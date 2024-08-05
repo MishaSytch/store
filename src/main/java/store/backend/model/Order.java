@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.*;
 
 @Entity
@@ -36,9 +37,13 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private Set<Product> products = new HashSet<>();
+
+    @Transactional
     public void addProduct(Product product) {
         products.add(product);
     }
+
+    @Transactional
     public void removeProduct(Product product) {
         products.remove(product);
         product.getOrders().remove(this);

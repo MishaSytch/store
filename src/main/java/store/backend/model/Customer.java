@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,10 +25,14 @@ public class Customer {
             orphanRemoval = true
     )
     private List<Order> orders = new ArrayList<>();
+
+    @Transactional
     public void addOrder(Order order) {
         orders.add(order);
         order.setCustomer(this);
     }
+
+    @Transactional
     public void removeOrder(Order order) {
         orders.remove(order);
         order.setCustomer(null);

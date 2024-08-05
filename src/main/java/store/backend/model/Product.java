@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,10 +26,14 @@ public class Product {
             orphanRemoval = true
     )
     private List<Price> prices = new ArrayList<>();
+
+    @Transactional
     public void addPrice(Price price) {
         prices.add(price);
         price.setProduct(this);
     }
+
+    @Transactional
     public void removePrice(Price price) {
         prices.remove(price);
         price.setProduct(null);
