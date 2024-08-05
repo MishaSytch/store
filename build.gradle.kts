@@ -30,9 +30,8 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
 //	Data
-//	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-//	runtimeOnly("com.h2database:h2")
-//	runtimeOnly("org.postgresql:postgresql")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	runtimeOnly("org.postgresql:postgresql")
 
 //	Security
 //	implementation("org.springframework.boot:spring-boot-starter-security")
