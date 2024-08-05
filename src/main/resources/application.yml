@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: backend
+
+  datasource:
+    url: jdbc:h2:mem:storedb
+    username: admin
+    password:

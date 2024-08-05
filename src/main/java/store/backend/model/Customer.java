@@ -10,15 +10,16 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "Customer")
+@Table(name = "Customers")
 public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long customer_id;
+    @Column(name = "customer_id")
+    private long id;
 
     @OneToMany(
-            mappedBy = "Order",
+            mappedBy = "customer",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )

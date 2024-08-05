@@ -9,19 +9,20 @@ import java.util.*;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "Order")
+@Table(name = "Orders")
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long order_id;
+    @Column(name = "order_id")
+    private long id;
 
     @ManyToOne(
             fetch = FetchType.LAZY
     )
     private Customer customer;
 
-    private Date date;
+    private String date;
 
     @ManyToMany (
             cascade = {
@@ -30,7 +31,7 @@ public class Order {
             }
     )
     @JoinTable(
-            name = "Product",
+            name = "items",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )

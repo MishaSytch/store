@@ -4,21 +4,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "Price_History")
+@Table(name = "Prices")
 public class Price {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long price_id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "price_id")
+    private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(
+            fetch = FetchType.LAZY
+    )
     private Product product;
 
     private float price;
 
-    private Date date;
+    private String date;
 }

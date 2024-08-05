@@ -12,14 +12,15 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "Product")
+@Table(name = "Products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long product_id;
+    @Column(name = "product_id")
+    private long id;
 
     @OneToMany(
-            mappedBy = "Price_History",
+            mappedBy = "product",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
@@ -33,7 +34,7 @@ public class Product {
         price.setProduct(null);
     }
 
-    @ManyToMany (mappedBy = "Order")
+    @ManyToMany(mappedBy = "products")
     private Set<Order> orders = new HashSet<>();
 
     private String name;
