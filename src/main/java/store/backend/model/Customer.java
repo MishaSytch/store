@@ -5,8 +5,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -24,25 +24,24 @@ public class Customer {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<Order> orders = new ArrayList<>();
-
+    private Set<Order> orders = new HashSet<>();
     @Transactional
     public void addOrder(Order order) {
         orders.add(order);
         order.setCustomer(this);
     }
-
     @Transactional
     public void removeOrder(Order order) {
         orders.remove(order);
         order.setCustomer(null);
     }
 
+    @Column(name = "customer_name", nullable = false)
     private String name;
 
+    @Column(name = "customer_surname", nullable = false)
     private String surname;
 
+    @Column(name = "customer_email", nullable = false)
     private String email;
-
-    private String password;
 }

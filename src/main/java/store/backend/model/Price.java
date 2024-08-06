@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
 @Data
@@ -20,7 +22,9 @@ public class Price {
     )
     private Product product;
 
-    private float price;
+    @Column(name = "price_value", nullable = false)
+    private BigDecimal price;
 
-    private String date;
+    @Column(name = "price_date", nullable = false)
+    private Date date;
 }

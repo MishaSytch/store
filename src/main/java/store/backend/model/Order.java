@@ -23,6 +23,7 @@ public class Order {
     )
     private Customer customer;
 
+    @Column(name = "order_date", nullable = false)
     private String date;
 
     @ManyToMany (
@@ -41,6 +42,7 @@ public class Order {
     @Transactional
     public void addProduct(Product product) {
         products.add(product);
+        product.getOrders().add(this);
     }
 
     @Transactional
