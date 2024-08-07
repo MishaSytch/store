@@ -1,4 +1,4 @@
-package store.backend.model;
+package store.backend.database.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,7 @@ public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Product product;

@@ -1,4 +1,4 @@
-package store.backend.model;
+package store.backend.database.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,7 @@ public class Price {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "price_id")
-    private long id;
+    private Long id;
 
     @ManyToOne(
             fetch = FetchType.LAZY

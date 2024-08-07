@@ -1,11 +1,10 @@
-package store.backend.model;
+package store.backend.database.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -17,7 +16,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "category_id")
-    private long id;
+    private Long id;
 
     @Column(name = "category_name", nullable = false)
     private String name;

@@ -4,12 +4,11 @@ spring:
 
 
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
-      use_sql_comments: true
-      format_sql: true
 
   datasource:
-    url: jdbc:h2:mem:storedb
-    username: admin
-    password:
+    url: jdbc:postgresql://localhost:5433/store_db
+    username: user
+    password: pass

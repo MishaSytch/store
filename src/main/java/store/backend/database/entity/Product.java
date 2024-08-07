@@ -1,4 +1,4 @@
-package store.backend.model;
+package store.backend.database.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "product_id")
-    private long id;
+    private Long id;
 
     @OneToMany(
             mappedBy = "product",
