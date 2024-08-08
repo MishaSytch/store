@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.print.DocFlavor.URL;
+import java.net.URL;
 
 @Entity
 @Data

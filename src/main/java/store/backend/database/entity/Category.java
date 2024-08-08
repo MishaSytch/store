@@ -1,14 +1,18 @@
 package store.backend.database.entity;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "Categories")
 public class Category {
@@ -27,7 +31,7 @@ public class Category {
                     CascadeType.MERGE
             }
     )
-    private Set<Product> products;
+    private Set<Product> products = new HashSet<>();
     @Transactional
     public void addProduct(Product product) {
         products.add(product);
@@ -38,7 +42,7 @@ public class Category {
         products.remove(product);
         product.getCategory().remove(this);
     }
-
+//
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    private Category superCategory;
 //
