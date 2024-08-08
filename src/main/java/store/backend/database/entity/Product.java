@@ -76,4 +76,21 @@ public class Product {
         images.remove(image);
         image.setProduct(null);
     }
+
+    @OneToMany(
+            mappedBy = "product",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<SKU> skus = new HashSet<>();
+    @Transactional
+    public void addSKU(SKU sku) {
+        skus.add(sku);
+        sku.setProduct(this);
+    }
+    @Transactional
+    public void removeSKU(SKU sku) {
+        skus.remove(sku);
+        sku.setProduct(null);
+    }
 }
