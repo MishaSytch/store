@@ -1,14 +1,16 @@
 package store.backend.database.entity;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "Prices")
 public class Price {
@@ -17,6 +19,7 @@ public class Price {
     @Column(name = "price_id")
     private Long id;
 
+    @Setter
     @ManyToOne(
             fetch = FetchType.LAZY
     )

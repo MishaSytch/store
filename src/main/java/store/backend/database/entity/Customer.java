@@ -1,18 +1,25 @@
 package store.backend.database.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import store.backend.security.role.Role;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@Builder
 @Table(name = "Customers")
-public class Customer {
+@AllArgsConstructor
+public class Customer implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -36,12 +43,47 @@ public class Customer {
         order.setCustomer(null);
     }
 
-    @Column(name = "customer_name", nullable = false)
-    private String name;
+    @Column(name = "customer_first_name", nullable = false)
+    private String firstName;
 
-    @Column(name = "customer_surname", nullable = false)
-    private String surname;
+    @Column(name = "customer_last_name", nullable = false)
+    private String lastName;
+
+    @Column(nullable = false)
+    private String password;
 
     @Column(name = "customer_email", nullable = false)
     private String email;
+
+    private Role role;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public String getUsername() {
+        return firstName + " " + lastName;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

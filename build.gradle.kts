@@ -27,23 +27,29 @@ dependencies {
 //	Spring
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
 //	Data
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.postgresql:postgresql")
 
-//	Security
-//	implementation("org.springframework.boot:spring-boot-starter-security")
-//	testImplementation("org.springframework.security:spring-security-test")
-
-//	Test
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-
-//	etc
+//  Util
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.apache.commons:commons-lang3")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 
+//  Security
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("io.jsonwebtoken:jjwt-api:0.12.6")
+	implementation("io.jsonwebtoken:jjwt-impl:0.12.6")
+	implementation("io.jsonwebtoken:jjwt-jackson:0.12.6")
+
+// Test
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation(platform("org.junit:junit-bom:5.10.0"))
+	testImplementation("org.junit.jupiter:junit-jupiter")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks.withType<Test> {

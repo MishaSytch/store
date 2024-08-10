@@ -1,7 +1,6 @@
 package store.backend.database.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
@@ -11,7 +10,8 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "Products")
 public class Product {
@@ -25,7 +25,7 @@ public class Product {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<Price> prices = new ArrayList<>();
+    private Set<Price> prices = new HashSet<>();
 
     @Transactional
     public void addPrice(Price price) {
