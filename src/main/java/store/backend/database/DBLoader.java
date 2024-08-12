@@ -1,14 +1,9 @@
 package store.backend.database;
 
-import org.apache.coyote.ProtocolHandler;
 import org.springframework.stereotype.Component;
 import store.backend.database.entity.*;
 import store.backend.database.repository.*;
-import store.backend.security.repository.UserRepository;
 
-import java.net.MalformedURLException;
-import java.net.ProtocolFamily;
-import java.net.URL;
 import java.util.*;
 
 @Component

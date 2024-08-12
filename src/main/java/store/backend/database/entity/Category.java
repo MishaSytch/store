@@ -73,7 +73,7 @@ public class Category {
     private Category superCategory;
 
     @OneToMany(
-            mappedBy = "category",
+//            mappedBy = "category",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
