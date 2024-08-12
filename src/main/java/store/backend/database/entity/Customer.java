@@ -32,12 +32,12 @@ public class Customer implements UserDetails {
             orphanRemoval = true
     )
     private Set<Order> orders = new HashSet<>();
-    @Transactional
+//    @Transactional
     public void addOrder(Order order) {
         orders.add(order);
         order.setCustomer(this);
     }
-    @Transactional
+//    @Transactional
     public void removeOrder(Order order) {
         orders.remove(order);
         order.setCustomer(null);

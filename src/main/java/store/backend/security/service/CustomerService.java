@@ -2,17 +2,18 @@ package store.backend.security.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import store.backend.database.entity.Customer;
 import store.backend.security.repository.UserRepository;
-import store.backend.security.role.Role;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class CustomerService {
+    @Autowired
     private UserRepository repository;
 
     /**

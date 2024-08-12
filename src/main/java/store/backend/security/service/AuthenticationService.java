@@ -15,7 +15,7 @@ import store.backend.security.role.Role;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-    private final UserService userService;
+    private final CustomerService customerService;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
@@ -36,7 +36,7 @@ public class AuthenticationService {
                 .role(Role.CUSTOMER)
                 .build();
 
-        userService.create(user);
+        customerService.create(user);
 
         String jwt = jwtService.generateToken(user);
         return new JwtAuthenticationResponse(jwt);
@@ -54,7 +54,7 @@ public class AuthenticationService {
                 request.getPassword()
         ));
 
-        UserDetails user = userService
+        UserDetails user = customerService
                 .userDetailsService()
                 .loadUserByUsername(request.getEmail());
 
