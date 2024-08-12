@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import store.backend.security.filter.JwtAuthenticationFilter;
 import store.backend.security.role.Role;
+import store.backend.security.role.UserRole;
 import store.backend.security.service.CustomerService;
 
 import java.util.Arrays;

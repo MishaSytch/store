@@ -3,7 +3,7 @@ package store.backend.database.entity;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import store.backend.security.role.Role;
+import store.backend.security.role.UserRole;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
@@ -32,12 +32,12 @@ public class Customer implements UserDetails {
             orphanRemoval = true
     )
     private Set<Order> orders = new HashSet<>();
-//    @Transactional
+    @Transactional
     public void addOrder(Order order) {
         orders.add(order);
         order.setCustomer(this);
     }
-//    @Transactional
+    @Transactional
     public void removeOrder(Order order) {
         orders.remove(order);
         order.setCustomer(null);
@@ -49,13 +49,18 @@ public class Customer implements UserDetails {
     @Column(name = "customer_last_name", nullable = false)
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(name = "customer_password", nullable = false)
     private String password;
 
     @Column(name = "customer_email", nullable = false)
     private String email;
 
-    private Role role;
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            optional = false
+    )
+    @PrimaryKeyJoinColumn
+    private UserRole role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
