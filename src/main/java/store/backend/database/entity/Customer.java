@@ -16,10 +16,16 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Table(name = "Customers")
-@AllArgsConstructor
 public class Customer implements UserDetails {
+    public Customer(String firstName, String lastName, String password, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

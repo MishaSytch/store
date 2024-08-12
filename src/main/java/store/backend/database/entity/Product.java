@@ -15,6 +15,22 @@ import java.util.Set;
 @NoArgsConstructor
 @Table(name = "Products")
 public class Product {
+    public Product(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public Product(String name, String description, Iterable<Price> prices, Iterable<Image> images) {
+        this.name = name;
+        this.description = description;
+        for (Price price : prices) {
+            addPrice(price);
+        }
+        for (Image image : images) {
+            addImage(image);
+        }
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "product_id")
@@ -26,6 +42,7 @@ public class Product {
             orphanRemoval = true
     )
     private Set<Price> prices = new HashSet<>();
+
 
     @Transactional
     public void addPrice(Price price) {
@@ -44,15 +61,6 @@ public class Product {
 
     @Column(name = "product_name", nullable = false)
     private String name;
-
-    @Column(name = "product_year", nullable = false)
-    private int year;
-
-    @Column(name = "product_series", nullable = false)
-    private String series;
-
-    @Column(name = "product_producer", nullable = false)
-    private String producer;
 
     @Column(name = "product_description", nullable = false)
     private String description;

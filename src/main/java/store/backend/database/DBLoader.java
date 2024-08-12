@@ -1,72 +1,130 @@
 package store.backend.database;
 
 import org.apache.coyote.ProtocolHandler;
+import org.springframework.stereotype.Component;
 import store.backend.database.entity.*;
+import store.backend.database.repository.*;
+import store.backend.security.repository.UserRepository;
 
 import java.net.MalformedURLException;
 import java.net.ProtocolFamily;
 import java.net.URL;
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
 
+@Component
 public class DBLoader {
+    private CategoryRepository categoryRepository;
+    private CustomerRepository customerRepository;
+    private ImageRepository imageRepository;
+    private OrderRepository orderRepository;
+    private PriceRepository priceRepository;
+    private ProductRepository productRepository;
+    private SKURepository skuRepository;
 
-    public DBLoader(){
-        Image image1 = new Image();
-        image1.setName("IPhone 15 1");
-        try {
-            image1.setReference(new URL(null,"https://www.google.com/search?q=iphone+15+1"));
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-        Image image2 = new Image();
-        image2.setName("IPhone 15 2");
-        try {
-            image2.setReference(new URL(null,"https://www.google.com/search?q=iphone+15+2"));
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-        Image image3 = new Image();
-        image3.setName("IPhone 15 3");
-        try {
-            image3.setReference(new URL(null,"https://www.google.com/search?q=iphone+15+3"));
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+    public DBLoader(CategoryRepository categoryRepository, CustomerRepository customerRepository, ImageRepository imageRepository, OrderRepository orderRepository, PriceRepository priceRepository, ProductRepository productRepository, SKURepository skuRepository) {
+        this.categoryRepository = categoryRepository;
+        this.customerRepository = customerRepository;
+        this.imageRepository = imageRepository;
+        this.orderRepository = orderRepository;
+        this.priceRepository = priceRepository;
+        this.productRepository = productRepository;
+        this.skuRepository = skuRepository;
 
-        Price price1 = new Price();
-        price1.setDate(new Date());
 
-        SKU sku1 = new SKU();
-        sku1.setSku("asd1");
+    }
 
-        SKU sku2 = new SKU();
-        sku2.setSku("asd2");
+    private void LoadCustomers() {
+        customerRepository.saveAll(Arrays.asList(
+                new Customer(
+                    "Misha", "Sytch", "MishaSytchPass", "mishaSytch@mail.ru"
+                ),
+                new Customer(
+                        "Lena", "Nam", "LenaNamPass", "lenaNam@mail.ru"
+                )
+        )
+        );
+    }
 
-        SKU sku3 = new SKU();
-        sku3.setSku("asd3");
-
-        SKU sku4 = new SKU();
-        sku4.setId((new Random()).nextLong());
-        sku4.setSku("asd4");
-
-        Product product1 = new Product();
-        product1.setName("IPhone 15");
-        product1.addImage(image1);
-        product1.addImage(image2);
-        product1.addImage(image3);
-        product1.addPrice(price1);
-        product1.addSKU(sku1);
-        product1.addSKU(sku2);
-        product1.addSKU(sku3);
-        product1.addSKU(sku4);
-
-        Category innerCategory = new Category();
-        innerCategory.setName("inner");
-        innerCategory.addProduct(product1);
-//
-//        Category outerCategory = new Category();
-//        outerCategory.setName("outer");
-//        outerCategory.addCategory(innerCategory);
+    private void LoadCategories() {
+        categoryRepository.saveAll(
+                Arrays.asList(
+                    new Category("Смартфоны",
+                            new HashSet<>(
+                                    Arrays.asList(
+                                        new Category("Apple",
+                                                Arrays.asList(
+                                                     new Product(
+                                                             "Смартфон Apple iPhone 14",
+                                                             "Смартфон Apple iPhone 14 2023 года выпуска"
+                                                     ),
+                                                        new Product(
+                                                                "Смартфон Apple iPhone 13",
+                                                                "Смартфон Apple iPhone 13 2022 года выпуска"
+                                                        )
+                                                )
+                                        ),
+                                        new Category("Samsung",
+                                                Collections.singletonList(
+                                                        new Product(
+                                                                "Смартфон Samsung Galaxy S8",
+                                                                "Смартфон Samsung Galaxy S8 2023 года выпуска"
+                                                        )
+                                                )
+                                        ),
+                                        new Category("Сопутствующие товары",
+                                                new HashSet<>(
+                                                        Arrays.asList(
+                                                            new Category("Наушники",
+                                                                    Collections.singletonList(
+                                                                            new Product(
+                                                                                    "Наушники Apple AirPods Pro",
+                                                                                    "Наушники Apple AirPods Pro для продукции Apple"
+                                                                            )
+                                                                    )
+                                                            ),
+                                                            new Category("Чехлы",
+                                                                    Collections.singletonList(
+                                                                            new Product(
+                                                                                    "Чехол для Huawei P50",
+                                                                                    "Чехол для Huawei P50 для телефона Huawei P50"
+                                                                            )
+                                                                    )
+                                                            )
+                                                    )
+                                                )
+                                        )
+                                    )
+                            ),
+                            Collections.singletonList(
+                                    new Product(
+                                            "Смартфон Huawei P50",
+                                            "Смартфон Huawei P50 телефон без категории"
+                                    )
+                            )
+                    ),
+                    new Category("Аудиотехника",
+                            new HashSet<>(
+                                    Arrays.asList(
+                                        new Category("Портативные колонки",
+                                                Collections.singletonList(
+                                                        new Product(
+                                                                "Умная колонка Яндекс Станция",
+                                                                "Умная колонка Яндекс Станция"
+                                                        )
+                                                )
+                                        ),
+                                        new Category("Наушники",
+                                                Collections.singletonList(
+                                                        new Product(
+                                                                "Наушники Apple AirPods Pro",
+                                                                "Наушники Apple AirPods Pro для продукции Apple"
+                                                        )
+                                                )
+                                        )
+                                    )
+                            )
+                    )
+                )
+        );
     }
 }
