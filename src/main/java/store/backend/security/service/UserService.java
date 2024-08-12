@@ -31,11 +31,6 @@ public class UserService {
      * @return созданный пользователь
      */
     public Customer create(Customer customer) {
-        if (repository.existsByUsername(customer.getUsername())) {
-            // Заменить на свои исключения
-            throw new RuntimeException("Пользователь с таким именем уже существует");
-        }
-
         if (repository.existsByEmail(customer.getEmail())) {
             throw new RuntimeException("Пользователь с таким email уже существует");
         }
@@ -48,8 +43,8 @@ public class UserService {
      *
      * @return пользователь
      */
-    public Customer getByUsername(String username) {
-        return repository.findByUsername(username)
+    public Customer getByEmail(String email) {
+        return repository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
 
     }
@@ -62,7 +57,7 @@ public class UserService {
      * @return пользователь
      */
     public UserDetailsService userDetailsService() {
-        return this::getByUsername;
+        return this::getByEmail;
     }
 
     /**
@@ -73,19 +68,6 @@ public class UserService {
     public Customer getCurrentUser() {
         // Получение имени пользователя из контекста Spring Security
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return getByUsername(username);
-    }
-
-
-    /**
-     * Выдача прав администратора текущему пользователю
-     * <p>
-     * Нужен для демонстрации
-     */
-    @Deprecated
-    public void getAdmin() {
-        Customer user = getCurrentUser();
-        user.setRole(Role.ADMIN);
-        save(user);
+        return getByEmail(username);
     }
 }

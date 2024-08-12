@@ -64,7 +64,7 @@ public class Customer implements UserDetails {
 
     @Override
     public String getUsername() {
-        return firstName + " " + lastName;
+        return email;
     }
 
     @Override
