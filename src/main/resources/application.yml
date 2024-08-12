@@ -2,7 +2,6 @@ spring:
   application:
     name: backend
 
-
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL81Dialect
     hibernate:
@@ -13,3 +12,7 @@ spring:
     url: jdbc:postgresql://localhost:5433/store_db
     username: user
     password: pass
+
+token:
+  signing:
+    key: 23YG9236BRTB3982H3C289GFH49264G237498GCNF4YT5C7HF0348H9HT235T2

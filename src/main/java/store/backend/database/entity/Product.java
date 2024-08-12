@@ -25,7 +25,7 @@ public class Product {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<Price> prices = new ArrayList<>();
+    private Set<Price> prices = new HashSet<>();
 
     @Transactional
     public void addPrice(Price price) {
