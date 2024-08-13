@@ -3,7 +3,7 @@ package store.backend.database.entity;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import store.backend.security.role.UserRole;
+import store.backend.security.role.Role;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
@@ -55,12 +55,7 @@ public class Customer implements UserDetails {
     @Column(name = "customer_email", nullable = false)
     private String email;
 
-    @OneToOne(
-            fetch = FetchType.LAZY,
-            optional = false
-    )
-    @PrimaryKeyJoinColumn
-    private UserRole role;
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
