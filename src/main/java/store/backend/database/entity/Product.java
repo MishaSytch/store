@@ -13,23 +13,10 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "Products")
 public class Product {
-    public Product(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
-
-    public Product(String name, String description, Iterable<Price> prices, Iterable<Image> images) {
-        this.name = name;
-        this.description = description;
-        for (Price price : prices) {
-            addPrice(price);
-        }
-        for (Image image : images) {
-            addImage(image);
-        }
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

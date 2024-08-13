@@ -6,4 +6,5 @@ import store.backend.database.entity.Customer;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
+    Customer getByEmail(String email);
 }

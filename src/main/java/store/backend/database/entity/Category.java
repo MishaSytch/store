@@ -1,8 +1,6 @@
 package store.backend.database.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
@@ -13,35 +11,10 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "Categories")
 public class Category {
-    public Category(String name) {
-        this.name = name;
-    }
-
-    public Category(String name, Iterable<Product> products) {
-        this.name = name;
-        for (Product product : products) {
-            addProduct(product);
-        }
-    }
-
-    public Category(String name, Set<Category> categories) {
-        this.name = name;
-        for (Category category : categories) {
-            addCategory(category);
-        }
-    }
-
-    public Category(String name, Set<Category> categories, Iterable<Product> products) {
-        this.name = name;
-        for (Category category : categories) {
-            addCategory(category);
-        }
-        for (Product product : products) {
-            addProduct(product);
-        }
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

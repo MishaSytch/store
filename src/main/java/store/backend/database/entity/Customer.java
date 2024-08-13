@@ -15,12 +15,6 @@ import java.util.Set;
 @Builder
 @Table(name = "Customers")
 public class Customer {
-    public Customer(String firstName, String lastName, String password, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.email = email;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

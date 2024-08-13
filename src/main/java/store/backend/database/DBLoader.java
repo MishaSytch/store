@@ -5,6 +5,7 @@ import store.backend.database.entity.*;
 import store.backend.database.repository.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class DBLoader {
@@ -25,101 +26,158 @@ public class DBLoader {
         this.productRepository = productRepository;
         this.skuRepository = skuRepository;
 
-
+        loadCategories();
+        loadCustomers();
     }
 
-    private void LoadCustomers() {
-        customerRepository.saveAll(Arrays.asList(
-                new Customer(
-                    "Misha", "Sytch", "MishaSytchPass", "mishaSytch@mail.ru"
-                ),
-                new Customer(
-                        "Lena", "Nam", "LenaNamPass", "lenaNam@mail.ru"
+    private void loadCustomers() {
+        customerRepository.saveAll(
+                Arrays.asList(
+                    Customer.builder()
+                            .firstName("Misha")
+                            .lastName("Sytch")
+                            .password("MishaSytchPass")
+                            .email("mishaSytch@mail.ru")
+                            .build(),
+                        Customer.builder()
+                                .firstName("Lena")
+                                .lastName("Nam")
+                                .password("LenaNamPass")
+                                .email("lenaNam@mail.ru")
+                                .build()
                 )
-        )
         );
     }
 
-    private void LoadCategories() {
+    private void loadCategories() {
         categoryRepository.saveAll(
                 Arrays.asList(
-                    new Category("Смартфоны",
-                            new HashSet<>(
-                                    Arrays.asList(
-                                        new Category("Apple",
-                                                Arrays.asList(
-                                                     new Product(
-                                                             "Смартфон Apple iPhone 14",
-                                                             "Смартфон Apple iPhone 14 2023 года выпуска"
-                                                     ),
-                                                        new Product(
-                                                                "Смартфон Apple iPhone 13",
-                                                                "Смартфон Apple iPhone 13 2022 года выпуска"
-                                                        )
-                                                )
-                                        ),
-                                        new Category("Samsung",
-                                                Collections.singletonList(
-                                                        new Product(
-                                                                "Смартфон Samsung Galaxy S8",
-                                                                "Смартфон Samsung Galaxy S8 2023 года выпуска"
-                                                        )
-                                                )
-                                        ),
-                                        new Category("Сопутствующие товары",
-                                                new HashSet<>(
-                                                        Arrays.asList(
-                                                            new Category("Наушники",
-                                                                    Collections.singletonList(
-                                                                            new Product(
-                                                                                    "Наушники Apple AirPods Pro",
-                                                                                    "Наушники Apple AirPods Pro для продукции Apple"
-                                                                            )
-                                                                    )
-                                                            ),
-                                                            new Category("Чехлы",
-                                                                    Collections.singletonList(
-                                                                            new Product(
-                                                                                    "Чехол для Huawei P50",
-                                                                                    "Чехол для Huawei P50 для телефона Huawei P50"
-                                                                            )
-                                                                    )
-                                                            )
+                    Category.builder()
+                            .name("Смартфоны")
+                            .categories(
+                                    new HashSet<>(
+                                            Arrays.asList(
+                                                Category.builder()
+                                                        .name("Apple")
+                                                        .products(
+                                                                new HashSet<>(
+                                                                        Arrays.asList(
+                                                                            Product.builder()
+                                                                                    .name("Смартфон Apple iPhone 14")
+                                                                                    .description("Смартфон Apple iPhone 14 2023 года выпуска")
+                                                                                    .build(),
+                                                                            Product.builder()
+                                                                                    .name("Смартфон Apple iPhone 13")
+                                                                                    .description("Смартфон Apple iPhone 13 2022 года выпуска")
+                                                                                    .build()
+                                                                        )
+                                                                )
+                                                        ).build(),
+                                                Category.builder()
+                                                        .name("Samsung")
+                                                        .products(
+                                                                new HashSet<>(
+                                                                        Collections.singletonList(
+                                                                            Product.builder()
+                                                                                    .name("Смартфон Samsung Galaxy S8")
+                                                                                    .description("Смартфон Samsung Galaxy S8 2023 года выпуска")
+                                                                                    .build()
+                                                                        )
+                                                                )
+                                                        ).build(),
+                                                Category.builder()
+                                                        .name("Сопутствующие товары")
+                                                        .categories(
+                                                                new HashSet<>(
+                                                                        Arrays.asList(
+                                                                                Category.builder()
+                                                                                        .name("Наушники")
+                                                                                        .products(
+                                                                                                new HashSet<>(
+                                                                                                        Collections.singletonList(
+                                                                                                                Product.builder()
+                                                                                                                        .name("Наушники Apple AirPods Pro")
+                                                                                                                        .description("Наушники Apple AirPods Pro для продукции Apple")
+                                                                                                                        .build()
+                                                                                                        )
+                                                                                                )
+                                                                                        ).build(),
+                                                                                Category.builder()
+                                                                                        .name("Чехлы")
+                                                                                        .products(
+                                                                                                new HashSet<>(
+                                                                                                    Collections.singletonList(
+                                                                                                            Product.builder()
+                                                                                                                    .name("Чехол для Huawei P50")
+                                                                                                                    .description("Чехол для Huawei P50 для телефона Huawei P50")
+                                                                                                                    .build()
+                                                                                                    )
+                                                                                                )
+                                                                                        ).build()
+                                                                        )
+                                                                )
+                                                        ).build()
+                                            )
+                                    )
+                            ).products(
+                                            new HashSet<>(
+                                                    Collections.singletonList(
+                                                            Product.builder()
+                                                                    .name("Смартфон Huawei P50")
+                                                                    .description("Смартфон Huawei P50 телефон без категории")
+                                                                    .build()
                                                     )
-                                                )
+                                            )
+                            ).build(),
+                Category.builder()
+                        .name("Аудиотехника")
+                        .categories(
+                                new HashSet<>(
+                                        Arrays.asList(
+                                                Category.builder()
+                                                        .name("Портативные колонки")
+                                                        .products(
+                                                                new HashSet<>(
+                                                                        Collections.singletonList(
+                                                                                Product.builder()
+                                                                                        .name("Умная колонка Яндекс Станция")
+                                                                                        .description("Умная колонка Яндекс Станция")
+                                                                                        .build()
+                                                                        )
+                                                                )
+                                                        ).build(),
+                                                Category.builder()
+                                                        .name("Наушники")
+                                                        .products(
+                                                                new HashSet<>(
+                                                                        Collections.singletonList(
+                                                                                Product.builder()
+                                                                                        .name("Наушники Apple AirPods Pro")
+                                                                                        .description("Наушники Apple AirPods Pro для продукции Apple")
+                                                                                        .build()
+                                                                        )
+                                                                )
+                                                        ).build()
                                         )
-                                    )
-                            ),
-                            Collections.singletonList(
-                                    new Product(
-                                            "Смартфон Huawei P50",
-                                            "Смартфон Huawei P50 телефон без категории"
-                                    )
-                            )
-                    ),
-                    new Category("Аудиотехника",
-                            new HashSet<>(
-                                    Arrays.asList(
-                                        new Category("Портативные колонки",
-                                                Collections.singletonList(
-                                                        new Product(
-                                                                "Умная колонка Яндекс Станция",
-                                                                "Умная колонка Яндекс Станция"
-                                                        )
-                                                )
-                                        ),
-                                        new Category("Наушники",
-                                                Collections.singletonList(
-                                                        new Product(
-                                                                "Наушники Apple AirPods Pro",
-                                                                "Наушники Apple AirPods Pro для продукции Apple"
-                                                        )
-                                                )
-                                        )
-                                    )
-                            )
-                    )
+                                )
+                        ).build()
                 )
         );
     }
+
+    private void loadProducts() {
+        productRepository.saveAll(
+                Arrays.asList(
+                        Product.builder()
+                                .name("Наушники Apple AirPods Pro")
+                                .description("Наушники Apple AirPods Pro для продукции Apple")
+                                .build(),
+                        Product.builder()
+                                .name("Умная колонка Яндекс Станция")
+                                .description("Умная колонка Яндекс Станция")
+                                .build()
+                )
+        );
+    }
+
 }
