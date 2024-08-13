@@ -1,5 +1,6 @@
 package store.backend.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -44,6 +45,7 @@ public class Product {
     }
 
     @ManyToMany(mappedBy = "products")
+    @JsonManagedReference
     private Set<Order> orders = new HashSet<>();
 
     @Column(name = "product_name", nullable = false)
@@ -53,6 +55,7 @@ public class Product {
     private String description;
 
     @ManyToMany(mappedBy = "products")
+    @JsonManagedReference
     private Set<Category> category = new HashSet<>();
 
     @OneToMany(

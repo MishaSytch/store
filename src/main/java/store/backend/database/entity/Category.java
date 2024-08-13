@@ -1,5 +1,6 @@
 package store.backend.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,12 +25,13 @@ public class Category {
     @Column(name = "category_name", nullable = false)
     private String name;
 
-    @ManyToMany(
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            }
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "category",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
     )
+    @JsonBackReference
     private Set<Product> products = new HashSet<>();
     @Transactional
     public void addProduct(Product product) {
