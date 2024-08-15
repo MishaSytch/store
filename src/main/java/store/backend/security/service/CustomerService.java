@@ -8,13 +8,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import store.backend.database.entity.Customer;
-import store.backend.security.repository.UserRepository;
+import store.backend.database.repository.CustomerRepository;
 
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
     @Autowired
-    private UserRepository repository;
+    private CustomerRepository repository;
 
     /**
      * Сохранение пользователя
@@ -32,7 +32,7 @@ public class CustomerService {
      * @return созданный пользователь
      */
     public Customer create(Customer customer) {
-        if (repository.existsByEmail(customer.getEmail())) {
+        if (repository.findByEmail(customer.getEmail()).isPresent()) {
             throw new RuntimeException("Пользователь с таким email уже существует");
         }
 
@@ -66,7 +66,7 @@ public class CustomerService {
      *
      * @return текущий пользователь
      */
-    public Customer getCurrentUser() {
+    public Customer getCurrentCustomer() {
         // Получение имени пользователя из контекста Spring Security
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return getByEmail(username);
