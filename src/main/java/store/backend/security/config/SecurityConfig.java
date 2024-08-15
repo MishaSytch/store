@@ -47,8 +47,8 @@ public class SecurityConfig {
                 // Настройка доступа к конечным точкам
                 .authorizeHttpRequests(request -> request
                         // Можно указать конкретный путь, * - 1 уровень вложенности, ** - любое количество уровней вложенности
-                        .mvcMatchers("/auth/**").permitAll()
-                        .mvcMatchers("/endpoint", "/customer/**").hasRole(Role.CUSTOMER.toString())
+                        .mvcMatchers("/auth/sign-up/**", "/auth/sign-in/**").permitAll()
+                        .mvcMatchers("/account/customer/**").hasRole(Role.CUSTOMER.toString())
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())

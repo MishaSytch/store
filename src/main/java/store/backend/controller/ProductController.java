@@ -13,12 +13,12 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public Product getProduct(@PathVariable("id") Long id) {
-        return productRepository.getById(id);
+        return productRepository.findById(id).orElse(null);
     }
 
     @GetMapping("/{category_id}")
     public Iterable<Product> getProducts(@PathVariable("category_id") Long category_id) {
-        return productRepository.getProductsByCategory_Id(category_id);
+        return productRepository.findAllByCategoryId(category_id);
     }
 
     @PostMapping
