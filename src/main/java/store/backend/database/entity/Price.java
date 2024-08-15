@@ -19,7 +19,6 @@ public class Price {
     @Column(name = "price_id")
     private Long id;
 
-    @Setter
     @ManyToOne(
             fetch = FetchType.LAZY
     )

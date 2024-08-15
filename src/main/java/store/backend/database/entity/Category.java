@@ -1,15 +1,19 @@
 package store.backend.database.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "Categories")
 public class Category {
 
@@ -21,13 +25,14 @@ public class Category {
     @Column(name = "category_name", nullable = false)
     private String name;
 
-    @ManyToMany(
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            }
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "category",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    private Set<Product> products;
+    @JsonBackReference
+    private Set<Product> products = new HashSet<>();
     @Transactional
     public void addProduct(Product product) {
         products.add(product);
@@ -39,23 +44,23 @@ public class Category {
         product.getCategory().remove(this);
     }
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Category superCategory;
-//
-//    @OneToMany(
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Category superCategory;
+
+    @OneToMany(
 //            mappedBy = "category",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true
-//    )
-//    private Set<Category> categories = new HashSet<>();
-//    @Transactional
-//    public void addCategory(Category category) {
-//        categories.add(category);
-//        category.setSuperCategory(this);
-//    }
-//    @Transactional
-//    public void removeCategory(Category category) {
-//        categories.remove(category);
-//        category.setSuperCategory(null);
-//    }
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<Category> categories = new HashSet<>();
+    @Transactional
+    public void addCategory(Category category) {
+        categories.add(category);
+        category.setSuperCategory(this);
+    }
+    @Transactional
+    public void removeCategory(Category category) {
+        categories.remove(category);
+        category.setSuperCategory(null);
+    }
 }

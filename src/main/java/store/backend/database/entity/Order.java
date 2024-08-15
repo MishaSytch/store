@@ -1,14 +1,18 @@
 package store.backend.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "Orders")
 public class Order {
@@ -26,17 +30,13 @@ public class Order {
     @Column(name = "order_date", nullable = false)
     private String date;
 
-    @ManyToMany (
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            }
-    )
+    @ManyToMany (cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "items",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
+    @JsonBackReference
     private Set<Product> products = new HashSet<>();
 
     @Transactional

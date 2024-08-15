@@ -1,5 +1,6 @@
 package store.backend.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,8 +14,11 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "Products")
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "product_id")
@@ -26,6 +30,7 @@ public class Product {
             orphanRemoval = true
     )
     private Set<Price> prices = new HashSet<>();
+
 
     @Transactional
     public void addPrice(Price price) {
@@ -40,25 +45,18 @@ public class Product {
     }
 
     @ManyToMany(mappedBy = "products")
+    @JsonManagedReference
     private Set<Order> orders = new HashSet<>();
 
     @Column(name = "product_name", nullable = false)
     private String name;
 
-    @Column(name = "product_year", nullable = false)
-    private int year;
-
-    @Column(name = "product_series", nullable = false)
-    private String series;
-
-    @Column(name = "product_producer", nullable = false)
-    private String producer;
-
     @Column(name = "product_description", nullable = false)
     private String description;
 
     @ManyToMany(mappedBy = "products")
-    private Set<Category> category;
+    @JsonManagedReference
+    private Set<Category> category = new HashSet<>();
 
     @OneToMany(
             mappedBy = "product",
@@ -75,5 +73,22 @@ public class Product {
     public void removeImage(Image image) {
         images.remove(image);
         image.setProduct(null);
+    }
+
+    @OneToMany(
+            mappedBy = "product",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<SKU> skus = new HashSet<>();
+    @Transactional
+    public void addSKU(SKU sku) {
+        skus.add(sku);
+        sku.setProduct(this);
+    }
+    @Transactional
+    public void removeSKU(SKU sku) {
+        skus.remove(sku);
+        sku.setProduct(null);
     }
 }
