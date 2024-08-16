@@ -1,6 +1,7 @@
 package store.backend.security.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +17,8 @@ import javax.validation.Valid;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private final AuthenticationService authenticationService;
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @PostMapping("/sign-up")
     public JwtAuthenticationResponse signUp(@RequestBody @Valid SignUpRequest request) {
