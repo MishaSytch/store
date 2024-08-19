@@ -97,6 +97,16 @@ public class DBLoader {
                                                                         Arrays.asList(
                                                                                 Category.builder()
                                                                                         .name("Наушники")
+                                                                                        .products(
+                                                                                                new HashSet<>(
+                                                                                                        Collections.singletonList(
+                                                                                                                Product.builder()
+                                                                                                                        .name("Наушники Apple AirPods Pro")
+                                                                                                                        .description("Наушники Apple AirPods Pro для продукции Apple")
+                                                                                                                        .build()
+                                                                                                        )
+                                                                                                )
+                                                                                        )
                                                                                         .build(),
                                                                                 Category.builder()
                                                                                         .name("Чехлы")
@@ -144,25 +154,22 @@ public class DBLoader {
                                                         ).build(),
                                                 Category.builder()
                                                         .name("Наушники")
+                                                        .products(
+                                                                new HashSet<>(
+                                                                        Collections.singletonList(
+                                                                                Product.builder()
+                                                                                        .name("Наушники Apple AirPods Pro")
+                                                                                        .description("Наушники Apple AirPods Pro для продукции Apple")
+                                                                                        .build()
+                                                                        )
+                                                                )
+                                                        )
                                                         .build()
                                         )
                                 )
                         ).build()
                 )
         );
-    }
-
-    @Transactional
-    private void loadProducts() {
-        Product.builder()
-                .name("Наушники Apple AirPods Pro")
-                .description("Наушники Apple AirPods Pro для продукции Apple")
-                .build();
-
-        Category headPhones = categoryRepository.findByName("Наушники").get();
-        Category addition = categoryRepository.findByName("")
-
-
     }
 
     @Transactional
@@ -205,7 +212,7 @@ public class DBLoader {
         imageRepository.saveAll(images);
 
 //        Наушники Apple AirPods Pro
-        Product airPodsPro = productRepository.findByName("Наушники Apple AirPods Pro").get();
+        Iterable<Product> airPodsPro = productRepository.findAllByName("Наушники Apple AirPods Pro");
         images = Arrays.asList(
                 Image.builder()
                         .name("https://iphoriya.ru/wp-content/uploads/airpods-pro-2022.jpeg")
@@ -220,7 +227,11 @@ public class DBLoader {
                         .reference("https://i-shop.ru/upload/iblock/dd6/dd6b450b68a97d04b1d6dcee58e0c39c.jpeg")
                         .build()
         );
-        for (Image image : images) airPodsPro.addImage(image);
+        for (Product product : airPodsPro) {
+            for (Image image : images) {
+                product.addImage(image);
+            }
+        }
         imageRepository.saveAll(images);
 
 //        Чехол для Huawei P50

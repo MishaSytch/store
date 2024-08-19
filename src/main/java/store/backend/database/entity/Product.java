@@ -47,7 +47,7 @@ public class Product {
     @JsonManagedReference
     private Set<Order> orders = new HashSet<>();
 
-    @Column(name = "product_name", nullable = false, unique = true)
+    @Column(name = "product_name", nullable = false)
     private String name;
 
     @Column(name = "product_description", nullable = false)
