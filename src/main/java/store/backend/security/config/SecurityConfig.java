@@ -62,7 +62,8 @@ public class SecurityConfig {
 
                         .mvcMatchers("/price/**").hasRole(Role.ADMIN.name())
 
-                        .mvcMatchers("/sku/**").hasRole(Role.ADMIN.name())
+                        .mvcMatchers("/sku/**").permitAll()
+//                        .hasRole(Role.ADMIN.name())
 
                         .mvcMatchers(HttpMethod.GET, "/account/customer/").hasRole(Role.CUSTOMER.name())
 

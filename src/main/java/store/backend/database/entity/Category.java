@@ -52,7 +52,8 @@ public class Category {
 
     @OneToMany(
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
     )
     @JsonManagedReference
     private Set<Category> categories = new HashSet<>();

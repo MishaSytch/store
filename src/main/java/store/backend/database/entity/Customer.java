@@ -29,7 +29,8 @@ public class Customer implements UserDetails {
     @OneToMany(
             mappedBy = "customer",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
     )
     private Set<Order> orders = new HashSet<>();
     @Transactional

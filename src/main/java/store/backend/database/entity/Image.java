@@ -1,17 +1,16 @@
 package store.backend.database.entity;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 
 import javax.persistence.*;
-import java.net.URL;
 
 @Entity
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "Images")
 public class Image {
 
@@ -20,11 +19,12 @@ public class Image {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private Product product;
 
     @Column(name = "image_title", nullable = false)
     private String name;
 
     @Column(name = "image_reference", nullable = false)
-    private URL reference;
+    private String reference;
 }

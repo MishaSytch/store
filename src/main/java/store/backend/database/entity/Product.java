@@ -5,9 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,7 +25,8 @@ public class Product {
     @OneToMany(
             mappedBy = "product",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
     private Set<Price> prices = new HashSet<>();
 
@@ -48,7 +47,7 @@ public class Product {
     @JsonManagedReference
     private Set<Order> orders = new HashSet<>();
 
-    @Column(name = "product_name", nullable = false)
+    @Column(name = "product_name", nullable = false, unique = true)
     private String name;
 
     @Column(name = "product_description", nullable = false)
@@ -61,8 +60,10 @@ public class Product {
     @OneToMany(
             mappedBy = "product",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
+    @JsonManagedReference
     private Set<Image> images = new HashSet<>();
     @Transactional
     public void addImage(Image image) {
@@ -78,8 +79,10 @@ public class Product {
     @OneToMany(
             mappedBy = "product",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
+    @JsonManagedReference
     private Set<SKU> skus = new HashSet<>();
     @Transactional
     public void addSKU(SKU sku) {
