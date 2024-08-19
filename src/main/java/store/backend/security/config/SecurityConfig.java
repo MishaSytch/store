@@ -64,10 +64,16 @@ public class SecurityConfig {
 
                         .mvcMatchers("/sku/**").hasRole(Role.ADMIN.name())
 
-                        .mvcMatchers( "/account/customer/**").hasRole(Role.CUSTOMER.name())
+                        .mvcMatchers(HttpMethod.GET, "/account/customer/").hasRole(Role.CUSTOMER.name())
+
+                        .mvcMatchers("/account/customer/**").hasRole(Role.ADMIN.name())
 
                         .mvcMatchers( "/order/**").hasRole(Role.ADMIN.name())
                         .mvcMatchers(HttpMethod.GET, "/order/**").hasRole(Role.CUSTOMER.name())
+
+                        .mvcMatchers(HttpMethod.GET, "/product/*").permitAll()
+
+                        .mvcMatchers(HttpMethod.GET, "/category/*").permitAll()
 
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))

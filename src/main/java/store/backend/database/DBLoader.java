@@ -17,6 +17,9 @@ public class DBLoader {
     private ProductRepository productRepository;
     private SKURepository skuRepository;
 
+
+    private final Random random = new Random();
+
     public DBLoader(CategoryRepository categoryRepository, CustomerRepository customerRepository, ImageRepository imageRepository, OrderRepository orderRepository, PriceRepository priceRepository, ProductRepository productRepository, SKURepository skuRepository) {
         this.categoryRepository = categoryRepository;
         this.customerRepository = customerRepository;
@@ -28,7 +31,9 @@ public class DBLoader {
 
         loadCategories();
         loadCustomers();
+        loadProducts();
     }
+
 
     private void loadCustomers() {
         customerRepository.saveAll(
@@ -65,10 +70,70 @@ public class DBLoader {
                                                                             Product.builder()
                                                                                     .name("Смартфон Apple iPhone 14")
                                                                                     .description("Смартфон Apple iPhone 14 2023 года выпуска")
+                                                                                    .skus(
+                                                                                            new HashSet<>(
+                                                                                                    Arrays.asList(
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build()
+                                                                                                            )
+                                                                                            )
+                                                                                    )
                                                                                     .build(),
                                                                             Product.builder()
                                                                                     .name("Смартфон Apple iPhone 13")
                                                                                     .description("Смартфон Apple iPhone 13 2022 года выпуска")
+                                                                                    .skus(
+                                                                                            new HashSet<>(
+                                                                                                    Arrays.asList(
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build()
+                                                                                                    )
+                                                                                            )
+                                                                                    )
                                                                                     .build()
                                                                         )
                                                                 )
@@ -81,6 +146,36 @@ public class DBLoader {
                                                                             Product.builder()
                                                                                     .name("Смартфон Samsung Galaxy S8")
                                                                                     .description("Смартфон Samsung Galaxy S8 2023 года выпуска")
+                                                                                    .skus(
+                                                                                            new HashSet<>(
+                                                                                                    Arrays.asList(
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build(),
+                                                                                                            SKU.builder()
+                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                    .build()
+                                                                                                    )
+                                                                                            )
+                                                                                    )
                                                                                     .build()
                                                                         )
                                                                 )
@@ -98,6 +193,36 @@ public class DBLoader {
                                                                                                                 Product.builder()
                                                                                                                         .name("Наушники Apple AirPods Pro")
                                                                                                                         .description("Наушники Apple AirPods Pro для продукции Apple")
+                                                                                                                        .skus(
+                                                                                                                                new HashSet<>(
+                                                                                                                                        Arrays.asList(
+                                                                                                                                                SKU.builder()
+                                                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                                                        .build(),
+                                                                                                                                                SKU.builder()
+                                                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                                                        .build(),
+                                                                                                                                                SKU.builder()
+                                                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                                                        .build(),
+                                                                                                                                                SKU.builder()
+                                                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                                                        .build(),
+                                                                                                                                                SKU.builder()
+                                                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                                                        .build(),
+                                                                                                                                                SKU.builder()
+                                                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                                                        .build(),
+                                                                                                                                                SKU.builder()
+                                                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                                                        .build(),
+                                                                                                                                                SKU.builder()
+                                                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                                                        .build()
+                                                                                                                                        )
+                                                                                                                                )
+                                                                                                                        )
                                                                                                                         .build()
                                                                                                         )
                                                                                                 )
@@ -110,6 +235,36 @@ public class DBLoader {
                                                                                                             Product.builder()
                                                                                                                     .name("Чехол для Huawei P50")
                                                                                                                     .description("Чехол для Huawei P50 для телефона Huawei P50")
+                                                                                                                    .skus(
+                                                                                                                            new HashSet<>(
+                                                                                                                                    Arrays.asList(
+                                                                                                                                            SKU.builder()
+                                                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                                                    .build(),
+                                                                                                                                            SKU.builder()
+                                                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                                                    .build(),
+                                                                                                                                            SKU.builder()
+                                                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                                                    .build(),
+                                                                                                                                            SKU.builder()
+                                                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                                                    .build(),
+                                                                                                                                            SKU.builder()
+                                                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                                                    .build(),
+                                                                                                                                            SKU.builder()
+                                                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                                                    .build(),
+                                                                                                                                            SKU.builder()
+                                                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                                                    .build(),
+                                                                                                                                            SKU.builder()
+                                                                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                                                    .build()
+                                                                                                                                    )
+                                                                                                                            )
+                                                                                                                    )
                                                                                                                     .build()
                                                                                                     )
                                                                                                 )
@@ -125,6 +280,36 @@ public class DBLoader {
                                                             Product.builder()
                                                                     .name("Смартфон Huawei P50")
                                                                     .description("Смартфон Huawei P50 телефон без категории")
+                                                                    .skus(
+                                                                            new HashSet<>(
+                                                                                    Arrays.asList(
+                                                                                            SKU.builder()
+                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                    .build(),
+                                                                                            SKU.builder()
+                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                    .build(),
+                                                                                            SKU.builder()
+                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                    .build(),
+                                                                                            SKU.builder()
+                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                    .build(),
+                                                                                            SKU.builder()
+                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                    .build(),
+                                                                                            SKU.builder()
+                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                    .build(),
+                                                                                            SKU.builder()
+                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                    .build(),
+                                                                                            SKU.builder()
+                                                                                                    .sku(String.valueOf(random.nextGaussian()))
+                                                                                                    .build()
+                                                                                    )
+                                                                            )
+                                                                    )
                                                                     .build()
                                                     )
                                             )
@@ -142,6 +327,36 @@ public class DBLoader {
                                                                                 Product.builder()
                                                                                         .name("Умная колонка Яндекс Станция")
                                                                                         .description("Умная колонка Яндекс Станция")
+                                                                                        .skus(
+                                                                                                new HashSet<>(
+                                                                                                        Arrays.asList(
+                                                                                                                SKU.builder()
+                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                        .build(),
+                                                                                                                SKU.builder()
+                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                        .build(),
+                                                                                                                SKU.builder()
+                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                        .build(),
+                                                                                                                SKU.builder()
+                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                        .build(),
+                                                                                                                SKU.builder()
+                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                        .build(),
+                                                                                                                SKU.builder()
+                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                        .build(),
+                                                                                                                SKU.builder()
+                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                        .build(),
+                                                                                                                SKU.builder()
+                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                        .build()
+                                                                                                        )
+                                                                                                )
+                                                                                        )
                                                                                         .build()
                                                                         )
                                                                 )
@@ -154,6 +369,36 @@ public class DBLoader {
                                                                                 Product.builder()
                                                                                         .name("Наушники Apple AirPods Pro")
                                                                                         .description("Наушники Apple AirPods Pro для продукции Apple")
+                                                                                        .skus(
+                                                                                                new HashSet<>(
+                                                                                                        Arrays.asList(
+                                                                                                                SKU.builder()
+                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                        .build(),
+                                                                                                                SKU.builder()
+                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                        .build(),
+                                                                                                                SKU.builder()
+                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                        .build(),
+                                                                                                                SKU.builder()
+                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                        .build(),
+                                                                                                                SKU.builder()
+                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                        .build(),
+                                                                                                                SKU.builder()
+                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                        .build(),
+                                                                                                                SKU.builder()
+                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                        .build(),
+                                                                                                                SKU.builder()
+                                                                                                                        .sku(String.valueOf(random.nextGaussian()))
+                                                                                                                        .build()
+                                                                                                        )
+                                                                                                )
+                                                                                        )
                                                                                         .build()
                                                                         )
                                                                 )
@@ -171,10 +416,70 @@ public class DBLoader {
                         Product.builder()
                                 .name("Наушники Apple AirPods Pro")
                                 .description("Наушники Apple AirPods Pro для продукции Apple")
+                                .skus(
+                                        new HashSet<>(
+                                                Arrays.asList(
+                                                        SKU.builder()
+                                                                .sku(String.valueOf(random.nextGaussian()))
+                                                                .build(),
+                                                        SKU.builder()
+                                                                .sku(String.valueOf(random.nextGaussian()))
+                                                                .build(),
+                                                        SKU.builder()
+                                                                .sku(String.valueOf(random.nextGaussian()))
+                                                                .build(),
+                                                        SKU.builder()
+                                                                .sku(String.valueOf(random.nextGaussian()))
+                                                                .build(),
+                                                        SKU.builder()
+                                                                .sku(String.valueOf(random.nextGaussian()))
+                                                                .build(),
+                                                        SKU.builder()
+                                                                .sku(String.valueOf(random.nextGaussian()))
+                                                                .build(),
+                                                        SKU.builder()
+                                                                .sku(String.valueOf(random.nextGaussian()))
+                                                                .build(),
+                                                        SKU.builder()
+                                                                .sku(String.valueOf(random.nextGaussian()))
+                                                                .build()
+                                                )
+                                        )
+                                )
                                 .build(),
                         Product.builder()
                                 .name("Умная колонка Яндекс Станция")
                                 .description("Умная колонка Яндекс Станция")
+                                .skus(
+                                        new HashSet<>(
+                                                Arrays.asList(
+                                                        SKU.builder()
+                                                                .sku(String.valueOf(random.nextGaussian()))
+                                                                .build(),
+                                                        SKU.builder()
+                                                                .sku(String.valueOf(random.nextGaussian()))
+                                                                .build(),
+                                                        SKU.builder()
+                                                                .sku(String.valueOf(random.nextGaussian()))
+                                                                .build(),
+                                                        SKU.builder()
+                                                                .sku(String.valueOf(random.nextGaussian()))
+                                                                .build(),
+                                                        SKU.builder()
+                                                                .sku(String.valueOf(random.nextGaussian()))
+                                                                .build(),
+                                                        SKU.builder()
+                                                                .sku(String.valueOf(random.nextGaussian()))
+                                                                .build(),
+                                                        SKU.builder()
+                                                                .sku(String.valueOf(random.nextGaussian()))
+                                                                .build(),
+                                                        SKU.builder()
+                                                                .sku(String.valueOf(random.nextGaussian()))
+                                                                .build()
+                                                )
+                                        )
+                                )
                                 .build()
                 )
         );
