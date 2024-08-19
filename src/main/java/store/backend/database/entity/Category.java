@@ -1,6 +1,8 @@
 package store.backend.database.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import io.jsonwebtoken.jackson.io.JacksonSerializer;
 import lombok.*;
 
 import javax.persistence.*;
@@ -45,13 +47,14 @@ public class Category {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private Category superCategory;
 
     @OneToMany(
-//            mappedBy = "category",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonManagedReference
     private Set<Category> categories = new HashSet<>();
     @Transactional
     public void addCategory(Category category) {
