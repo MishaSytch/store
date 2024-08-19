@@ -3,6 +3,7 @@ package store.backend.security.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -47,8 +48,27 @@ public class SecurityConfig {
                 // Настройка доступа к конечным точкам
                 .authorizeHttpRequests(request -> request
                         // Можно указать конкретный путь, * - 1 уровень вложенности, ** - любое количество уровней вложенности
-                        .mvcMatchers("/auth/sign-up/**", "/auth/sign-in/**").permitAll()
-                        .mvcMatchers("/account/customer/**").hasRole(Role.CUSTOMER.toString())
+                        .mvcMatchers(HttpMethod.POST, "/auth/sign-up/**", "/auth/sign-in/**").permitAll()
+
+                        .mvcMatchers(HttpMethod.DELETE, "/product/**").hasRole(Role.ADMIN.name())
+                        .mvcMatchers(HttpMethod.POST, "/product/**").hasRole(Role.ADMIN.name())
+                        .mvcMatchers(HttpMethod.PUT, "/product/**").hasRole(Role.ADMIN.name())
+
+                        .mvcMatchers(HttpMethod.DELETE, "/category/**").hasRole(Role.ADMIN.name())
+                        .mvcMatchers(HttpMethod.POST, "/category/**").hasRole(Role.ADMIN.name())
+                        .mvcMatchers(HttpMethod.PUT, "/category/**").hasRole(Role.ADMIN.name())
+
+                        .mvcMatchers("/image/**").hasRole(Role.ADMIN.name())
+
+                        .mvcMatchers("/price/**").hasRole(Role.ADMIN.name())
+
+                        .mvcMatchers("/sku/**").hasRole(Role.ADMIN.name())
+
+                        .mvcMatchers( "/account/customer/**").hasRole(Role.CUSTOMER.name())
+
+                        .mvcMatchers( "/order/**").hasRole(Role.ADMIN.name())
+                        .mvcMatchers(HttpMethod.GET, "/order/**").hasRole(Role.CUSTOMER.name())
+
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())
