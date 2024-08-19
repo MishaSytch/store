@@ -6,6 +6,7 @@ import store.backend.database.entity.*;
 import store.backend.database.repository.*;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Component
@@ -33,6 +34,7 @@ public class DBLoader {
         loadCategories();
         loadSKUs();
         loadImages();
+        loadPrices();
     }
 
     private void loadCustomers() {
@@ -328,5 +330,20 @@ public class DBLoader {
         );
         for (Image image : images) yandex.addImage(image);
         imageRepository.saveAll(images);
+    }
+
+    @Transactional
+    private void loadPrices() {
+        Iterable<Product> products = productRepository.findAll();
+
+        for (Product product : products) {
+            Price price = Price.builder()
+                    .price(BigDecimal.valueOf(random.nextDouble() * 100))
+                    .date(new Date())
+                    .build();
+
+            product.addPrice(price);
+            priceRepository.save(price);
+        }
     }
 }

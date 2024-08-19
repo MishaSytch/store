@@ -1,8 +1,7 @@
 package store.backend.database.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -12,6 +11,8 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "Prices")
 public class Price {
     @Id
@@ -22,6 +23,7 @@ public class Price {
     @ManyToOne(
             fetch = FetchType.LAZY
     )
+    @JsonBackReference
     private Product product;
 
     @Column(name = "price_value", nullable = false)

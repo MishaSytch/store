@@ -28,15 +28,13 @@ public class Product {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
+    @JsonManagedReference
     private Set<Price> prices = new HashSet<>();
-
-
     @Transactional
     public void addPrice(Price price) {
         prices.add(price);
         price.setProduct(this);
     }
-
     @Transactional
     public void removePrice(Price price) {
         prices.remove(price);
