@@ -6,5 +6,5 @@ import store.backend.database.entity.SKU;
 
 @Repository
 public interface SKURepository extends JpaRepository<SKU, Long> {
-    Iterable<SKU> findAllByProductId(Long productId);
+    Iterable<SKU> findAllByProduct_Id(Long product_id);
 }

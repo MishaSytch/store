@@ -13,7 +13,7 @@ public class SKUController {
     @Autowired
     private SKURepository skuRepository;
 
-    @GetMapping
+    @GetMapping("/all")
     public Iterable<SKU> getSKUs() {
         return skuRepository.findAll();
     }
@@ -25,7 +25,7 @@ public class SKUController {
 
     @GetMapping
     public Iterable<SKU> getProductSKU(@RequestParam Long product_id) {
-        return skuRepository.findAllByProductId(product_id);
+        return skuRepository.findAllByProduct_Id(product_id);
     }
 
     @PostMapping

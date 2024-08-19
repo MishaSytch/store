@@ -16,7 +16,7 @@ public class CategoryController {
 
     @GetMapping("/{id}/products")
     public Iterable<Product> getProductByCategoryId(@PathVariable Long id) {
-        return categoryRepository.findAllProductByCategoryId(id);
+        return categoryRepository.findAllProductById(id);
     }
 
     @GetMapping("/{id}")
