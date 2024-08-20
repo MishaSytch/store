@@ -24,4 +24,8 @@ public class SKU {
 
     @Column(name = "sku", nullable = false)
     private String sku;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    private Order order;
 }

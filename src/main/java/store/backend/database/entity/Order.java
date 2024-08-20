@@ -1,10 +1,7 @@
 package store.backend.database.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
@@ -14,6 +11,8 @@ import java.util.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "Orders")
 public class Order {
 
@@ -28,26 +27,24 @@ public class Order {
     private Customer customer;
 
     @Column(name = "order_date", nullable = false)
-    private String date;
+    private Date date;
 
-    @ManyToMany (cascade = CascadeType.PERSIST)
-    @JoinTable(
-            name = "items",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
+    @OneToMany(
+            mappedBy = "order",
+            cascade = CascadeType.MERGE,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
-    @JsonBackReference
-    private Set<Product> products = new HashSet<>();
-
+    @JsonManagedReference
+    private Set<SKU> skus = new HashSet<>();
     @Transactional
-    public void addProduct(Product product) {
-        products.add(product);
-        product.getOrders().add(this);
+    public void addSKU(SKU sku) {
+        skus.add(sku);
+        sku.setOrder(this);
     }
-
     @Transactional
-    public void removeProduct(Product product) {
-        products.remove(product);
-        product.getOrders().remove(this);
+    public void removeSKU(SKU sku) {
+        skus.remove(sku);
+        sku.setOrder(null);
     }
 }

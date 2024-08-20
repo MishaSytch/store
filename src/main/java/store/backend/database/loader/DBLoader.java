@@ -8,6 +8,7 @@ import store.backend.database.repository.*;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class DBLoader {
@@ -33,6 +34,8 @@ public class DBLoader {
         loadCustomers();
         loadCategories();
         loadSKUs();
+        loadOrders();
+        loadSKUs();
         loadImages();
         loadPrices();
     }
@@ -54,6 +57,32 @@ public class DBLoader {
                                 .build()
                 )
         );
+    }
+
+    @Transactional
+    private void loadOrders() {
+        Iterable<Customer> customers = customerRepository.findAll();
+        List<SKU> skus = skuRepository.findAll();
+        Deque<SKU> skuDeque = new ArrayDeque<>(skus);
+
+        for (Customer customer : customers) {
+            List<SKU> usedSKU = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                    usedSKU.add(skuDeque.pollFirst());
+            }
+            skuRepository.deleteAllById(usedSKU.stream().map(SKU::getId).collect(Collectors.toList()));
+            Order order = Order.builder()
+                    .customer(customer)
+                    .date(new Date())
+                    .skus(new HashSet<>())
+                    .build();
+
+            Hibernate.initialize(order.getSkus());
+            for (SKU sku : usedSKU) {
+                order.addSKU(sku);
+            }
+            orderRepository.save(order);
+        }
     }
 
     private void loadCategories() {
