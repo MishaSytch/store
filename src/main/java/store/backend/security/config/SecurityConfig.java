@@ -62,15 +62,18 @@ public class SecurityConfig {
 
                         .mvcMatchers("/price/**").hasRole(Role.ADMIN.name())
 
-                        .mvcMatchers("/sku/**").hasRole(Role.ADMIN.name())
+                        .mvcMatchers("/sku/**").permitAll()
+//                        .hasRole(Role.ADMIN.name())
 
                         .mvcMatchers(HttpMethod.GET, "/account/customer/").hasRole(Role.CUSTOMER.name())
 
                         .mvcMatchers("/account/customer/**").hasRole(Role.ADMIN.name())
 
-                        .mvcMatchers( "/order/**").hasRole(Role.ADMIN.name())
+//                        .mvcMatchers( "/order/**").hasRole(Role.ADMIN.name())
 
-                        .mvcMatchers(HttpMethod.GET, "/order/**").hasRole(Role.CUSTOMER.name())
+//                        .mvcMatchers(HttpMethod.GET, "/order/**").hasRole(Role.CUSTOMER.name())
+
+                        .mvcMatchers(HttpMethod.GET, "/order/**").permitAll()
 
                         .mvcMatchers(HttpMethod.GET, "/product/*").permitAll()
 

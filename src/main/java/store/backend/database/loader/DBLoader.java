@@ -61,26 +61,30 @@ public class DBLoader {
 
     @Transactional
     private void loadOrders() {
-        Iterable<Customer> customers = customerRepository.findAll();
-        List<SKU> skus = skuRepository.findAll();
-        Deque<SKU> skuDeque = new ArrayDeque<>(skus);
+        List<Customer> customers = customerRepository.findAll();
+        List<Product> products = productRepository.findAll();
+        Set<SKU> skuDeque = new HashSet<>();
 
         for (Customer customer : customers) {
-            List<SKU> usedSKU = new ArrayList<>();
-            for (int i = 0; i < 10; i++) {
-                    usedSKU.add(skuDeque.pollFirst());
-            }
-            skuRepository.deleteAllById(usedSKU.stream().map(SKU::getId).collect(Collectors.toList()));
             Order order = Order.builder()
                     .customer(customer)
                     .date(new Date())
                     .skus(new HashSet<>())
                     .build();
 
-            Hibernate.initialize(order.getSkus());
-            for (SKU sku : usedSKU) {
-                order.addSKU(sku);
+            for (Product product : products) {
+                int count = 0;
+                Iterable<SKU> skus = skuRepository.findAllByProduct_Id(product.getId());
+                for (SKU sku : skus) {
+                    if (!skuDeque.contains(sku)) {
+                        order.addSKU(sku);
+                        skuDeque.add(sku);
+                        count++;
+                    }
+                    if (count == 2) break;
+                }
             }
+
             orderRepository.save(order);
         }
     }

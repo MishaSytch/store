@@ -1,5 +1,6 @@
 package store.backend.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -21,16 +22,16 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    @ManyToOne(
-            fetch = FetchType.LAZY
-    )
+    @ManyToOne(fetch = FetchType.LAZY)
+
+    @JsonBackReference
     private Customer customer;
 
     @Column(name = "order_date", nullable = false)
     private Date date;
 
     @OneToMany(
-            mappedBy = "order",
+            mappedBy = "product",
             cascade = CascadeType.MERGE,
             orphanRemoval = true,
             fetch = FetchType.EAGER
