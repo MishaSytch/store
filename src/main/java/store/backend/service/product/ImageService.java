@@ -11,9 +11,27 @@ class ImageService {
     @Autowired
     private ImageRepository imageRepository;
 
+    public Image createImage(String name, String ref) {
+        return Image.builder()
+                .name(name)
+                .reference(ref)
+                .build();
+    }
+
     public Image addImage(Product product, Image image) {
         product.addImage(image);
 
         return image;
+    }
+
+    public Image updateImage(Long image_id, Image editedImage) {
+        return imageRepository.findById(image_id).map(
+                image -> {
+                    image.setName(editedImage.getName());
+                    image.setReference(editedImage.getReference());
+
+                    return image;
+                }
+        ).orElse(null);
     }
 }

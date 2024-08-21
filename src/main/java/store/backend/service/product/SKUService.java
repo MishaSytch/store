@@ -11,10 +11,26 @@ class SKUService {
     @Autowired
     private SKURepository skuRepository;
 
+    public SKU createSKU(String sku) {
+        return SKU.builder()
+                .sku(sku)
+                .build();
+    }
+
     public SKU addSKU(Product product, SKU sku) {
         product.addSKU(sku);
 
         return sku;
+    }
+
+    public SKU updateSKU(Long sku_id, SKU editedSKU) {
+        return skuRepository.findById(sku_id).map(
+                sku -> {
+                    sku.setSku(editedSKU.getSku());
+
+                    return sku;
+                }
+        ).orElse(null);
     }
 
 }
