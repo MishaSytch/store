@@ -8,7 +8,6 @@ import store.backend.database.repository.*;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class DBLoader {
@@ -18,26 +17,22 @@ public class DBLoader {
     private OrderRepository orderRepository;
     private PriceRepository priceRepository;
     private ProductRepository productRepository;
-    private SKURepository skuRepository;
 
     private final Random random = new Random();
 
-    public DBLoader(CategoryRepository categoryRepository, CustomerRepository customerRepository, ImageRepository imageRepository, OrderRepository orderRepository, PriceRepository priceRepository, ProductRepository productRepository, SKURepository skuRepository) {
+    public DBLoader(CategoryRepository categoryRepository, CustomerRepository customerRepository, ImageRepository imageRepository, OrderRepository orderRepository, PriceRepository priceRepository, ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
         this.customerRepository = customerRepository;
         this.imageRepository = imageRepository;
         this.orderRepository = orderRepository;
         this.priceRepository = priceRepository;
         this.productRepository = productRepository;
-        this.skuRepository = skuRepository;
 
         loadCustomers();
         loadCategories();
-        loadSKUs();
-        loadOrders();
-        loadSKUs();
         loadImages();
         loadPrices();
+        loadOrders();
     }
 
     private void loadCustomers() {
@@ -63,26 +58,16 @@ public class DBLoader {
     private void loadOrders() {
         List<Customer> customers = customerRepository.findAll();
         List<Product> products = productRepository.findAll();
-        Set<SKU> skuDeque = new HashSet<>();
 
         for (Customer customer : customers) {
             Order order = Order.builder()
                     .customer(customer)
                     .date(new Date())
-                    .skus(new HashSet<>())
                     .build();
 
+            Hibernate.initialize(order.getProducts());
             for (Product product : products) {
-                int count = 0;
-                Iterable<SKU> skus = skuRepository.findAllByProduct_Id(product.getId());
-                for (SKU sku : skus) {
-                    if (!skuDeque.contains(sku)) {
-                        order.addSKU(sku);
-                        skuDeque.add(sku);
-                        count++;
-                    }
-                    if (count == 2) break;
-                }
+                order.addProduct(product);
             }
 
             orderRepository.save(order);
@@ -105,10 +90,14 @@ public class DBLoader {
                                                                             Product.builder()
                                                                                     .name("Смартфон Apple iPhone 14")
                                                                                     .description("Смартфон Apple iPhone 14 2023 года выпуска")
+                                                                                    .SKU(String.valueOf(random.nextGaussian()))
+                                                                                    .quantity(100L)
                                                                                     .build(),
                                                                             Product.builder()
                                                                                     .name("Смартфон Apple iPhone 13")
                                                                                     .description("Смартфон Apple iPhone 13 2022 года выпуска")
+                                                                                    .SKU(String.valueOf(random.nextGaussian()))
+                                                                                    .quantity(100L)
                                                                                     .build()
                                                                         )
                                                                 )
@@ -121,6 +110,8 @@ public class DBLoader {
                                                                             Product.builder()
                                                                                     .name("Смартфон Samsung Galaxy S8")
                                                                                     .description("Смартфон Samsung Galaxy S8 2023 года выпуска")
+                                                                                    .SKU(String.valueOf(random.nextGaussian()))
+                                                                                    .quantity(100L)
                                                                                     .build()
                                                                         )
                                                                 )
@@ -138,6 +129,8 @@ public class DBLoader {
                                                                                                                 Product.builder()
                                                                                                                         .name("Наушники Apple AirPods Pro")
                                                                                                                         .description("Наушники Apple AirPods Pro для продукции Apple")
+                                                                                                                        .SKU(String.valueOf(random.nextGaussian()))
+                                                                                                                        .quantity(100L)
                                                                                                                         .build()
                                                                                                         )
                                                                                                 )
@@ -151,6 +144,8 @@ public class DBLoader {
                                                                                                             Product.builder()
                                                                                                                     .name("Чехол для Huawei P50")
                                                                                                                     .description("Чехол для Huawei P50 для телефона Huawei P50")
+                                                                                                                    .SKU(String.valueOf(random.nextGaussian()))
+                                                                                                                    .quantity(100L)
                                                                                                                     .build()
                                                                                                     )
                                                                                                 )
@@ -166,6 +161,8 @@ public class DBLoader {
                                                             Product.builder()
                                                                     .name("Смартфон Huawei P50")
                                                                     .description("Смартфон Huawei P50 телефон без категории")
+                                                                    .SKU(String.valueOf(random.nextGaussian()))
+                                                                    .quantity(100L)
                                                                     .build()
                                                     )
                                             )
@@ -183,6 +180,8 @@ public class DBLoader {
                                                                                 Product.builder()
                                                                                         .name("Умная колонка Яндекс Станция")
                                                                                         .description("Умная колонка Яндекс Станция")
+                                                                                        .SKU(String.valueOf(random.nextGaussian()))
+                                                                                        .quantity(100L)
                                                                                         .build()
                                                                         )
                                                                 )
@@ -195,6 +194,8 @@ public class DBLoader {
                                                                                 Product.builder()
                                                                                         .name("Наушники Apple AirPods Pro")
                                                                                         .description("Наушники Apple AirPods Pro для продукции Apple")
+                                                                                        .SKU(String.valueOf(random.nextGaussian()))
+                                                                                        .quantity(100L)
                                                                                         .build()
                                                                         )
                                                                 )
@@ -205,24 +206,6 @@ public class DBLoader {
                         ).build()
                 )
         );
-    }
-
-    @Transactional
-    private void loadSKUs() {
-        Iterable<Product> products = productRepository.findAll();
-        for (Product product : products) {
-            Hibernate.initialize(product);
-            for (int i = 0; i < 5; i++) {
-                SKU sku = SKU.builder()
-                        .sku(String.valueOf(random.nextGaussian()))
-                        .product(product)
-                        .build();
-
-                product.addSKU(sku);
-
-                skuRepository.save(sku);
-            }
-        }
     }
 
     @Transactional

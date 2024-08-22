@@ -1,11 +1,14 @@
 package store.backend.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -47,9 +50,19 @@ public class Product {
     @Column(name = "product_description", nullable = false)
     private String description;
 
+    @Column(name = "product_sku", nullable = false)
+    private String SKU;
+
+    @Column(name = "product_quantity", nullable = false)
+    private Long quantity;
+
     @ManyToMany(mappedBy = "products")
-    @JsonManagedReference
+    @JsonBackReference
     private Set<Category> category = new HashSet<>();
+
+    @ManyToMany(mappedBy = "products")
+    @JsonBackReference
+    private List<Order> orders = new ArrayList<>();
 
     @OneToMany(
             mappedBy = "product",
@@ -68,24 +81,5 @@ public class Product {
     public void removeImage(Image image) {
         images.remove(image);
         image.setProduct(null);
-    }
-
-    @OneToMany(
-            mappedBy = "product",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.EAGER
-    )
-    @JsonManagedReference
-    private Set<SKU> skus = new HashSet<>();
-    @Transactional
-    public void addSKU(SKU sku) {
-        skus.add(sku);
-        sku.setProduct(this);
-    }
-    @Transactional
-    public void removeSKU(SKU sku) {
-        skus.remove(sku);
-        sku.setProduct(null);
     }
 }

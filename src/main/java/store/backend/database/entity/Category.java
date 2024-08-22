@@ -33,7 +33,7 @@ public class Category {
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    @JsonBackReference
+    @JsonManagedReference
     private Set<Product> products = new HashSet<>();
     @Transactional
     public void addProduct(Product product) {

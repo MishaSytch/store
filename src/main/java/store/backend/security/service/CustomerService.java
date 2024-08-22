@@ -42,11 +42,11 @@ public class CustomerService {
     }
 
     public Iterable<Order> getOrders(Long customer_id) {
-        return customerRepository.findAllOrdersByCustomer_id(customer_id);
+        return customerRepository.findOrdersByCustomer_id(customer_id);
     }
 
     public Order getOrder(Long customer_id, Long order_id) {
-        Iterable<Order> orders = customerRepository.findAllOrdersByCustomer_id(customer_id);
+        Iterable<Order> orders = customerRepository.findOrdersByCustomer_id(customer_id);
         for (Order order : orders) {
             if (order.getId().equals(order_id)) return order;
         }
@@ -62,12 +62,6 @@ public class CustomerService {
                         }
                 )
                 .orElse(null);
-    }
-
-    public Order updateOrder(@PathVariable("id") Long customer_id, @RequestParam Long order_id, @RequestBody Order editedOrder) {
-        return getOrder(customer_id, order_id) != null
-                ? orderService.updateOrder(order_id, editedOrder)
-                : null;
     }
 
     public void deleteOrder(@PathVariable("id") Long customer_id, @RequestParam Long order_id) {

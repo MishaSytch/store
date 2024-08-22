@@ -23,29 +23,30 @@ public class Order {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-
     @JsonBackReference
     private Customer customer;
 
     @Column(name = "order_date", nullable = false)
     private Date date;
 
-    @OneToMany(
-            mappedBy = "product",
-            cascade = CascadeType.MERGE,
-            orphanRemoval = true,
-            fetch = FetchType.EAGER
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "order",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     @JsonManagedReference
-    private Set<SKU> skus = new HashSet<>();
+    private List<Product> products = new ArrayList<>();
     @Transactional
-    public void addSKU(SKU sku) {
-        skus.add(sku);
-        sku.setOrder(this);
+    public void addProduct(Product product) {
+        products.add(product);
+        product.setQuantity(product.getQuantity() - 1);
+        product.getOrders().add(this);
     }
     @Transactional
-    public void removeSKU(SKU sku) {
-        skus.remove(sku);
-        sku.setOrder(null);
+    public void removeProduct(Product product) {
+        products.remove(product);
+        product.setQuantity(product.getQuantity() + 1);
+        product.getOrders().remove(this);
     }
 }

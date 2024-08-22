@@ -17,8 +17,6 @@ public class ProductService {
     private PriceService priceService;
     @Autowired
     private ImageService imageService;
-    @Autowired
-    private SKUService skuService;
 
     public Product createProduct(String name, String description, Category category) {
         Product product = Product.builder()
@@ -40,7 +38,7 @@ public class ProductService {
                         product.setName(editedProduct.getName());
                         product.setPrices(editedProduct.getPrices());
                         product.setImages(editedProduct.getImages());
-                        product.setSkus(editedProduct.getSkus());
+                        product.setSKU(editedProduct.getSKU());
                         product.setDescription(editedProduct.getDescription());
 
                         return productRepository.save(product);
@@ -50,6 +48,14 @@ public class ProductService {
 
     public Optional<Product> getProduct(Long product_id) {
         return productRepository.findById(product_id);
+    }
+
+    public void addQuantity(Long product_id, Long quantity) {
+        getProduct(product_id).ifPresent(product -> product.setQuantity(product.getQuantity() + quantity));
+    }
+
+    public Long getQuantity(Long product_id) {
+        return getProduct(product_id).map(Product::getQuantity).orElse(null);
     }
 
     public Iterable<Product> getAll() {
@@ -79,16 +85,18 @@ public class ProductService {
     }
 
     public Price getPrice(Long product_id, Long price_id) {
-        Iterable<Price> prices = productRepository.findAllPricesByProduct_id(product_id);
-        for (Price price : prices) {
-            if (price.getId().equals(price_id)) return price;
-        }
+        Optional<Product> product = getProduct(product_id);
 
+        if (product.isPresent()) {
+            for (Price price : product.get().getPrices()) {
+                if (price.getId().equals(price_id)) return price;
+            }
+        }
         return null;
     }
 
     public Price getCurrentPrice(Long product_id) {
-        return productRepository.findFirstPriceByProduct_idOrderByDate(product_id).orElse(null);
+        return productRepository.findCurrentPriceByProduct_id(product_id).orElse(null);
     }
 
     public Price updatePrice(Long price_id, Price editedPrice) {
@@ -114,11 +122,13 @@ public class ProductService {
     }
 
     public Image getImage(Long product_id, Long image_id) {
-        Iterable<Image> images = productRepository.findAllImagesByProduct_id(product_id);
-        for (Image image : images) {
-            if (image.getId().equals(image_id)) return image;
-        }
+        Optional<Product> product = getProduct(product_id);
 
+        if (product.isPresent()) {
+            for (Image image : product.get().getImages()) {
+                if (image.getId().equals(image_id)) return image;
+            }
+        }
         return null;
     }
 
@@ -128,40 +138,5 @@ public class ProductService {
 
     public void deleteImage(Long product_id, Long image_id) {
         if (getImage(product_id, image_id) != null) imageService.deleteImage(image_id);
-    }
-
-    public Iterable<SKU> getAvailableSKU(Long product_id) {
-        return skuService.getAvailableSKU(product_id);
-    }
-
-    public SKU createSKU(String sku) {
-        return skuService.createSKU(sku);
-    }
-
-    public SKU addSKU(Long product_id, SKU sku) {
-        return productRepository.findById(product_id)
-                .map(
-                        product -> {
-                            product.addSKU(sku);
-                            return sku;
-                        }
-                ).orElse(null);
-    }
-
-    public SKU getSKU(Long product_id, Long sku_id) {
-        Iterable<SKU> skus = productRepository.findAllSKUsByProduct_id(product_id);
-        for (SKU sku : skus) {
-            if (sku.getId().equals(sku_id)) return sku;
-        }
-
-        return null;
-    }
-
-    public SKU updateSKU(Long sku_id, SKU editedSKU) {
-        return skuService.updateSKU(sku_id, editedSKU);
-    }
-
-    public void deleteSKU(Long product_id, Long sku_id) {
-        if (getSKU(product_id, sku_id) != null) skuService.deleteSKU(sku_id);
     }
 }

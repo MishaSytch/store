@@ -69,7 +69,7 @@ public class CategoryService {
     }
 
     public Product getProduct(Long category_id, Long product_id) {
-        Iterable<Product> products = categoryRepository.findAllProductByCategory_id(category_id);
+        Iterable<Product> products = categoryRepository.findProductByCategory_id(category_id);
         for (Product product : products) {
             if (product.getId().equals(product_id)) return product;
         }

@@ -5,8 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import store.backend.database.entity.Image;
 import store.backend.database.entity.Price;
 import store.backend.database.entity.Product;
-import store.backend.database.entity.SKU;
-import store.backend.database.repository.ProductRepository;
 import store.backend.service.product.ProductService;
 
 import java.math.BigDecimal;
@@ -28,6 +26,11 @@ public class ProductController {
     @GetMapping("/all")
     public Iterable<Product> getAllProducts() {
         return productService.getAll();
+    }
+
+    @GetMapping("/{id}/quantity")
+    public Long getQuantity(Long product_id) {
+        return productService.getQuantity(product_id);
     }
 
     @PostMapping
@@ -88,36 +91,5 @@ public class ProductController {
     @DeleteMapping("/{id}/delete/price")
     public void deletePrice(@PathVariable("id") Long product_id, @RequestParam Long price_id) {
         productService.deletePrice(product_id, price_id);
-    }
-//    SKU
-
-    @GetMapping("/{id}/available")
-    public Boolean isAvailable(@PathVariable("id") Long product_id) {
-        for (SKU sku : productService.getAvailableSKU(product_id)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    @PostMapping("/{id}/create/sku")
-    public SKU createSKU(String sku) {
-        return productService.createSKU(sku);
-    }
-
-    @PostMapping("/{id}/add/sku")
-    public SKU addSKU(@PathVariable("id") Long product_id, SKU sku) {
-        return productService.addSKU(product_id, sku);
-    }
-
-
-    @PutMapping("/update/sku/{id}")
-    public SKU updateSKU(@PathVariable("id") Long sku_id, SKU sku) {
-        return productService.updateSKU(sku_id, sku);
-    }
-
-    @DeleteMapping("/{id}/delete/sku")
-    public void deleteSKU(@PathVariable("id") Long product_id, @RequestParam Long sku_id) {
-        productService.deleteSKU(product_id, sku_id);
     }
 }

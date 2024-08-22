@@ -39,11 +39,6 @@ public class CustomerController {
         return customerService.addOrder(customer_id, order);
     }
 
-    @PutMapping("/{id}/update/order")
-    public Order putOrder(@PathVariable("id") Long customer_id, @RequestParam Long order_id, @RequestBody Order editedOrder) {
-        return customerService.updateOrder(customer_id, order_id, editedOrder);
-    }
-
     @DeleteMapping("/{id}/delete/order")
     public void deleteOrder(@PathVariable("id") Long customer_id, @RequestParam Long order_id) {
         customerService.deleteOrder(customer_id, order_id);
