@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import store.backend.database.entity.Customer;
 import store.backend.database.entity.Order;
 import store.backend.database.repository.CustomerRepository;
-import store.backend.service.OrderService;
 
 import java.util.Optional;
 

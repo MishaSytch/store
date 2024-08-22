@@ -58,9 +58,7 @@ public class SecurityConfig {
 
                         .mvcMatchers("/account/**").hasRole(Role.ADMIN.name())
                         .mvcMatchers(HttpMethod.GET, "/account/customer/**").hasRole(Role.CUSTOMER.name())
-                        .mvcMatchers(HttpMethod.PUT, "/account/customer/**").hasRole(Role.CUSTOMER.name())
-
-                        .mvcMatchers("/order/**").hasRole(Role.ADMIN.name())
+                        .mvcMatchers(HttpMethod.PUT, "/account/customer/{id}").hasRole(Role.CUSTOMER.name())
 
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))

@@ -9,7 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    Iterable<Product> findAllProductById(Long id);
-
-    Optional<Category> findByName(String name);
+    Iterable<Product> findAllProductByCategory_id(Long id);
 }

@@ -2,8 +2,6 @@ package store.backend.service.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import store.backend.database.entity.*;
 import store.backend.database.repository.ProductRepository;
 
@@ -87,6 +85,10 @@ public class ProductService {
         }
 
         return null;
+    }
+
+    public Price getCurrentPrice(Long product_id) {
+        return productRepository.findFirstPriceByProduct_idOrderByDate(product_id).orElse(null);
     }
 
     public Price updatePrice(Long price_id, Price editedPrice) {

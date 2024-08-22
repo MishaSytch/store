@@ -1,4 +1,4 @@
-package store.backend.service;
+package store.backend.security.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,12 +6,11 @@ import store.backend.database.entity.Customer;
 import store.backend.database.entity.Order;
 import store.backend.database.entity.SKU;
 import store.backend.database.repository.OrderRepository;
-import store.backend.database.repository.SKURepository;
 
 import java.util.Date;
 
 @Service
-public class OrderService {
+class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 

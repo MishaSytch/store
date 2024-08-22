@@ -7,12 +7,11 @@ import store.backend.database.entity.Price;
 import store.backend.database.entity.Product;
 import store.backend.database.entity.SKU;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    Iterable<Product> findAllByCategoryId(Long categoryId);
+    Iterable<Product> findAllByCategory_id(Long categoryId);
 
     Optional<Product> findByName(String name);
 
@@ -23,4 +22,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Iterable<Image> findAllImagesByProduct_id(Long product_id);
 
     Iterable<SKU> findAllSKUsByProduct_id(Long product_id);
+
+    Optional<Price> findFirstPriceByProduct_idOrderByDate(Long productId);
 }
