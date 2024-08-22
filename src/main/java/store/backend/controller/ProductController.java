@@ -91,6 +91,15 @@ public class ProductController {
     }
 //    SKU
 
+    @GetMapping("/{id}/available")
+    public Boolean isAvailable(@PathVariable("id") Long product_id) {
+        for (SKU sku : productService.getAvailableSKU(product_id)) {
+            return true;
+        }
+
+        return false;
+    }
+
     @PostMapping("/{id}/create/sku")
     public SKU createSKU(String sku) {
         return productService.createSKU(sku);

@@ -130,6 +130,10 @@ public class ProductService {
         if (getImage(product_id, image_id) != null) imageService.deleteImage(image_id);
     }
 
+    public Iterable<SKU> getAvailableSKU(Long product_id) {
+        return skuService.getAvailableSKU(product_id);
+    }
+
     public SKU createSKU(String sku) {
         return skuService.createSKU(sku);
     }

@@ -11,6 +11,10 @@ class SKUService {
     @Autowired
     private SKURepository skuRepository;
 
+    public Iterable<SKU> getAvailableSKU(Long product_id) {
+        return skuRepository.findAvailableSKUByProduct_id(product_id);
+    }
+
     public SKU createSKU(String sku) {
         return SKU.builder()
                 .sku(sku)
