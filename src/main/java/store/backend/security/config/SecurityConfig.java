@@ -50,34 +50,17 @@ public class SecurityConfig {
                         // Можно указать конкретный путь, * - 1 уровень вложенности, ** - любое количество уровней вложенности
                         .mvcMatchers(HttpMethod.POST, "/auth/sign-up/**", "/auth/sign-in/**").permitAll()
 
-                        .mvcMatchers(HttpMethod.DELETE, "/product/**").hasRole(Role.ADMIN.name())
-                        .mvcMatchers(HttpMethod.POST, "/product/**").hasRole(Role.ADMIN.name())
-                        .mvcMatchers(HttpMethod.PUT, "/product/**").hasRole(Role.ADMIN.name())
-
-                        .mvcMatchers(HttpMethod.DELETE, "/category/**").hasRole(Role.ADMIN.name())
-                        .mvcMatchers(HttpMethod.POST, "/category/**").hasRole(Role.ADMIN.name())
-                        .mvcMatchers(HttpMethod.PUT, "/category/**").hasRole(Role.ADMIN.name())
-
-                        .mvcMatchers("/image/**").hasRole(Role.ADMIN.name())
-
-                        .mvcMatchers("/price/**").hasRole(Role.ADMIN.name())
-
-                        .mvcMatchers("/sku/**").permitAll()
-//                        .hasRole(Role.ADMIN.name())
-
-                        .mvcMatchers(HttpMethod.GET, "/account/customer/").hasRole(Role.CUSTOMER.name())
-
-                        .mvcMatchers("/account/customer/**").hasRole(Role.ADMIN.name())
-
-//                        .mvcMatchers( "/order/**").hasRole(Role.ADMIN.name())
-
-//                        .mvcMatchers(HttpMethod.GET, "/order/**").hasRole(Role.CUSTOMER.name())
-
-                        .mvcMatchers(HttpMethod.GET, "/order/**").permitAll()
-
+                        .mvcMatchers("/product/**").hasRole(Role.ADMIN.name())
                         .mvcMatchers(HttpMethod.GET, "/product/*").permitAll()
 
+                        .mvcMatchers( "/category/**").hasRole(Role.ADMIN.name())
                         .mvcMatchers(HttpMethod.GET, "/category/*").permitAll()
+
+                        .mvcMatchers("/account/**").hasRole(Role.ADMIN.name())
+                        .mvcMatchers(HttpMethod.GET, "/account/customer/**").hasRole(Role.CUSTOMER.name())
+                        .mvcMatchers(HttpMethod.PUT, "/account/customer/**").hasRole(Role.CUSTOMER.name())
+
+                        .mvcMatchers("/order/**").hasRole(Role.ADMIN.name())
 
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))

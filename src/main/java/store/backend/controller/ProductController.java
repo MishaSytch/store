@@ -6,6 +6,7 @@ import store.backend.database.entity.Image;
 import store.backend.database.entity.Price;
 import store.backend.database.entity.Product;
 import store.backend.database.entity.SKU;
+import store.backend.database.repository.ProductRepository;
 import store.backend.service.product.ProductService;
 
 import java.math.BigDecimal;
@@ -18,7 +19,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-//  Product
+    //  Product
     @GetMapping("/{id}")
     public Optional<Product> getProduct(@PathVariable("id") Long id) {
         return productService.getProduct(id);
@@ -62,6 +63,11 @@ public class ProductController {
         return productService.updateImage(image_id, image);
     }
 
+    @DeleteMapping("/{id}/delete/image")
+    public void deleteImage(@PathVariable("id") Long product_id, @RequestParam Long image_id) {
+        productService.deleteImage(product_id, image_id);
+    }
+
 //    Price
 
     @PostMapping("/{id}/create/price")
@@ -79,6 +85,10 @@ public class ProductController {
         return productService.updatePrice(price_id, price);
     }
 
+    @DeleteMapping("/{id}/delete/price")
+    public void deletePrice(@PathVariable("id") Long product_id, @RequestParam Long price_id) {
+        productService.deletePrice(product_id, price_id);
+    }
 //    SKU
 
     @PostMapping("/{id}/create/sku")
@@ -97,4 +107,8 @@ public class ProductController {
         return productService.updateSKU(sku_id, sku);
     }
 
+    @DeleteMapping("/{id}/delete/sku")
+    public void deleteSKU(@PathVariable("id") Long product_id, @RequestParam Long sku_id) {
+        productService.deleteSKU(product_id, sku_id);
+    }
 }

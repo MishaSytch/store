@@ -7,14 +7,75 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
 import store.backend.database.entity.Customer;
+import store.backend.database.entity.Order;
 import store.backend.database.repository.CustomerRepository;
+import store.backend.service.OrderService;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
     @Autowired
-    private CustomerRepository repository;
+    private CustomerRepository customerRepository;
+    @Autowired
+    private OrderService orderService;
+
+    public Optional<Customer> getCustomer(Long customer_id) {
+        return customerRepository.findById(customer_id);
+    }
+
+    public Customer updateCustomer(Long customer_id, Customer editedCustomer) {
+        return customerRepository.findById(customer_id)
+                .map(
+                        customer -> {
+                            customer.setFirstName(editedCustomer.getFirstName());
+                            customer.setLastName(editedCustomer.getLastName());
+                            customer.setPassword(editedCustomer.getPassword());
+                            customer.setEmail(editedCustomer.getEmail());
+                            customer.setRole(editedCustomer.getRole());
+
+                            return customerRepository.save(customer);
+                        }
+                ).orElse(null);
+    }
+
+    public Iterable<Order> getOrders(Long customer_id) {
+        return customerRepository.findAllOrdersByCustomer_id(customer_id);
+    }
+
+    public Order getOrder(Long customer_id, Long order_id) {
+        Iterable<Order> orders = customerRepository.findAllOrdersByCustomer_id(customer_id);
+        for (Order order : orders) {
+            if (order.getId().equals(order_id)) return order;
+        }
+        return null;
+    }
+
+    public Order addOrder(Long customer_id, Order order) {
+        return customerRepository.findById(customer_id)
+                .map(
+                        customer -> {
+                            customer.addOrder(order);
+                            return order;
+                        }
+                )
+                .orElse(null);
+    }
+
+    public Order updateOrder(@PathVariable("id") Long customer_id, @RequestParam Long order_id, @RequestBody Order editedOrder) {
+        return getOrder(customer_id, order_id) != null
+                ? orderService.updateOrder(order_id, editedOrder)
+                : null;
+    }
+
+    public void deleteOrder(@PathVariable("id") Long customer_id, @RequestParam Long order_id) {
+        if (getOrder(customer_id, order_id) != null) orderService.deleteOrder(order_id);
+    }
+
+//    Security
 
     /**
      * Сохранение пользователя
@@ -22,7 +83,7 @@ public class CustomerService {
      * @return сохраненный пользователь
      */
     public Customer save(Customer customer) {
-        return repository.save(customer);
+        return customerRepository.save(customer);
     }
 
 
@@ -32,7 +93,7 @@ public class CustomerService {
      * @return созданный пользователь
      */
     public Customer create(Customer customer) {
-        if (repository.findByEmail(customer.getEmail()).isPresent()) {
+        if (customerRepository.findByEmail(customer.getEmail()).isPresent()) {
             throw new RuntimeException("Пользователь с таким email уже существует");
         }
 
@@ -45,7 +106,7 @@ public class CustomerService {
      * @return пользователь
      */
     public Customer getByEmail(String email) {
-        return repository.findByEmail(email)
+        return customerRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
 
     }

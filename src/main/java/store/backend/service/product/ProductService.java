@@ -2,6 +2,8 @@ package store.backend.service.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import store.backend.database.entity.*;
 import store.backend.database.repository.ProductRepository;
 
@@ -69,11 +71,30 @@ public class ProductService {
     }
 
     public Price addPrice(Long product_id, Price price) {
-        return productRepository.findById(product_id).map(product -> priceService.addPrice(product, price)).orElse(null);
+        return productRepository.findById(product_id)
+                .map(
+                        product -> {
+                        product.addPrice(price);
+                        return price;
+                    }
+        ).orElse(null);
+    }
+
+    public Price getPrice(Long product_id, Long price_id) {
+        Iterable<Price> prices = productRepository.findAllPricesByProduct_id(product_id);
+        for (Price price : prices) {
+            if (price.getId().equals(price_id)) return price;
+        }
+
+        return null;
     }
 
     public Price updatePrice(Long price_id, Price editedPrice) {
         return priceService.updatePrice(price_id, editedPrice);
+    }
+
+    public void deletePrice(Long product_id, Long price_id) {
+        if (getPrice(product_id, price_id) != null) priceService.deletePrice(price_id);
     }
 
     public Image createImage(String name, String ref) {
@@ -81,11 +102,30 @@ public class ProductService {
     }
 
     public Image addImage(Long product_id, Image image) {
-        return productRepository.findById(product_id).map(product -> imageService.addImage(product, image)).orElse(null);
+        return productRepository.findById(product_id)
+                .map(
+                        product -> {
+                            product.addImage(image);
+                            return image;
+                        }
+                ).orElse(null);
+    }
+
+    public Image getImage(Long product_id, Long image_id) {
+        Iterable<Image> images = productRepository.findAllImagesByProduct_id(product_id);
+        for (Image image : images) {
+            if (image.getId().equals(image_id)) return image;
+        }
+
+        return null;
     }
 
     public Image updateImage(Long image_id, Image editedImage) {
         return imageService.updateImage(image_id, editedImage);
+    }
+
+    public void deleteImage(Long product_id, Long image_id) {
+        if (getImage(product_id, image_id) != null) imageService.deleteImage(image_id);
     }
 
     public SKU createSKU(String sku) {
@@ -93,10 +133,29 @@ public class ProductService {
     }
 
     public SKU addSKU(Long product_id, SKU sku) {
-        return productRepository.findById(product_id).map(product -> skuService.addSKU(product, sku)).orElse(null);
+        return productRepository.findById(product_id)
+                .map(
+                        product -> {
+                            product.addSKU(sku);
+                            return sku;
+                        }
+                ).orElse(null);
+    }
+
+    public SKU getSKU(Long product_id, Long sku_id) {
+        Iterable<SKU> skus = productRepository.findAllSKUsByProduct_id(product_id);
+        for (SKU sku : skus) {
+            if (sku.getId().equals(sku_id)) return sku;
+        }
+
+        return null;
     }
 
     public SKU updateSKU(Long sku_id, SKU editedSKU) {
         return skuService.updateSKU(sku_id, editedSKU);
+    }
+
+    public void deleteSKU(Long product_id, Long sku_id) {
+        if (getSKU(product_id, sku_id) != null) skuService.deleteSKU(sku_id);
     }
 }

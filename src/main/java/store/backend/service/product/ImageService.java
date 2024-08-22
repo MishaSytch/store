@@ -18,12 +18,6 @@ class ImageService {
                 .build();
     }
 
-    public Image addImage(Product product, Image image) {
-        product.addImage(image);
-
-        return image;
-    }
-
     public Image updateImage(Long image_id, Image editedImage) {
         return imageRepository.findById(image_id).map(
                 image -> {
@@ -33,5 +27,11 @@ class ImageService {
                     return image;
                 }
         ).orElse(null);
+    }
+
+    public void deleteImage(Long image_id) {
+        imageRepository.findById(image_id).ifPresent(
+                image -> image.getProduct().removeImage(image)
+        );
     }
 }

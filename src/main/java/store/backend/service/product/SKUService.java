@@ -17,12 +17,6 @@ class SKUService {
                 .build();
     }
 
-    public SKU addSKU(Product product, SKU sku) {
-        product.addSKU(sku);
-
-        return sku;
-    }
-
     public SKU updateSKU(Long sku_id, SKU editedSKU) {
         return skuRepository.findById(sku_id).map(
                 sku -> {
@@ -33,4 +27,9 @@ class SKUService {
         ).orElse(null);
     }
 
+    public void deleteSKU(Long sku_id) {
+        skuRepository.findById(sku_id).ifPresent(
+                sku -> sku.getProduct().removeSKU(sku)
+        );
+    }
 }

@@ -22,12 +22,6 @@ class PriceService {
                 .build();
     }
 
-    public Price addPrice(Product product, Price price) {
-        product.addPrice(price);
-
-        return price;
-    }
-
     public Price updatePrice(Long price_id, Price editedPrice) {
         return priceRepository.findById(price_id).map(
                 price -> {
@@ -37,5 +31,11 @@ class PriceService {
                 return price;
             }
         ).orElse(null);
+    }
+
+    public void deletePrice(Long price_id) {
+        priceRepository.findById(price_id).ifPresent(
+                price -> price.getProduct().removePrice(price)
+        );
     }
 }

@@ -11,9 +11,6 @@ import java.util.Collections;
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
-    @Autowired
-    private CategoryRepository categoryRepository;
-
     @GetMapping("/{id}/products")
     public Iterable<Product> getProductByCategoryId(@PathVariable Long id) {
         return categoryRepository.findAllProductById(id);

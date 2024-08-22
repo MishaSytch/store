@@ -4,8 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import store.backend.database.entity.Customer;
 import store.backend.database.entity.Order;
-import store.backend.database.repository.CustomerRepository;
-import store.backend.database.repository.OrderRepository;
+import store.backend.security.service.CustomerService;
 
 import java.util.Optional;
 
@@ -13,40 +12,40 @@ import java.util.Optional;
 @RequestMapping("/account/customer")
 public class CustomerController {
     @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private OrderRepository orderRepository;
+    private CustomerService customerService;
 
     @GetMapping("/{id}")
-    public Optional<Customer> getCustomerByEmail(@PathVariable("id") Long id) {
-        return customerRepository.findById(id);
+    public Optional<Customer> getCustomerById(@PathVariable("id") Long customer_id) {
+        return customerService.getCustomer(customer_id);
     }
 
     @PutMapping("/{id}")
-    public Customer putCustomer(@PathVariable("id") Long id, @RequestBody Customer editedCustomer) {
-        Customer customer = customerRepository.findById(id).orElse(null);
-
-        if (customer != null) {
-            customer.setFirstName(editedCustomer.getFirstName());
-            customer.setLastName(editedCustomer.getLastName());
-            customer.setPassword(editedCustomer.getPassword());
-            customer.setEmail(editedCustomer.getEmail());
-            customer.setRole(editedCustomer.getRole());
-            customerRepository.save(customer);
-        }
-
-        return customer;
+    public Customer putCustomer(@PathVariable("id") Long customer_id, @RequestBody Customer editedCustomer) {
+        return customerService.updateCustomer(customer_id, editedCustomer);
     }
 
+    @GetMapping("/{id}/orders")
+    public Iterable<Order> getOrders(@PathVariable("id") Long customer_id) {
+        return customerService.getOrders(customer_id);
+    }
 
     @GetMapping("/{id}/order")
-    public Iterable<Order> getCustomerOrders(@PathVariable("id") Long user_id) {
-        return orderRepository.findAllByCustomerId(user_id);
+    public Order getOrder(@PathVariable("id") Long customer_id, @RequestParam Long order_id) {
+        return customerService.getOrder(customer_id, order_id);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteCustomer(@PathVariable Long id) {
-        customerRepository.deleteById(id);
+    @PostMapping("/{id}/add/order")
+    public Order postOrder(@PathVariable("id") Long customer_id, @RequestBody Order order) {
+        return customerService.addOrder(customer_id, order);
+    }
+
+    @PutMapping("/{id}/update/order")
+    public Order putOrder(@PathVariable("id") Long customer_id, @RequestParam Long order_id, @RequestBody Order editedOrder) {
+        return customerService.updateOrder(customer_id, order_id, editedOrder);
+    }
+
+    @DeleteMapping("/{id}/delete/order")
+    public void deleteOrder(@PathVariable("id") Long customer_id, @RequestParam Long order_id) {
+        customerService.deleteOrder(customer_id, order_id);
     }
 }
