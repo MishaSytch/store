@@ -29,20 +29,22 @@ public class Order {
     @Column(name = "order_date", nullable = false)
     private Date date;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany
     @JoinTable(
-            name = "order",
+            name = "order_products",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     @JsonManagedReference
     private List<Product> products = new ArrayList<>();
+
     @Transactional
     public void addProduct(Product product) {
         products.add(product);
         product.setQuantity(product.getQuantity() - 1);
         product.getOrders().add(this);
     }
+
     @Transactional
     public void removeProduct(Product product) {
         products.remove(product);

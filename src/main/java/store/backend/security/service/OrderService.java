@@ -7,6 +7,7 @@ import store.backend.database.entity.Order;
 import store.backend.database.entity.Product;
 import store.backend.database.repository.OrderRepository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -16,29 +17,20 @@ class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public Order createOrder(Customer customer, Date date) {
-        Order order = Order.builder()
-                .customer(customer)
-                .date(date)
-                .build();
+    public Order createOrder(Customer customer, Date date, Iterable<Product> products) {
+        Order order = orderRepository.save(
+                Order.builder()
+                    .customer(customer)
+                    .date(date)
+                    .products(new ArrayList<>())
+                    .build()
+        );
 
-        return orderRepository.save(order);
-    }
-
-    public Order addOrder(Customer customer, Order order) {
-        customer.addOrder(order);
-
-        return  order;
-    }
-
-    public void addProduct(Long order_id, List<Product> products) {
-        Optional<Order> order = orderRepository.findById(order_id);
-
-        if (order.isPresent()) {
-            for (Product product : products) {
-                order.get().addProduct(product);
-            }
+        for (Product product : products) {
+            order.addProduct(product);
         }
+
+        return order;
     }
 
     public void deleteOrder(Long order_id) {

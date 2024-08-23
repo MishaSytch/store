@@ -33,11 +33,13 @@ public class Product {
     )
     @JsonManagedReference
     private Set<Price> prices = new HashSet<>();
+
     @Transactional
     public void addPrice(Price price) {
         prices.add(price);
         price.setProduct(this);
     }
+
     @Transactional
     public void removePrice(Price price) {
         prices.remove(price);
@@ -56,30 +58,36 @@ public class Product {
     @Column(name = "product_quantity", nullable = false)
     private Long quantity;
 
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(
+            mappedBy = "products",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.MERGE
+    )
     @JsonBackReference
-    private Set<Category> category = new HashSet<>();
-
-    @ManyToMany(mappedBy = "products")
-    @JsonBackReference
-    private List<Order> orders = new ArrayList<>();
+    private Set<Category> categories = new HashSet<>();
 
     @OneToMany(
             mappedBy = "product",
-            cascade = CascadeType.ALL,
+            cascade = CascadeType.MERGE,
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
     @JsonManagedReference
     private Set<Image> images = new HashSet<>();
+
     @Transactional
     public void addImage(Image image) {
         images.add(image);
         image.setProduct(this);
     }
+
     @Transactional
     public void removeImage(Image image) {
         images.remove(image);
         image.setProduct(null);
     }
+
+    @ManyToMany(mappedBy = "products")
+    @JsonBackReference
+    private List<Order> orders = new ArrayList<>();
 }

@@ -6,6 +6,8 @@ import store.backend.database.entity.Category;
 import store.backend.database.entity.Product;
 import store.backend.database.repository.CategoryRepository;
 
+import java.util.HashSet;
+
 @Service
 public class CategoryService {
     @Autowired
@@ -17,10 +19,11 @@ public class CategoryService {
         return categoryRepository.save(
                 Category.builder()
                         .name(name)
+                        .products(new HashSet<>())
+                        .categories(new HashSet<>())
                         .build()
         );
     }
-
     public Category getCategory(Long category_id) {
         return categoryRepository.findById(category_id).orElse(null);
     }
@@ -33,15 +36,12 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category addCategory(Long category_id, Category category) {
-        return categoryRepository.findById(category_id)
-                .map(
-                        c -> {
-                            c.addCategory(category);
-
-                            return category;
-                        }
-                ).orElse(null);
+    public Category addCategory(Long parentCategory_id, Category subCategory) {
+        return categoryRepository.findById(parentCategory_id)
+                .map(parentCategory -> {
+                    parentCategory.addCategory(subCategory);
+                    return categoryRepository.save(parentCategory);
+                }).orElse(null);
     }
 
     public Category updateCategory(Long category_id, Category editedCategory) {
@@ -66,15 +66,6 @@ public class CategoryService {
                             return category;
                         }
                 ).orElse(null) == null) categoryRepository.deleteById(category.getId());
-    }
-
-    public Product getProduct(Long category_id, Long product_id) {
-        Iterable<Product> products = categoryRepository.findProductByCategory_id(category_id);
-        for (Product product : products) {
-            if (product.getId().equals(product_id)) return product;
-        }
-
-        return null;
     }
 
     public Iterable<Product> getProducts(Long category_id) {

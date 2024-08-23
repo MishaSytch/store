@@ -15,11 +15,12 @@ class PriceService {
     private PriceRepository priceRepository;
 
     public Price createPrice(BigDecimal price, Date date) {
-
-        return Price.builder()
+        return priceRepository.save(
+                Price.builder()
                 .price(price)
                 .date(date)
-                .build();
+                .build()
+        );
     }
 
     public Price updatePrice(Long price_id, Price editedPrice) {

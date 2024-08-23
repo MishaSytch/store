@@ -29,8 +29,19 @@ public class ProductController {
     }
 
     @GetMapping("/{id}/quantity")
-    public Long getQuantity(Long product_id) {
+    public Long getQuantity(@PathVariable("id") Long product_id) {
         return productService.getQuantity(product_id);
+    }
+
+    @PutMapping("/{id}/quantity")
+    public Long addQuantity(@PathVariable("id") Long product_id, @RequestParam Long count) {
+        return getProduct(product_id).map(
+                product -> {
+                    productService.addQuantity(product_id, count);
+
+                    return product.getQuantity();
+                }
+        ).orElse(0L);
     }
 
     @PostMapping

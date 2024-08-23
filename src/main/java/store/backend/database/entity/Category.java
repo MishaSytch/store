@@ -2,7 +2,6 @@ package store.backend.database.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import io.jsonwebtoken.jackson.io.JacksonSerializer;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,41 +26,49 @@ public class Category {
     @Column(name = "category_name", nullable = false)
     private String name;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(
+            cascade = CascadeType.MERGE,
+            fetch = FetchType.EAGER
+    )
     @JoinTable(
-            name = "category",
+            name = "category_product",
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     @JsonManagedReference
     private Set<Product> products = new HashSet<>();
+
     @Transactional
     public void addProduct(Product product) {
         products.add(product);
-        product.getCategory().add(this);
+        product.getCategories().add(this);
     }
+
     @Transactional
     public void removeProduct(Product product) {
         products.remove(product);
-        product.getCategory().remove(this);
+        product.getCategories().remove(this);
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "super_category_id")
     private Category superCategory;
 
     @OneToMany(
+            mappedBy = "superCategory",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     @JsonManagedReference
     private Set<Category> categories = new HashSet<>();
+
     @Transactional
     public void addCategory(Category category) {
         categories.add(category);
         category.setSuperCategory(this);
     }
+
     @Transactional
     public void removeCategory(Category category) {
         categories.remove(category);

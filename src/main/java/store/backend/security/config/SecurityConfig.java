@@ -2,6 +2,7 @@ package store.backend.security.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -50,15 +51,15 @@ public class SecurityConfig {
                         // Можно указать конкретный путь, * - 1 уровень вложенности, ** - любое количество уровней вложенности
                         .mvcMatchers(HttpMethod.POST, "/auth/sign-up/**", "/auth/sign-in/**").permitAll()
 
+                        .mvcMatchers(HttpMethod.GET, "/product/**").permitAll()
                         .mvcMatchers("/product/**").hasRole(Role.ADMIN.name())
-                        .mvcMatchers(HttpMethod.GET, "/product/*").permitAll()
 
+                        .mvcMatchers(HttpMethod.GET, "/category/**").permitAll()
                         .mvcMatchers( "/category/**").hasRole(Role.ADMIN.name())
-                        .mvcMatchers(HttpMethod.GET, "/category/*").permitAll()
 
-                        .mvcMatchers("/account/**").hasRole(Role.ADMIN.name())
                         .mvcMatchers(HttpMethod.GET, "/account/customer/**").hasRole(Role.CUSTOMER.name())
                         .mvcMatchers(HttpMethod.PUT, "/account/customer/{id}").hasRole(Role.CUSTOMER.name())
+                        .mvcMatchers("/account/**").hasRole(Role.ADMIN.name())
 
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))

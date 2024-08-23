@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import store.backend.database.entity.Customer;
 import store.backend.database.entity.Order;
+import store.backend.database.entity.Product;
 import store.backend.database.repository.CustomerRepository;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,6 +27,10 @@ public class CustomerService {
 
     public Optional<Customer> getCustomer(Long customer_id) {
         return customerRepository.findById(customer_id);
+    }
+
+    public List<Customer> getAll() {
+        return customerRepository.findAll();
     }
 
     public Customer updateCustomer(Long customer_id, Customer editedCustomer) {
@@ -42,15 +49,19 @@ public class CustomerService {
     }
 
     public Iterable<Order> getOrders(Long customer_id) {
-        return customerRepository.findOrdersByCustomer_id(customer_id);
+        return customerRepository.findById(customer_id).map(Customer::getOrders).orElse(null);
     }
 
     public Order getOrder(Long customer_id, Long order_id) {
-        Iterable<Order> orders = customerRepository.findOrdersByCustomer_id(customer_id);
+        Iterable<Order> orders = getOrders(customer_id);
         for (Order order : orders) {
             if (order.getId().equals(order_id)) return order;
         }
         return null;
+    }
+
+    public Order createOrder(Customer customer, Date date, List<Product> products) {
+        return orderService.createOrder(customer, date, products);
     }
 
     public Order addOrder(Long customer_id, Order order) {

@@ -1,13 +1,14 @@
 package store.backend.service.product;
 
+import org.apache.logging.log4j.util.PropertySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import store.backend.database.entity.*;
 import store.backend.database.repository.ProductRepository;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -18,15 +19,19 @@ public class ProductService {
     @Autowired
     private ImageService imageService;
 
-    public Product createProduct(String name, String description, Category category) {
-        Product product = Product.builder()
-                .name(name)
-                .description(description)
-                .build();
-
-        category.addProduct(product);
-
-        return product;
+    public Product createProduct(String name, String description, String sku, Long quantity) {
+        return productRepository.save(
+                Product.builder()
+                    .name(name)
+                    .description(description)
+                    .SKU(sku)
+                    .quantity(quantity)
+                    .categories(new HashSet<>())
+                    .images(new HashSet<>())
+                    .prices(new HashSet<>())
+                    .orders(new ArrayList<>())
+                    .build()
+        );
     }
 
     public Product updateProduct(Long product_id, Product editedProduct) {
@@ -34,7 +39,7 @@ public class ProductService {
                 .findById(product_id)
                 .map(
                     product -> {
-                        product.setCategory(editedProduct.getCategory());
+                        product.setCategories(editedProduct.getCategories());
                         product.setName(editedProduct.getName());
                         product.setPrices(editedProduct.getPrices());
                         product.setImages(editedProduct.getImages());
@@ -58,7 +63,7 @@ public class ProductService {
         return getProduct(product_id).map(Product::getQuantity).orElse(null);
     }
 
-    public Iterable<Product> getAll() {
+    public List<Product> getAll() {
         return productRepository.findAll();
     }
 
@@ -96,7 +101,7 @@ public class ProductService {
     }
 
     public Price getCurrentPrice(Long product_id) {
-        return productRepository.findCurrentPriceByProduct_id(product_id).orElse(null);
+        return productRepository.findById(product_id).flatMap(product -> product.getPrices().stream().max(Comparator.comparing(Price::getDate))).orElse(null);
     }
 
     public Price updatePrice(Long price_id, Price editedPrice) {

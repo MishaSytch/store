@@ -11,7 +11,4 @@ import java.util.Optional;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
     Optional<Customer> findByEmail(String email);
-
-    @Query(value = "SELECT * FROM Orders WHERE customer_id = ?1", nativeQuery = true)
-    Iterable<Order> findOrdersByCustomer_id(Long customer_id);
 }

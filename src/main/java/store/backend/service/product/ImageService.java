@@ -12,10 +12,12 @@ class ImageService {
     private ImageRepository imageRepository;
 
     public Image createImage(String name, String ref) {
-        return Image.builder()
-                .name(name)
-                .reference(ref)
-                .build();
+        return imageRepository.save(
+                Image.builder()
+                    .name(name)
+                    .reference(ref)
+                    .build()
+        );
     }
 
     public Image updateImage(Long image_id, Image editedImage) {
