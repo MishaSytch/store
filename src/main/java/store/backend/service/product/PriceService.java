@@ -29,6 +29,7 @@ class PriceService {
                 price.setDate(editedPrice.getDate());
                 price.setPrice(editedPrice.getPrice());
 
+                priceRepository.save(price);
                 return price;
             }
         ).orElse(null);

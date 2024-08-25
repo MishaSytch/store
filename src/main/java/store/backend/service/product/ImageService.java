@@ -26,6 +26,7 @@ class ImageService {
                     image.setName(editedImage.getName());
                     image.setReference(editedImage.getReference());
 
+                    imageRepository.save(image);
                     return image;
                 }
         ).orElse(null);

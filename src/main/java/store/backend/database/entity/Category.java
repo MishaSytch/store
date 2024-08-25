@@ -19,7 +19,7 @@ import java.util.Set;
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
     private Long id;
 
@@ -52,6 +52,7 @@ public class Category {
 
     @ManyToOne
     @JoinColumn(name = "super_category_id")
+    @JsonBackReference
     private Category superCategory;
 
     @OneToMany(

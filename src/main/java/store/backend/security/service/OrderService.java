@@ -18,19 +18,17 @@ class OrderService {
     private OrderRepository orderRepository;
 
     public Order createOrder(Customer customer, Date date, Iterable<Product> products) {
-        Order order = orderRepository.save(
-                Order.builder()
+        Order order = Order.builder()
                     .customer(customer)
                     .date(date)
                     .products(new ArrayList<>())
-                    .build()
-        );
+                    .build();
 
         for (Product product : products) {
             order.addProduct(product);
         }
 
-        return order;
+        return orderRepository.save(order);
     }
 
     public void deleteOrder(Long order_id) {

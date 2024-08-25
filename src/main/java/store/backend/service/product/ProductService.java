@@ -56,7 +56,11 @@ public class ProductService {
     }
 
     public void addQuantity(Long product_id, Long quantity) {
-        getProduct(product_id).ifPresent(product -> product.setQuantity(product.getQuantity() + quantity));
+        Optional<Product> product =  getProduct(product_id);
+        product.ifPresent(p -> {
+            p.setQuantity(p.getQuantity() + quantity);
+            productRepository.save(p);
+        });
     }
 
     public Long getQuantity(Long product_id) {
@@ -84,6 +88,7 @@ public class ProductService {
                 .map(
                         product -> {
                         product.addPrice(price);
+                        productRepository.save(product);
                         return price;
                     }
         ).orElse(null);
@@ -121,6 +126,7 @@ public class ProductService {
                 .map(
                         product -> {
                             product.addImage(image);
+                            productRepository.save(product);
                             return image;
                         }
                 ).orElse(null);

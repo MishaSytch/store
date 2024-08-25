@@ -40,6 +40,7 @@ public class CategoryService {
         return categoryRepository.findById(parentCategory_id)
                 .map(parentCategory -> {
                     parentCategory.addCategory(subCategory);
+
                     return categoryRepository.save(parentCategory);
                 }).orElse(null);
     }
@@ -53,7 +54,7 @@ public class CategoryService {
                             category.setName(editedCategory.getName());
                             category.setProducts(editedCategory.getProducts());
 
-                            return category;
+                            return categoryRepository.save(category);
                         }
                 ).orElse(null);
     }
@@ -78,6 +79,7 @@ public class CategoryService {
                         category -> {
                             category.addProduct(product);
 
+                            categoryRepository.save(category);
                             return product;
                         }
                 ).orElse(null);
@@ -90,7 +92,9 @@ public class CategoryService {
                              Iterable<Product> products = category.getProducts();
 
                              for (Product product : products) {
-                                 if (product.getId().equals(product_id)) return productService.updateProduct(product_id, editedProduct);
+                                 if (product.getId().equals(product_id)) {
+                                     return productService.updateProduct(product_id, editedProduct);
+                                 }
                              }
 
                              return null;
