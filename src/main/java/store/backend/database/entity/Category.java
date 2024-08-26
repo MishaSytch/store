@@ -27,7 +27,6 @@ public class Category {
     private String name;
 
     @ManyToMany(
-            cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER
     )
     @JoinTable(

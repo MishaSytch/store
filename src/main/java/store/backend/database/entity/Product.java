@@ -60,8 +60,8 @@ public class Product {
 
     @ManyToMany(
             mappedBy = "products",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.MERGE
+            cascade = CascadeType.MERGE,
+            fetch = FetchType.EAGER
     )
     @JsonBackReference
     private Set<Category> categories = new HashSet<>();
