@@ -8,64 +8,64 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
-import store.backend.database.entity.Customer;
+import store.backend.database.entity.User;
 import store.backend.database.entity.Order;
-import store.backend.database.repository.CustomerRepository;
+import store.backend.database.repository.UserRepository;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerService {
+public class UserService {
     @Autowired
-    private CustomerRepository customerRepository;
+    private UserRepository userRepository;
     @Autowired
     private OrderService orderService;
 
-    public Optional<Customer> getCustomer(Long customer_id) {
-        return customerRepository.findById(customer_id);
+    public Optional<User> getUser(Long user_id) {
+        return userRepository.findById(user_id);
     }
 
-    public Customer updateCustomer(Long customer_id, Customer editedCustomer) {
-        return customerRepository.findById(customer_id)
+    public User updateUser(Long user_id, User editedUser) {
+        return userRepository.findById(user_id)
                 .map(
-                        customer -> {
-                            customer.setFirstName(editedCustomer.getFirstName());
-                            customer.setLastName(editedCustomer.getLastName());
-                            customer.setPassword(editedCustomer.getPassword());
-                            customer.setEmail(editedCustomer.getEmail());
-                            customer.setRole(editedCustomer.getRole());
+                        user -> {
+                            user.setFirstName(editedUser.getFirstName());
+                            user.setLastName(editedUser.getLastName());
+                            user.setPassword(editedUser.getPassword());
+                            user.setEmail(editedUser.getEmail());
+                            user.setRole(editedUser.getRole());
 
-                            return customerRepository.save(customer);
+                            return userRepository.save(user);
                         }
                 ).orElse(null);
     }
 
     public Iterable<Order> getOrders(Long customer_id) {
-        return customerRepository.findOrdersByCustomer_id(customer_id);
+        return orderService.getOrders(customer_id);
     }
 
-    public Order getOrder(Long customer_id, Long order_id) {
-        Iterable<Order> orders = customerRepository.findOrdersByCustomer_id(customer_id);
+    public Order getOrder(Long user_id, Long order_id) {
+        Iterable<Order> orders = getOrders(user_id);
         for (Order order : orders) {
             if (order.getId().equals(order_id)) return order;
         }
         return null;
     }
 
-    public Order addOrder(Long customer_id, Order order) {
-        return customerRepository.findById(customer_id)
+    public Order addOrder(Long user_id, Order order) {
+        return userRepository.findById(user_id)
                 .map(
-                        customer -> {
-                            customer.addOrder(order);
+                        user -> {
+                            user.addOrder(order);
                             return order;
                         }
                 )
                 .orElse(null);
     }
 
-    public void deleteOrder(@PathVariable("id") Long customer_id, @RequestParam Long order_id) {
-        if (getOrder(customer_id, order_id) != null) orderService.deleteOrder(order_id);
+    public void deleteOrder(@PathVariable("id") Long user_id, @RequestParam Long order_id) {
+        if (getOrder(user_id, order_id) != null) orderService.deleteOrder(order_id);
     }
 
 //    Security
@@ -75,8 +75,8 @@ public class CustomerService {
      *
      * @return сохраненный пользователь
      */
-    public Customer save(Customer customer) {
-        return customerRepository.save(customer);
+    public User save(User user) {
+        return userRepository.save(user);
     }
 
 
@@ -85,12 +85,12 @@ public class CustomerService {
      *
      * @return созданный пользователь
      */
-    public Customer create(Customer customer) {
-        if (customerRepository.findByEmail(customer.getEmail()).isPresent()) {
+    public User create(User user) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new RuntimeException("Пользователь с таким email уже существует");
         }
 
-        return save(customer);
+        return save(user);
     }
 
     /**
@@ -98,8 +98,8 @@ public class CustomerService {
      *
      * @return пользователь
      */
-    public Customer getByEmail(String email) {
-        return customerRepository.findByEmail(email)
+    public User getByEmail(String email) {
+        return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
 
     }
@@ -120,7 +120,7 @@ public class CustomerService {
      *
      * @return текущий пользователь
      */
-    public Customer getCurrentCustomer() {
+    public User getCurrentUser() {
         // Получение имени пользователя из контекста Spring Security
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return getByEmail(username);

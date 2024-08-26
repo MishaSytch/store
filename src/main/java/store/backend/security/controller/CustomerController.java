@@ -2,9 +2,9 @@ package store.backend.security.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import store.backend.database.entity.Customer;
+import store.backend.database.entity.User;
 import store.backend.database.entity.Order;
-import store.backend.security.service.CustomerService;
+import store.backend.security.service.UserService;
 
 import java.util.Optional;
 
@@ -12,35 +12,35 @@ import java.util.Optional;
 @RequestMapping("/account/customer")
 public class CustomerController {
     @Autowired
-    private CustomerService customerService;
+    private UserService userService;
 
     @GetMapping("/{id}")
-    public Optional<Customer> getCustomerById(@PathVariable("id") Long customer_id) {
-        return customerService.getCustomer(customer_id);
+    public Optional<User> getCustomerById(@PathVariable("id") Long user_id) {
+        return userService.getUser(user_id);
     }
 
     @PutMapping("/{id}")
-    public Customer putCustomer(@PathVariable("id") Long customer_id, @RequestBody Customer editedCustomer) {
-        return customerService.updateCustomer(customer_id, editedCustomer);
+    public User putCustomer(@PathVariable("id") Long user_id, @RequestBody User editedUser) {
+        return userService.updateUser(user_id, editedUser);
     }
 
     @GetMapping("/{id}/orders")
-    public Iterable<Order> getOrders(@PathVariable("id") Long customer_id) {
-        return customerService.getOrders(customer_id);
+    public Iterable<Order> getOrders(@PathVariable("id") Long user_id) {
+        return userService.getOrders(user_id);
     }
 
     @GetMapping("/{id}/order")
-    public Order getOrder(@PathVariable("id") Long customer_id, @RequestParam Long order_id) {
-        return customerService.getOrder(customer_id, order_id);
+    public Order getOrder(@PathVariable("id") Long user_id, @RequestParam Long order_id) {
+        return userService.getOrder(user_id, order_id);
     }
 
     @PostMapping("/{id}/add/order")
-    public Order postOrder(@PathVariable("id") Long customer_id, @RequestBody Order order) {
-        return customerService.addOrder(customer_id, order);
+    public Order postOrder(@PathVariable("id") Long user_id, @RequestBody Order order) {
+        return userService.addOrder(user_id, order);
     }
 
     @DeleteMapping("/{id}/delete/order")
-    public void deleteOrder(@PathVariable("id") Long customer_id, @RequestParam Long order_id) {
-        customerService.deleteOrder(customer_id, order_id);
+    public void deleteOrder(@PathVariable("id") Long user_id, @RequestParam Long order_id) {
+        userService.deleteOrder(user_id, order_id);
     }
 }

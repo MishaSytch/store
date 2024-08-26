@@ -1,9 +1,11 @@
 package store.backend.database.loader;
 
 import org.hibernate.Hibernate;
+import org.springframework.context.support.BeanDefinitionDsl;
 import org.springframework.stereotype.Component;
 import store.backend.database.entity.*;
 import store.backend.database.repository.*;
+import store.backend.security.role.Role;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -12,7 +14,7 @@ import java.util.*;
 @Component
 public class DBLoader {
     private CategoryRepository categoryRepository;
-    private CustomerRepository customerRepository;
+    private UserRepository userRepository;
     private ImageRepository imageRepository;
     private OrderRepository orderRepository;
     private PriceRepository priceRepository;
@@ -20,35 +22,37 @@ public class DBLoader {
 
     private final Random random = new Random();
 
-    public DBLoader(CategoryRepository categoryRepository, CustomerRepository customerRepository, ImageRepository imageRepository, OrderRepository orderRepository, PriceRepository priceRepository, ProductRepository productRepository) {
+    public DBLoader(CategoryRepository categoryRepository, UserRepository userRepository, ImageRepository imageRepository, OrderRepository orderRepository, PriceRepository priceRepository, ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
-        this.customerRepository = customerRepository;
+        this.userRepository = userRepository;
         this.imageRepository = imageRepository;
         this.orderRepository = orderRepository;
         this.priceRepository = priceRepository;
         this.productRepository = productRepository;
 
-        loadCustomers();
+        loadUsers();
         loadCategories();
         loadImages();
         loadPrices();
         loadOrders();
     }
 
-    private void loadCustomers() {
-        customerRepository.saveAll(
+    private void loadUsers() {
+        userRepository.saveAll(
                 Arrays.asList(
-                    Customer.builder()
+                    User.builder()
                             .firstName("Misha")
                             .lastName("Sytch")
                             .password("MishaSytchPass")
                             .email("mishaSytch@mail.ru")
+                            .role(Role.ADMIN)
                             .build(),
-                        Customer.builder()
+                        User.builder()
                                 .firstName("Lena")
                                 .lastName("Nam")
                                 .password("LenaNamPass")
                                 .email("lenaNam@mail.ru")
+                                .role(Role.CUSTOMER)
                                 .build()
                 )
         );
@@ -56,12 +60,12 @@ public class DBLoader {
 
     @Transactional
     private void loadOrders() {
-        List<Customer> customers = customerRepository.findAll();
+        List<User> users = userRepository.findAll();
         List<Product> products = productRepository.findAll();
 
-        for (Customer customer : customers) {
+        for (User user : users) {
             Order order = Order.builder()
-                    .customer(customer)
+                    .user(user)
                     .date(new Date())
                     .build();
 
