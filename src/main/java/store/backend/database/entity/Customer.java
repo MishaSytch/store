@@ -19,7 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Table(name = "Customers")
-public class Customer implements UserDetails {
+public class Customer extends AbstractUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -56,36 +56,8 @@ public class Customer implements UserDetails {
     @Column(name = "customer_email", nullable = false)
     private String email;
 
-
-    private Role role;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
-    }
-
     @Override
     public String getUsername() {
         return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 }

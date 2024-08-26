@@ -1,34 +1,20 @@
 package store.backend.database.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import store.backend.security.role.Role;
 
-import store.backend.security.role.*;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.util.Collection;
 import java.util.Collections;
 
 @Getter
 @Setter
-@Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class Admin implements UserDetails {
+public abstract class AbstractUser implements UserDetails {
+    private Role role;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String name;
-
-    private Role role = Role.ADMIN;
-
-    private String password;
+    private String userName;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -36,13 +22,8 @@ public class Admin implements UserDetails {
     }
 
     @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
     public String getUsername() {
-        return name;
+        return userName;
     }
 
     @Override
