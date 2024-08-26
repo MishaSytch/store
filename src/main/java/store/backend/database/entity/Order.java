@@ -24,7 +24,7 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
-    private Customer customer;
+    private User user;
 
     @Column(name = "order_date", nullable = false)
     private Date date;

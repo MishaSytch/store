@@ -1,34 +1,63 @@
 package store.backend.database.loader;
 
 import org.springframework.stereotype.Component;
+import store.backend.database.entity.*;
+import store.backend.database.repository.*;
+import store.backend.security.role.Role;
 import store.backend.database.entity.Category;
 import store.backend.database.entity.Product;
-import store.backend.security.service.CustomerService;
+import store.backend.security.service.UserService;
 import store.backend.service.product.CategoryService;
 import store.backend.service.product.ProductService;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
 
 @Component
 public class DBLoader {
+    private final UserRepository userRepository;
     private final CategoryService categoryService;
     private final ProductService productService;
-    private final CustomerService customerService;
+    private final UserService userService;
     private final Random random = new Random();
 
-    public DBLoader(CategoryService categoryService, ProductService productService, CustomerService customerService) {
+    public DBLoader(UserRepository userRepository, CategoryService categoryService, ProductService productService, UserService userService) {
         this.categoryService = categoryService;
         this.productService = productService;
-        this.customerService = customerService;
+        this.userService = userService;
+        this.userRepository = userRepository;
 
         load();
     }
 
     public void load() {
         loadItems();
+        loadUsers();
     }
+
+    private void loadUsers() {
+        userRepository.saveAll(
+                Arrays.asList(
+                    User.builder()
+                            .firstName("Misha")
+                            .lastName("Sytch")
+                            .password("MishaSytchPass")
+                            .email("mishaSytch@mail.ru")
+                            .role(Role.ADMIN)
+                            .build(),
+                        User.builder()
+                                .firstName("Lena")
+                                .lastName("Nam")
+                                .password("LenaNamPass")
+                                .email("lenaNam@mail.ru")
+                                .role(Role.CUSTOMER)
+                                .build()
+                )
+        );
+    }
+
 
     private void loadItems() {
         // Создание основной категории "Смартфоны"

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import store.backend.database.entity.Customer;
+import store.backend.database.entity.User;
 
 import java.security.Key;
 import java.util.Date;
@@ -42,8 +42,8 @@ public class JwtService {
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
 
-        if (userDetails instanceof Customer) {
-            Customer customUserDetails = (Customer) userDetails;
+        if (userDetails instanceof User) {
+            User customUserDetails = (User) userDetails;
             claims.put("id", customUserDetails.getId());
             claims.put("email", customUserDetails.getEmail());
             claims.put("role", customUserDetails.getRole());
