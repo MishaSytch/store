@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import store.backend.database.entity.User;
@@ -17,6 +18,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -86,6 +89,8 @@ public class UserService {
      * @return созданный пользователь
      */
     public User create(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new RuntimeException("Пользователь с таким email уже существует");
         }

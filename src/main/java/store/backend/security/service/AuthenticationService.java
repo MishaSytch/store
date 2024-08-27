@@ -1,10 +1,9 @@
 package store.backend.security.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import store.backend.database.entity.User;
 import store.backend.security.dto.JwtAuthenticationResponse;
@@ -17,8 +16,7 @@ import store.backend.security.role.Role;
 public class AuthenticationService {
     private final UserService userService;
     private final JwtService jwtService;
-    private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
+    private final AuthenticationProvider authenticationProvider;
 
     /**
      * Регистрация пользователя
@@ -30,7 +28,7 @@ public class AuthenticationService {
         User user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
-                .password(passwordEncoder.encode(request.getPassword()))
+                .password(request.getPassword())
                 .email(request.getEmail())
                 .role(role)
                 .build();
@@ -48,7 +46,7 @@ public class AuthenticationService {
      * @return токен
      */
     public JwtAuthenticationResponse signIn(SignInRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+        authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getEmail(),
                 request.getPassword()
         ));
