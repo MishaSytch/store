@@ -17,7 +17,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-
     @Autowired
     private UserRepository userRepository;
     @Autowired
