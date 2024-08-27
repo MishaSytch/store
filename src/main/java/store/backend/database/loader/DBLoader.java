@@ -1,11 +1,15 @@
 package store.backend.database.loader;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.stereotype.Component;
 import store.backend.database.entity.*;
 import store.backend.database.repository.*;
+import store.backend.security.dto.SignUpRequest;
 import store.backend.security.role.Role;
 import store.backend.database.entity.Category;
 import store.backend.database.entity.Product;
+import store.backend.security.service.AuthenticationService;
 import store.backend.security.service.UserService;
 import store.backend.service.product.CategoryService;
 import store.backend.service.product.ProductService;
@@ -17,45 +21,39 @@ import java.util.Random;
 
 @Component
 public class DBLoader {
-    private final UserRepository userRepository;
     private final CategoryService categoryService;
     private final ProductService productService;
     private final UserService userService;
+    private final AuthenticationService authenticationService;
     private final Random random = new Random();
 
-    public DBLoader(UserRepository userRepository, CategoryService categoryService, ProductService productService, UserService userService) {
+    public DBLoader(CategoryService categoryService, ProductService productService, UserService userService, AuthenticationService authenticationService) {
         this.categoryService = categoryService;
         this.productService = productService;
         this.userService = userService;
-        this.userRepository = userRepository;
+        this.authenticationService = authenticationService;
 
-        load();
-    }
-
-    public void load() {
         loadItems();
         loadUsers();
     }
 
     private void loadUsers() {
-        userRepository.saveAll(
-                Arrays.asList(
-                    User.builder()
-                            .firstName("Misha")
-                            .lastName("Sytch")
-                            .password("MishaSytchPass")
-                            .email("mishaSytch@mail.ru")
-                            .role(Role.ADMIN)
-                            .build(),
-                        User.builder()
-                                .firstName("Lena")
-                                .lastName("Nam")
-                                .password("LenaNamPass")
-                                .email("lenaNam@mail.ru")
-                                .role(Role.CUSTOMER)
-                                .build()
-                )
-        );
+        authenticationService.signUp(
+                SignUpRequest.builder()
+                        .firstName("Misha")
+                        .lastName("Sytch")
+                        .password("MishaSytchPass")
+                        .email("mishaSytch@mail.ru")
+                        .build(),
+                Role.ADMIN);
+        authenticationService.signUp(
+                SignUpRequest.builder()
+                        .firstName("Lena")
+                        .lastName("Nam")
+                        .password("LenaNamPass")
+                        .email("lenaNam@mail.ru")
+                        .build(),
+                Role.CUSTOMER);
     }
 
 

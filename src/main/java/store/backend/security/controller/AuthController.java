@@ -10,6 +10,7 @@ import store.backend.security.dto.JwtAuthenticationResponse;
 import store.backend.security.dto.SignInRequest;
 import store.backend.security.dto.SignUpRequest;
 import store.backend.security.service.AuthenticationService;
+import store.backend.security.role.Role;
 
 import javax.validation.Valid;
 
@@ -22,7 +23,12 @@ public class AuthController {
 
     @PostMapping("/sign-up")
     public JwtAuthenticationResponse signUp(@RequestBody @Valid SignUpRequest request) {
-        return authenticationService.signUp(request);
+        return authenticationService.signUp(request, Role.CUSTOMER);
+    }
+
+    @PostMapping("/admin/sign-up")
+    public JwtAuthenticationResponse signUpAdmin(@RequestBody @Valid SignUpRequest request) {
+        return authenticationService.signUp(request, Role.ADMIN);
     }
 
     @PostMapping("/sign-in")
