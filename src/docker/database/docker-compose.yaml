@@ -15,3 +15,9 @@ services:
       - pg_store:/var/lib/postgresql/data
     ports:
       - "127.0.0.1:5433:5432"
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+    driver: bridge
