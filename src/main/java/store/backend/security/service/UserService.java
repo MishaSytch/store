@@ -13,6 +13,7 @@ import store.backend.database.entity.User;
 import store.backend.database.entity.Order;
 import store.backend.database.repository.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +28,10 @@ public class UserService {
 
     public Optional<User> getUser(Long user_id) {
         return userRepository.findById(user_id);
+    }
+
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
 
     public User updateUser(Long user_id, User editedUser) {

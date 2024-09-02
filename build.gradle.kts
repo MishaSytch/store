@@ -1,8 +1,4 @@
-import org.gradle.api.JavaVersion
-import org.gradle.api.tasks.compile.JavaCompile
-
 plugins {
-	kotlin("jvm") version "1.5.21"
 	java
 	id("org.springframework.boot") version "2.5.15"
 	id("io.spring.dependency-management") version "1.1.6"
@@ -11,15 +7,6 @@ plugins {
 group = "store"
 version = "0.0.1"
 
-java {
-	toolchain {
-		languageVersion.set(JavaLanguageVersion.of(8))
-	}
-}
-
-tasks.withType<JavaCompile> {
-	options.encoding = "UTF-8"
-}
 
 configurations {
 	compileOnly {
