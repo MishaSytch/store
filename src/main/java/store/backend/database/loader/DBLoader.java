@@ -44,20 +44,12 @@ public class DBLoader {
     private void loadUsers() {
         authenticationService.signUp(
                 SignUpRequest.builder()
-                        .firstName("Misha")
-                        .lastName("Sytch")
-                        .password("MishaSytchPass")
-                        .email("mishaSytch@mail.ru")
+                        .firstName("admin")
+                        .lastName("admin")
+                        .password("pass")
+                        .email("admin")
                         .build(),
                 Role.ADMIN);
-        authenticationService.signUp(
-                SignUpRequest.builder()
-                        .firstName("Lena")
-                        .lastName("Nam")
-                        .password("LenaNamPass")
-                        .email("lenaNam@mail.ru")
-                        .build(),
-                Role.CUSTOMER);
     }
 
 
