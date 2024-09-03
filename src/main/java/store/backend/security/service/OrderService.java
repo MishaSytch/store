@@ -6,6 +6,7 @@ import store.backend.database.entity.User;
 import store.backend.database.entity.Order;
 import store.backend.database.entity.Product;
 import store.backend.database.repository.OrderRepository;
+import store.backend.service.product.EmailMsgService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,14 +18,16 @@ import java.util.stream.Collectors;
 class OrderService {
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private EmailMsgService emailMsgService;
 
     public Order createOrder(User user, Date date) {
         Order order = Order.builder()
                 .user(user)
                 .date(date)
                 .build();
-
         return orderRepository.save(order);
+
     }
 
     public Order addOrder(User user, Order order) {

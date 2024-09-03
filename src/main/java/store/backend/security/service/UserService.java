@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import store.backend.database.entity.User;
 import store.backend.database.entity.Order;
 import store.backend.database.repository.UserRepository;
+import store.backend.service.product.EmailService;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,8 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private EmailService emailService;
 
     public Optional<User> getUser(Long user_id) {
         return userRepository.findById(user_id);
@@ -66,6 +69,10 @@ public class UserService {
                 .map(
                         user -> {
                             user.addOrder(order);
+                            StringBuilder stringBuilder = new StringBuilder();
+                            order.getProducts().forEach(product -> stringBuilder.append(product.getName()));
+
+                            emailService.sendSimpleEmail(user.getEmail(), "order", stringBuilder.toString());
                             return order;
                         }
                 )
@@ -73,7 +80,11 @@ public class UserService {
     }
 
     public void deleteOrder(@PathVariable("id") Long user_id, @RequestParam Long order_id) {
-        if (getOrder(user_id, order_id) != null) orderService.deleteOrder(order_id);
+        getUser(user_id).ifPresent(user -> {
+            Order order;
+            if ((order = orderService.getOrder(order_id)) != null)
+                user.removeOrder(order);
+        });
     }
 
 //    Security
