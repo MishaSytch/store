@@ -60,13 +60,13 @@ public class CategoryService {
     }
 
     public void deleteCategory(Long superCategory_id, Category category) {
-        if (categoryRepository.findById(superCategory_id)
+        categoryRepository.findById(superCategory_id)
                 .map(
                         c -> {
                             c.removeCategory(category);
                             return category;
                         }
-                ).orElse(null) == null) categoryRepository.deleteById(category.getId());
+                );
     }
 
     public Iterable<Product> getProducts(Long category_id) {
