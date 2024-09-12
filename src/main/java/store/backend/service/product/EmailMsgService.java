@@ -1,6 +1,5 @@
 package store.backend.service.product;
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -28,7 +27,7 @@ public class EmailMsgService implements EmailService {
     }
 
     @Override
-    public void sendEmailWithAttachment(String toAddress, String subject, String message, String attachment) throws MessagingException, FileNotFoundException, javax.mail.MessagingException {
+    public void sendEmailWithAttachment(String toAddress, String subject, String message, String attachment) throws FileNotFoundException, javax.mail.MessagingException {
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
