@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
 class OrderService {
     @Autowired
     private OrderRepository orderRepository;
-    @Autowired
-    private EmailMsgService emailMsgService;
 
     public Order createOrder(User user, Date date) {
         Order order = Order.builder()

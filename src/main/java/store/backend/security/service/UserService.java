@@ -13,6 +13,7 @@ import store.backend.database.entity.User;
 import store.backend.database.entity.Order;
 import store.backend.database.repository.UserRepository;
 import store.backend.service.product.EmailService;
+import store.backend.service.product.ProductService;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,8 @@ public class UserService {
     private OrderService orderService;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private ProductService productService;
 
     public Optional<User> getUser(Long user_id) {
         return userRepository.findById(user_id);
@@ -70,9 +73,9 @@ public class UserService {
                         user -> {
                             user.addOrder(order);
                             StringBuilder stringBuilder = new StringBuilder();
-                            order.getProducts().forEach(product -> stringBuilder.append(product.getName()));
-
+                            order.getProducts().forEach(product -> stringBuilder.append(product.getName()).append(": ").append(productService.getCurrentPrice(product.getId()).getPrice().toString()).append("/n"));
                             emailService.sendSimpleEmail(user.getEmail(), "order", stringBuilder.toString());
+
                             return order;
                         }
                 )

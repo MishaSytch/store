@@ -1,6 +1,5 @@
 package store.backend.service.product;
 
-import org.apache.logging.log4j.util.PropertySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import store.backend.database.entity.*;
@@ -8,7 +7,6 @@ import store.backend.database.repository.ProductRepository;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
