@@ -14,6 +14,9 @@ public class CustomerController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/all")
+    public Iterable<User> getUsers() {return userService.getUsers();}
+
     @GetMapping("/{id}")
     public Optional<User> getCustomerById(@PathVariable("id") Long user_id) {
         return userService.getUser(user_id);
@@ -33,8 +36,6 @@ public class CustomerController {
     public Order getOrder(@PathVariable("id") Long user_id, @RequestParam Long order_id) {
         return userService.getOrder(user_id, order_id);
     }
-
-
 
     @PostMapping("/{id}/add/order")
     public Order postOrder(@PathVariable("id") Long user_id, @RequestBody Order order) {

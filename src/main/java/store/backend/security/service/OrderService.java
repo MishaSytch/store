@@ -6,25 +6,30 @@ import store.backend.database.entity.User;
 import store.backend.database.entity.Order;
 import store.backend.database.entity.Product;
 import store.backend.database.repository.OrderRepository;
-import store.backend.service.product.EmailMsgService;
+import store.backend.service.product.ProductService;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-class OrderService {
+public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ProductService productService;
 
-    public Order createOrder(User user, Date date) {
+    public Order createOrder(Long user_id, Date date, List<Long> product_id) {
         Order order = Order.builder()
-                .user(user)
                 .date(date)
                 .build();
-        return orderRepository.save(order);
+        orderRepository.save(addOrder(userService.getUser(user_id).get(), order));
+        addProduct(order.getId(), productService.getProducts(product_id));
+
+        return order;
 
     }
 

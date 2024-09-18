@@ -46,8 +46,8 @@ public class DBLoader {
                 SignUpRequest.builder()
                         .firstName("admin")
                         .lastName("admin")
-                        .password("pass")
-                        .email("admin")
+                        .password("password_admin")
+                        .email("admin@mail.ru")
                         .build(),
                 Role.ADMIN);
     }

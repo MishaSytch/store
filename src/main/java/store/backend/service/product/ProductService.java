@@ -53,6 +53,10 @@ public class ProductService {
         return productRepository.findById(product_id);
     }
 
+    public List<Product> getProducts(List<Long> products_id) {
+        return productRepository.findAllById(products_id);
+    }
+
     public void addQuantity(Long product_id, Long quantity) {
         Optional<Product> product =  getProduct(product_id);
         product.ifPresent(p -> {
