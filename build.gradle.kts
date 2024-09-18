@@ -22,7 +22,6 @@ dependencies {
 //	Spring
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	implementation("org.springframework.boot:spring-boot-starter-mail")
 
 //	Data
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -39,6 +38,7 @@ dependencies {
 	implementation("org.apache.commons:commons-lang3")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
+	implementation("org.springframework.boot:spring-boot-starter-mail")
 
 // Test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
