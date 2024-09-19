@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+import store.backend.database.entity.Product;
 import store.backend.database.entity.User;
 import store.backend.database.entity.Order;
 import store.backend.database.repository.UserRepository;
@@ -69,10 +70,18 @@ public class UserService {
 
     public Order addOrder(User user, Order order) {
                             user.addOrder(order);
-
                             StringBuilder stringBuilder = new StringBuilder();
-                            order.getProducts().forEach(product -> stringBuilder.append(product.getName()).append(": ").append(productService.getCurrentPrice(product.getId()).getPrice().toString()).append("/n"));
+                            List<Product> products =  order.getProducts();
+                            products.forEach(
+                                product ->
+                                        stringBuilder
+                                                .append(product.getName())
+                                                .append(": ")
+                                                .append(productService.getCurrentPrice(product.getId()).getPrice().toString())
+                                                .append("/n")
+                            );
                             emailService.sendSimpleEmail(user.getEmail(), "order", stringBuilder.toString());
+
                             return order;
     }
 

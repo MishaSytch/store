@@ -40,6 +40,6 @@ public class OrderController {
 
     @PostMapping("/create")
     public Order createOrder(@RequestBody Data data) {
-        return orderService.createOrder(data.user, new Date(), data.products);
+        return userService.addOrder(data.user, orderService.createOrder(data.user, new Date(), data.products));
     }
 }
