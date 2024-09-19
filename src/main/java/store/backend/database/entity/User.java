@@ -33,10 +33,11 @@ public class User implements UserDetails {
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
-    @JsonManagedReference
-    private Set<Order> orders = new HashSet<>();
+    private Set<Order> orders;
     @Transactional
     public void addOrder(Order order) {
+        if (orders == null) orders = new HashSet<>();
+
         orders.add(order);
         order.setUser(this);
     }
@@ -57,7 +58,6 @@ public class User implements UserDetails {
 
     @Column(name = "user_email", nullable = false)
     private String email;
-
 
     private Role role;
 

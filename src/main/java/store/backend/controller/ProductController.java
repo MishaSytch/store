@@ -9,6 +9,7 @@ import store.backend.service.product.ProductService;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -26,6 +27,11 @@ public class ProductController {
     @GetMapping("/all")
     public Iterable<Product> getAllProducts() {
         return productService.getAllProducts();
+    }
+
+    @GetMapping("/all/a")
+    public Iterable<Product> getAllProductsById(List<Long> products_id) {
+        return productService.getProductsById(products_id);
     }
 
     @GetMapping("/{id}/quantity")

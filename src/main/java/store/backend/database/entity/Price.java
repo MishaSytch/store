@@ -1,6 +1,7 @@
 package store.backend.database.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,7 +24,7 @@ public class Price {
     @ManyToOne(
             fetch = FetchType.LAZY
     )
-    @JsonBackReference
+    @JsonIgnore
     private Product product;
 
     @Column(name = "price_value", nullable = false)

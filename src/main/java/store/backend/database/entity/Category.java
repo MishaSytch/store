@@ -1,6 +1,7 @@
 package store.backend.database.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -34,11 +35,12 @@ public class Category {
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    @JsonManagedReference
-    private Set<Product> products = new HashSet<>();
+    private Set<Product> products;
 
     @Transactional
     public void addProduct(Product product) {
+        if (products == null) products = new HashSet<>();
+
         products.add(product);
         product.getCategories().add(this);
     }
@@ -51,7 +53,7 @@ public class Category {
 
     @ManyToOne
     @JoinColumn(name = "super_category_id")
-    @JsonBackReference
+    @JsonIgnore
     private Category superCategory;
 
     @OneToMany(
@@ -60,11 +62,12 @@ public class Category {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
-    @JsonManagedReference
-    private Set<Category> categories = new HashSet<>();
+    private Set<Category> categories;
 
     @Transactional
     public void addCategory(Category category) {
+        if (categories == null) categories = new HashSet<>();
+
         categories.add(category);
         category.setSuperCategory(this);
     }

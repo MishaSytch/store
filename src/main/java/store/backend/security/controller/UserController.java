@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/account/customer")
-public class CustomerController {
+public class UserController {
     @Autowired
     private UserService userService;
 

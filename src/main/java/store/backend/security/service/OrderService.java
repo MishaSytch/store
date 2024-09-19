@@ -23,7 +23,7 @@ public class OrderService {
     @Autowired
     private ProductService productService;
 
-    public Order createOrder(User user, Date date, List<Product> products) {
+    public Order createOrder(User user, Date date, Iterable<Product> products) {
         Order order = Order.builder()
                 .date(date)
                 .build();
@@ -41,7 +41,7 @@ public class OrderService {
         return  order;
     }
 
-    public void addProduct(Order order, List<Product> products) {
+    public void addProduct(Order order, Iterable<Product> products) {
         for (Product product : products) {
             order.addProduct(product);
         }

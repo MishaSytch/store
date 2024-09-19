@@ -1,6 +1,7 @@
 package store.backend.database.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ public class Image {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
+    @JsonIgnore
     private Product product;
 
     @Column(name = "image_title", nullable = false)

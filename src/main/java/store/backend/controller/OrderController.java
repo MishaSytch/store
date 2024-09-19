@@ -1,9 +1,9 @@
 package store.backend.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +12,8 @@ import store.backend.database.entity.Order;
 import store.backend.database.entity.Product;
 import store.backend.database.entity.User;
 import store.backend.security.service.OrderService;
+import store.backend.security.service.UserService;
+import store.backend.service.product.ProductService;
 
 import java.util.Date;
 import java.util.List;
@@ -21,19 +23,23 @@ import java.util.List;
 public class OrderController {
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ProductService productService;
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
     @AllArgsConstructor
+    @Builder
     private static class Data {
-        @JsonProperty("user")
-        User user;
-
-        @JsonProperty("products")
-        List<Product> products;
+        private User user;
+        private List<Product> products;
     }
 
     @PostMapping("/create")
     public Order createOrder(@RequestBody Data data) {
         return orderService.createOrder(data.user, new Date(), data.products);
     }
-
 }

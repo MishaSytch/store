@@ -1,6 +1,7 @@
 package store.backend.database.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -31,11 +32,12 @@ public class Product {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
-    @JsonManagedReference
-    private Set<Price> prices = new HashSet<>();
+    private Set<Price> prices;
 
     @Transactional
     public void addPrice(Price price) {
+        if (prices == null) prices = new HashSet<>();
+
         prices.add(price);
         price.setProduct(this);
     }
@@ -63,7 +65,7 @@ public class Product {
             cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER
     )
-    @JsonBackReference
+    @JsonIgnore
     private Set<Category> categories = new HashSet<>();
 
     @OneToMany(
@@ -72,11 +74,13 @@ public class Product {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
-    @JsonManagedReference
-    private Set<Image> images = new HashSet<>();
+
+    private Set<Image> images;
 
     @Transactional
     public void addImage(Image image) {
+        if (images == null) images = new HashSet<>();
+
         images.add(image);
         image.setProduct(this);
     }
@@ -88,6 +92,6 @@ public class Product {
     }
 
     @ManyToMany(mappedBy = "products")
-    @JsonBackReference
+    @JsonIgnore
     private List<Order> orders = new ArrayList<>();
 }
