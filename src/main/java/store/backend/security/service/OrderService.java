@@ -10,6 +10,7 @@ import store.backend.service.product.ProductService;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -22,12 +23,13 @@ public class OrderService {
     @Autowired
     private ProductService productService;
 
-    public Order createOrder(Long user_id, Date date, List<Long> product_id) {
+    public Order createOrder(User user, Date date, List<Product> products) {
         Order order = Order.builder()
                 .date(date)
                 .build();
-        orderRepository.save(addOrder(userService.getUser(user_id).get(), order));
-        addProduct(order.getId(), productService.getProducts(product_id));
+
+            orderRepository.save(addOrder(user, order));
+            addProduct(order, products);
 
         return order;
 
@@ -39,13 +41,9 @@ public class OrderService {
         return  order;
     }
 
-    public void addProduct(Long order_id, List<Product> products) {
-        Optional<Order> order = orderRepository.findById(order_id);
-
-        if (order.isPresent()) {
-            for (Product product : products) {
-                order.get().addProduct(product);
-            }
+    public void addProduct(Order order, List<Product> products) {
+        for (Product product : products) {
+            order.addProduct(product);
         }
     }
 
@@ -57,9 +55,7 @@ public class OrderService {
         return orderRepository.findAll().stream().filter(order -> order.getUser().getId().equals(customer_id)).collect(Collectors.toList());
     }
 
-    public void deleteOrder(Long order_id) {
-        orderRepository.findById(order_id).ifPresent(
-                order -> order.getUser().removeOrder(order)
-        );
+    public void deleteOrder(Order order) {
+        order.getUser().removeOrder(order);
     }
 }

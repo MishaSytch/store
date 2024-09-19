@@ -53,23 +53,16 @@ public class ProductService {
         return productRepository.findById(product_id);
     }
 
-    public List<Product> getProducts(List<Long> products_id) {
+    public List<Product> getProductsById(List<Long> products_id) {
         return productRepository.findAllById(products_id);
     }
 
-    public void addQuantity(Long product_id, Long quantity) {
-        Optional<Product> product =  getProduct(product_id);
-        product.ifPresent(p -> {
-            p.setQuantity(p.getQuantity() + quantity);
-            productRepository.save(p);
-        });
+    public void addQuantity(Product product, Long quantity) {
+        product.setQuantity(product.getQuantity() + quantity);
+        productRepository.save(product);
     }
 
-    public Long getQuantity(Long product_id) {
-        return getProduct(product_id).map(Product::getQuantity).orElse(null);
-    }
-
-    public List<Product> getAll() {
+    public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
@@ -85,28 +78,6 @@ public class ProductService {
         return priceService.createPrice(price, date);
     }
 
-    public Price addPrice(Long product_id, Price price) {
-        return productRepository.findById(product_id)
-                .map(
-                        product -> {
-                        product.addPrice(price);
-                        productRepository.save(product);
-                        return price;
-                    }
-        ).orElse(null);
-    }
-
-    public Price getPrice(Long product_id, Long price_id) {
-        Optional<Product> product = getProduct(product_id);
-
-        if (product.isPresent()) {
-            for (Price price : product.get().getPrices()) {
-                if (price.getId().equals(price_id)) return price;
-            }
-        }
-        return null;
-    }
-
     public Price getCurrentPrice(Long product_id) {
         return productRepository.findById(product_id).flatMap(product -> product.getPrices().stream().max(Comparator.comparing(Price::getDate))).orElse(null);
     }
@@ -115,41 +86,19 @@ public class ProductService {
         return priceService.updatePrice(price_id, editedPrice);
     }
 
-    public void deletePrice(Long product_id, Long price_id) {
-        if (getPrice(product_id, price_id) != null) priceService.deletePrice(price_id);
+    public void deletePrice(Long price_id) {
+        priceService.deletePrice(price_id);
     }
 
     public Image createImage(String name, String ref) {
         return imageService.createImage(name, ref);
     }
 
-    public Image addImage(Long product_id, Image image) {
-        return productRepository.findById(product_id)
-                .map(
-                        product -> {
-                            product.addImage(image);
-                            productRepository.save(product);
-                            return image;
-                        }
-                ).orElse(null);
-    }
-
-    public Image getImage(Long product_id, Long image_id) {
-        Optional<Product> product = getProduct(product_id);
-
-        if (product.isPresent()) {
-            for (Image image : product.get().getImages()) {
-                if (image.getId().equals(image_id)) return image;
-            }
-        }
-        return null;
-    }
-
     public Image updateImage(Long image_id, Image editedImage) {
         return imageService.updateImage(image_id, editedImage);
     }
 
-    public void deleteImage(Long product_id, Long image_id) {
-        if (getImage(product_id, image_id) != null) imageService.deleteImage(image_id);
+    public void deleteImage(Long image_id) {
+        imageService.deleteImage(image_id);
     }
 }

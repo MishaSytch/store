@@ -67,27 +67,18 @@ public class UserService {
         return null;
     }
 
-    public Order addOrder(Long user_id, Order order) {
-        return userRepository.findById(user_id)
-                .map(
-                        user -> {
+    public Order addOrder(User user, Order order) {
                             user.addOrder(order);
+
                             StringBuilder stringBuilder = new StringBuilder();
                             order.getProducts().forEach(product -> stringBuilder.append(product.getName()).append(": ").append(productService.getCurrentPrice(product.getId()).getPrice().toString()).append("/n"));
                             emailService.sendSimpleEmail(user.getEmail(), "order", stringBuilder.toString());
-
                             return order;
-                        }
-                )
-                .orElse(null);
     }
 
-    public void deleteOrder(@PathVariable("id") Long user_id, @RequestParam Long order_id) {
-        getUser(user_id).ifPresent(user -> {
-            Order order;
-            if ((order = orderService.getOrder(order_id)) != null)
-                user.removeOrder(order);
-        });
+    public void deleteOrder(User user, @RequestParam Long order_id) {
+        Order order;
+        if ((order = orderService.getOrder(order_id)) != null) user.removeOrder(order);
     }
 
 //    Security

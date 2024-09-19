@@ -52,7 +52,7 @@ public class SecurityConfig {
                         .mvcMatchers(HttpMethod.POST, "/auth/sign-up/**", "/auth/sign-in/**").permitAll()
                         .mvcMatchers(HttpMethod.POST, "/auth/admin/**").hasRole(Role.ADMIN.name())
 
-                        .mvcMatchers(HttpMethod.POST, "/order/create").permitAll()
+                        .mvcMatchers(HttpMethod.POST, "/order/*").permitAll()
 //                        .hasRole(Role.CUSTOMER.name())
 
                         .mvcMatchers(HttpMethod.GET, "/product/**").permitAll()

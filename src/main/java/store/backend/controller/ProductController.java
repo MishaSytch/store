@@ -25,19 +25,19 @@ public class ProductController {
 
     @GetMapping("/all")
     public Iterable<Product> getAllProducts() {
-        return productService.getAll();
+        return productService.getAllProducts();
     }
 
     @GetMapping("/{id}/quantity")
     public Long getQuantity(@PathVariable("id") Long product_id) {
-        return productService.getQuantity(product_id);
+        return productService.getProduct(product_id).get().getQuantity();
     }
 
     @PutMapping("/{id}/quantity")
     public Long addQuantity(@PathVariable("id") Long product_id, @RequestParam Long count) {
         return getProduct(product_id).map(
                 product -> {
-                    productService.addQuantity(product_id, count);
+                    productService.addQuantity(product, count);
 
                     return product.getQuantity();
                 }
@@ -68,8 +68,8 @@ public class ProductController {
     }
 
     @PostMapping("/{id}/add/image")
-    public Image addImage(@PathVariable("id") Long product_id, Image image) {
-        return productService.addImage(product_id, image);
+    public void addImage(@PathVariable("id") Long product_id, Image image) {
+        getProduct(product_id).ifPresent(p -> p.addImage(image));
     }
 
     @PutMapping("/update/image/{id}")
@@ -78,8 +78,8 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}/delete/image")
-    public void deleteImage(@PathVariable("id") Long product_id, @RequestParam Long image_id) {
-        productService.deleteImage(product_id, image_id);
+    public void deleteImage(@RequestParam Long image_id) {
+        productService.deleteImage(image_id);
     }
 
 //    Price
@@ -90,8 +90,8 @@ public class ProductController {
     }
 
     @PostMapping("/{id}/add/price")
-    public Price addPrice(@PathVariable("id") Long product_id, Price price) {
-        return productService.addPrice(product_id, price);
+    public void addPrice(@PathVariable("id") Long product_id, Price price) {
+        productService.getProduct(product_id).ifPresent(p -> p.addPrice(price));
     }
 
     @PutMapping("/update/price/{id}")
@@ -100,7 +100,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}/delete/price")
-    public void deletePrice(@PathVariable("id") Long product_id, @RequestParam Long price_id) {
-        productService.deletePrice(product_id, price_id);
+    public void deletePrice(@RequestParam Long price_id) {
+        productService.deletePrice(price_id);
     }
 }

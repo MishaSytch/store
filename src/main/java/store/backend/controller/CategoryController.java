@@ -14,12 +14,12 @@ public class CategoryController {
 
     @GetMapping("/{id}/product/all")
     public Iterable<Product> getProducts(@PathVariable("id") Long category_id) {
-        return categoryService.getProducts(category_id);
+        return categoryService.getCategory(category_id).getProducts();
     }
 
     @GetMapping("/{id}")
-    public Iterable<Category> getCategory(@PathVariable Long id) {
-        return categoryService.getSubCategories(id);
+    public Iterable<Category> getSubCategory(@PathVariable("id") Long category_id) {
+        return categoryService.getCategory(category_id).getCategories();
     }
 
     @GetMapping("/all")
