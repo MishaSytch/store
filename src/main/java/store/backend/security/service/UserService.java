@@ -14,7 +14,7 @@ import store.backend.database.entity.Product;
 import store.backend.database.entity.User;
 import store.backend.database.entity.Order;
 import store.backend.database.repository.UserRepository;
-import store.backend.service.product.EmailService;
+import store.backend.service.product.IEmailService;
 import store.backend.service.product.ProductService;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class UserService {
     @Autowired
     private OrderService orderService;
     @Autowired
-    private EmailService emailService;
+    private IEmailService IEmailService;
     @Autowired
     private ProductService productService;
 
@@ -83,7 +83,7 @@ public class UserService {
                                                 .append(productService.getCurrentPrice(product.getId()).getPrice().toString())
                                                 .append("/n")
                             );
-                            emailService.sendSimpleEmail(user.getEmail(), "order", stringBuilder.toString());
+                            IEmailService.sendSimpleMessage(user.getEmail(), "order", stringBuilder.toString());
 
                             return order;
     }
