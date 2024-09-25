@@ -52,8 +52,7 @@ public class SecurityConfig {
                         .mvcMatchers(HttpMethod.POST, "/auth/sign-up/**", "/auth/sign-in/**").permitAll()
                         .mvcMatchers(HttpMethod.POST, "/auth/admin/**").hasRole(Role.ADMIN.name())
 
-                        .mvcMatchers(HttpMethod.POST, "/order/*").permitAll()
-//                        .hasRole(Role.CUSTOMER.name())
+                        .mvcMatchers(HttpMethod.POST, "/order/*").hasRole(Role.CUSTOMER.name())
 
                         .mvcMatchers(HttpMethod.GET, "/product/**").permitAll()
                         .mvcMatchers("/product/**").hasRole(Role.ADMIN.name())
@@ -61,7 +60,6 @@ public class SecurityConfig {
                         .mvcMatchers(HttpMethod.GET, "/category/**").permitAll()
                         .mvcMatchers( "/category/**").hasRole(Role.ADMIN.name())
 
-                        .mvcMatchers("/account/**").permitAll()
                         .mvcMatchers(HttpMethod.GET, "/account/customer/{id}").hasRole(Role.CUSTOMER.name())
                         .mvcMatchers(HttpMethod.PUT, "/account/customer/{id}").hasRole(Role.ADMIN.name())
 
