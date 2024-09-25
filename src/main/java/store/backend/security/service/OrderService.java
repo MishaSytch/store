@@ -2,6 +2,7 @@ package store.backend.security.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import store.backend.database.entity.User;
 import store.backend.database.entity.Order;
 import store.backend.database.entity.Product;
@@ -23,6 +24,7 @@ public class OrderService {
     @Autowired
     private ProductService productService;
 
+    @Transactional
     public Order createOrder(User user, Date date, Iterable<Product> products) {
         Order order = Order.builder()
                 .date(date)
@@ -35,12 +37,14 @@ public class OrderService {
 
     }
 
+    @Transactional
     public Order addOrder(User user, Order order) {
         user.addOrder(order);
 
         return  order;
     }
 
+    @Transactional
     public void addProduct(Order order, Iterable<Product> products) {
         for (Product product : products) {
             order.addProduct(product);
@@ -55,6 +59,7 @@ public class OrderService {
         return orderRepository.findAll().stream().filter(order -> order.getUser().getId().equals(customer_id)).collect(Collectors.toList());
     }
 
+    @Transactional
     public void deleteOrder(Order order) {
         order.getUser().removeOrder(order);
     }

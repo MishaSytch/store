@@ -2,6 +2,7 @@ package store.backend.service.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import store.backend.database.entity.Category;
 import store.backend.database.entity.Product;
 import store.backend.database.repository.CategoryRepository;
@@ -15,6 +16,7 @@ public class CategoryService {
     @Autowired
     private ProductService productService;
 
+    @Transactional
     public Category createCategory(String name) {
         return categoryRepository.save(
                 Category.builder()
@@ -32,6 +34,7 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
+    @Transactional
     public Category updateCategory(Long category_id, Category editedCategory) {
         return categoryRepository.findById(category_id)
                 .map(
