@@ -61,7 +61,7 @@ public class SecurityConfig {
                         .mvcMatchers( "/category/**").hasRole(Role.ADMIN.name())
 
                         .mvcMatchers(HttpMethod.GET, "/account/customer/{id}").hasRole(Role.CUSTOMER.name())
-                        .mvcMatchers(HttpMethod.PUT, "/account/customer/{id}").hasRole(Role.ADMIN.name())
+                        .mvcMatchers("/account/**").hasRole(Role.ADMIN.name())
 
 
                         .anyRequest().authenticated())
