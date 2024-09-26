@@ -1,12 +1,9 @@
 package store.backend.database.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -34,7 +31,6 @@ public class Product {
     )
     private Set<Price> prices;
 
-    @Transactional
     public void addPrice(Price price) {
         if (prices == null) prices = new HashSet<>();
 
@@ -42,7 +38,6 @@ public class Product {
         price.setProduct(this);
     }
 
-    @Transactional
     public void removePrice(Price price) {
         prices.remove(price);
         price.setProduct(null);
@@ -77,7 +72,6 @@ public class Product {
 
     private Set<Image> images;
 
-    @Transactional
     public void addImage(Image image) {
         if (images == null) images = new HashSet<>();
 
@@ -85,7 +79,6 @@ public class Product {
         image.setProduct(this);
     }
 
-    @Transactional
     public void removeImage(Image image) {
         images.remove(image);
         image.setProduct(null);

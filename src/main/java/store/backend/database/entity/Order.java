@@ -39,7 +39,6 @@ public class Order {
 
     private List<Product> products;
 
-    @Transactional
     public void addProduct(Product product) {
         if (products == null) products = new ArrayList<>();
 
@@ -48,7 +47,6 @@ public class Order {
         product.getOrders().add(this);
     }
 
-    @Transactional
     public void removeProduct(Product product) {
         products.remove(product);
         product.setQuantity(product.getQuantity() + 1);

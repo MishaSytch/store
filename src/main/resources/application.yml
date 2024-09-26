@@ -35,3 +35,7 @@ spring:
 token:
   signing:
     key: 23YG9236BRTB3982H3C289GFH49264G237498GCNF4YT5C7HF0348H9HT235T2
+
+logging:
+  level:
+    org.springframework.transaction: DEBUG

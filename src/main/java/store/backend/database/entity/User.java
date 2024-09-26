@@ -34,14 +34,14 @@ public class User implements UserDetails {
             fetch = FetchType.LAZY
     )
     private Set<Order> orders;
-    @Transactional
+
     public void addOrder(Order order) {
         if (orders == null) orders = new HashSet<>();
 
         orders.add(order);
         order.setUser(this);
     }
-    @Transactional
+
     public void removeOrder(Order order) {
         orders.remove(order);
         order.setUser(null);

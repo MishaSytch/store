@@ -37,7 +37,6 @@ public class Category {
     )
     private Set<Product> products;
 
-    @Transactional
     public void addProduct(Product product) {
         if (products == null) products = new HashSet<>();
 
@@ -45,7 +44,6 @@ public class Category {
         product.getCategories().add(this);
     }
 
-    @Transactional
     public void removeProduct(Product product) {
         products.remove(product);
         product.getCategories().remove(this);
@@ -64,7 +62,6 @@ public class Category {
     )
     private Set<Category> categories;
 
-    @Transactional
     public void addCategory(Category category) {
         if (categories == null) categories = new HashSet<>();
 
@@ -72,7 +69,6 @@ public class Category {
         category.setSuperCategory(this);
     }
 
-    @Transactional
     public void removeCategory(Category category) {
         categories.remove(category);
         category.setSuperCategory(null);
