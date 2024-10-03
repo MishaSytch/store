@@ -42,5 +42,6 @@ class PriceService {
         priceRepository.findById(price_id).ifPresent(
                 price -> price.getProduct().removePrice(price)
         );
+        priceRepository.deleteById(price_id);
     }
 }

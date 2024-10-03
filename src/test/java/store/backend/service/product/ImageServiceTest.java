@@ -23,7 +23,7 @@ class ImageServiceTest {
     void createImage() {
         Assertions.assertTrue(imageRepository.findAll().stream().noneMatch(i -> i.getName().equals(name)));
         imageService.createImage(name, name);
-        Assertions.assertEquals(1, imageRepository.findAll().stream().filter(c -> c.getName().equals(name)).count());
+        Assertions.assertEquals(1, imageRepository.findAll().stream().filter(i -> i.getName().equals(name)).count());
     }
 
     @Test
