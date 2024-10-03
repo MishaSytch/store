@@ -26,11 +26,6 @@ public class AuthController {
         return authenticationService.signUp(request, Role.CUSTOMER);
     }
 
-    @PostMapping("/admin/sign-up")
-    public JwtAuthenticationResponse signUpAdmin(@RequestBody @Valid SignUpRequest request) {
-        return authenticationService.signUp(request, Role.ADMIN);
-    }
-
     @PostMapping("/sign-in")
     public JwtAuthenticationResponse signIn(@RequestBody @Valid SignInRequest request) {
         return authenticationService.signIn(request);
