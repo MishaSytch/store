@@ -157,5 +157,8 @@ public class DBLoader {
         locAudio.addProduct(yandex);
         audio.addCategory(locAudio);
 
+        categoryService.saveCategory(smartPhones);
+        categoryService.saveCategory(audio);
+
     }
 }

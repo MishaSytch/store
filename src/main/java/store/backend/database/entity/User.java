@@ -1,13 +1,11 @@
 package store.backend.database.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import store.backend.security.role.Role;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;

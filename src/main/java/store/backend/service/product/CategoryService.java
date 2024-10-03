@@ -2,9 +2,7 @@ package store.backend.service.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import store.backend.database.entity.Category;
-import store.backend.database.entity.Product;
 import store.backend.database.repository.CategoryRepository;
 
 import java.util.HashSet;
@@ -16,7 +14,6 @@ public class CategoryService {
     @Autowired
     private ProductService productService;
 
-    @Transactional
     public Category createCategory(String name) {
         return categoryRepository.save(
                 Category.builder()
@@ -26,6 +23,11 @@ public class CategoryService {
                         .build()
         );
     }
+
+    public Category saveCategory(Category category) {
+        return categoryRepository.save(category);
+    }
+
     public Category getCategory(Long category_id) {
         return categoryRepository.findById(category_id).orElse(null);
     }
@@ -34,7 +36,6 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    @Transactional
     public Category updateCategory(Long category_id, Category editedCategory) {
         return categoryRepository.findById(category_id)
                 .map(

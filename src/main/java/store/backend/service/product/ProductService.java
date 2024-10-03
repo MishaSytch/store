@@ -2,7 +2,6 @@ package store.backend.service.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import store.backend.database.entity.*;
 import store.backend.database.repository.ProductRepository;
 
@@ -18,7 +17,6 @@ public class ProductService {
     @Autowired
     private ImageService imageService;
 
-    @Transactional
     public Product createProduct(String name, String description, String sku, Long quantity) {
         return productRepository.save(
                 Product.builder()
@@ -34,7 +32,10 @@ public class ProductService {
         );
     }
 
-    @Transactional
+    public Product saveProduct(Product product) {
+        return productRepository.save(product);
+    }
+
     public Product updateProduct(Long product_id, Product editedProduct) {
         return productRepository
                 .findById(product_id)
@@ -60,7 +61,6 @@ public class ProductService {
         return productRepository.findAllById(products_id);
     }
 
-    @Transactional
     public void addQuantity(Product product, Long quantity) {
         product.setQuantity(product.getQuantity() + quantity);
         productRepository.save(product);
@@ -70,17 +70,14 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    @Transactional
     public Product addProduct(Product product) {
         return productRepository.save(product);
     }
 
-    @Transactional
     public void deleteProduct(Long product_id) {
         productRepository.deleteById(product_id);
     }
 
-    @Transactional
     public Price createPrice(BigDecimal price, Date date) {
         return priceService.createPrice(price, date);
     }
@@ -89,27 +86,22 @@ public class ProductService {
         return productRepository.findById(product_id).flatMap(product -> product.getPrices().stream().max(Comparator.comparing(Price::getDate))).orElse(null);
     }
 
-    @Transactional
     public Price updatePrice(Long price_id, Price editedPrice) {
         return priceService.updatePrice(price_id, editedPrice);
     }
 
-    @Transactional
     public void deletePrice(Long price_id) {
         priceService.deletePrice(price_id);
     }
 
-    @Transactional
     public Image createImage(String name, String ref) {
         return imageService.createImage(name, ref);
     }
 
-    @Transactional
     public Image updateImage(Long image_id, Image editedImage) {
         return imageService.updateImage(image_id, editedImage);
     }
 
-    @Transactional
     public void deleteImage(Long image_id) {
         imageService.deleteImage(image_id);
     }
