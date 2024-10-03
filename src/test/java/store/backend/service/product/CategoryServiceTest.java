@@ -67,4 +67,14 @@ class CategoryServiceTest {
 
         Assertions.assertEquals(name_new, categoryService.getCategory(category.getId()).getName());
     }
+
+    @Test
+    void deleteCategory() {
+        String name_1 = name + "Delete";
+        Category category = categoryService.createCategory(name_1);
+        Assertions.assertEquals(name_1, categoryService.getCategory(category.getId()).getName());
+
+        categoryService.deleteCategory(category.getId());
+        Assertions.assertNull(categoryService.getCategory(category.getId()));
+    }
 }

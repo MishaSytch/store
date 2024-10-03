@@ -49,4 +49,8 @@ public class CategoryService {
                         }
                 ).orElse(null);
     }
+
+    public void deleteCategory(Long category_id) {
+        categoryRepository.deleteById(category_id);
+    }
 }

@@ -39,5 +39,10 @@ class ImageService {
         imageRepository.findById(image_id).ifPresent(
                 image -> image.getProduct().removeImage(image)
         );
+        imageRepository.deleteById(image_id);
+    }
+
+    public Image getImage(Long image_id) {
+        return imageRepository.findById(image_id).orElse(null);
     }
 }
