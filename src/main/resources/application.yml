@@ -24,8 +24,9 @@ spring:
     mail:
       host: smtp.gmail.com
       port: 587
-      username: username
-      password: pass
+      username: mishafromnic@tutamail.com
+      password: "bjx3QR2gYDXuAyH"
+      test-connection: true
       properties:
         mail:
           smtp:
@@ -34,6 +35,9 @@ spring:
               enable: true
           ssl:
             trust: smtp.gmail.com
+          sender:
+            email: no-reply@example.com
+            text: no-reply
 
 token:
   signing:

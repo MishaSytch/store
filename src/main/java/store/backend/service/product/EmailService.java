@@ -32,7 +32,6 @@ public class EmailService implements IEmailService {
 
     @Override
     public void sendMessageWithAttachment(String toAddress, String subject, String text, String attachment) throws FileNotFoundException, javax.mail.MessagingException {
-
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(message, true);
         messageHelper.setTo(toAddress);

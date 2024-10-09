@@ -70,7 +70,7 @@ public class UserService {
 
     public Order addOrder(User user, Order order) {
                             user.addOrder(order);
-                            StringBuilder stringBuilder = new StringBuilder();
+                            StringBuilder stringBuilder = new StringBuilder("Дорогой " + user.getFirstName() + "\nВаш заказ успешно оформлен:\n\t");
                             List<Product> products =  order.getProducts();
                             products.forEach(
                                 product ->
@@ -78,9 +78,9 @@ public class UserService {
                                                 .append(product.getName())
                                                 .append(": ")
                                                 .append(productService.getCurrentPrice(product.getId()).getPrice().toString())
-                                                .append("/n")
+                                                .append("\n\t")
                             );
-                            IEmailService.sendSimpleMessage(user.getEmail(), "order", stringBuilder.toString());
+                            IEmailService.sendSimpleMessage(user.getEmail(), "Ваш заказ в интернет магазине", stringBuilder.toString());
 
                             return order;
     }
