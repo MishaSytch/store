@@ -14,16 +14,18 @@ class PriceService {
     private PriceRepository priceRepository;
 
     public Price createPrice(BigDecimal price, Date date) {
-        return priceRepository.save(
-                Price.builder()
+        return Price.builder()
                 .price(price)
                 .date(date)
-                .build()
-        );
+                .build();
     }
 
     public Price savePrice(Price price) {
-        return priceRepository.save(price);
+        try {
+            return priceRepository.save(price);
+        } catch (Exception e) {
+            return updatePrice(price.getId(), price);
+        }
     }
 
     public Price updatePrice(Long price_id, Price editedPrice) {

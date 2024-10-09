@@ -25,22 +25,24 @@ public class ProductService {
     private ImageService imageService;
 
     public Product createProduct(String name, String description, String sku, Long quantity) {
-        return productRepository.save(
-                Product.builder()
-                    .name(name)
-                    .description(description)
-                    .SKU(sku)
-                    .quantity(quantity)
-                    .categories(new HashSet<>())
-                    .images(new HashSet<>())
-                    .prices(new HashSet<>())
-                    .orders(new ArrayList<>())
-                    .build()
-        );
+        return Product.builder()
+                .name(name)
+                .description(description)
+                .SKU(sku)
+                .quantity(quantity)
+                .categories(new HashSet<>())
+                .images(new HashSet<>())
+                .prices(new HashSet<>())
+                .orders(new ArrayList<>())
+                .build();
     }
 
     public Product saveProduct(Product product) {
-        return productRepository.save(product);
+        try {
+            return productRepository.save(product);
+        } catch (Exception e) {
+            return updateProduct(product.getId(), product);
+        }
     }
 
     public Product updateProduct(Long product_id, Product editedProduct) {

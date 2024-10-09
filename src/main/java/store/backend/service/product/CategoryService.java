@@ -15,17 +15,19 @@ public class CategoryService {
     private ProductService productService;
 
     public Category createCategory(String name) {
-        return categoryRepository.save(
-                Category.builder()
-                        .name(name)
-                        .products(new HashSet<>())
-                        .categories(new HashSet<>())
-                        .build()
-        );
+        return Category.builder()
+                .name(name)
+                .products(new HashSet<>())
+                .categories(new HashSet<>())
+                .build();
     }
 
     public Category saveCategory(Category category) {
-        return categoryRepository.save(category);
+        try {
+            return categoryRepository.save(category);
+        } catch (Exception e) {
+            return updateCategory(category.getId(), category);
+        }
     }
 
     public Category getCategory(Long category_id) {

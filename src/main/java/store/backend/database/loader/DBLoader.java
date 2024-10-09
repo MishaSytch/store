@@ -74,6 +74,7 @@ public class DBLoader {
         iphone14.addImage(productService.createImage("https://twigo.ru/center/resize_cache/iblock/74a/970_970_1/d8bd0dd74bc298feec877c076eaff574.jpeg", "https://twigo.ru/center/resize_cache/iblock/74a/970_970_1/d8bd0dd74bc298feec877c076eaff574.jpeg"));
         iphone14.addImage(productService.createImage("https://mtscdn.ru/upload/iblock/30b/1.png", "https://mtscdn.ru/upload/iblock/30b/1.png"));
         apple.addProduct(iphone14);
+        productService.saveProduct(iphone14);
 
         Product iphone13 = productService.createProduct(
                 "Смартфон Apple iPhone 13",
@@ -86,6 +87,7 @@ public class DBLoader {
         iphone13.addImage(productService.createImage("https://ineed-apple.ru/upload/iblock/a6e/a6e750715da67d4c81603ce356bc65a4.jpg", "https://ineed-apple.ru/upload/iblock/a6e/a6e750715da67d4c81603ce356bc65a4.jpg"));
         iphone13.addImage(productService.createImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_OPMIfa4MokQpVu48pqPN_ShhbMG6iIXdUg&s", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_OPMIfa4MokQpVu48pqPN_ShhbMG6iIXdUg&s"));
         apple.addProduct(iphone13);
+        productService.saveProduct(iphone13);
 
         Product product_samsung = productService.createProduct(
                 "Samsung Galaxy S8",
@@ -98,6 +100,7 @@ public class DBLoader {
         product_samsung.addImage(productService.createImage("https://ae04.alicdn.com/kf/H6a01b1baa4744be5a897d07671ae0765H.jpg", "https://ae04.alicdn.com/kf/H6a01b1baa4744be5a897d07671ae0765H.jpg"));
         product_samsung.addImage(productService.createImage("https://apple11.ru/10714/samsung-galaxy-s8-64gb-sm-g950fd-midnight-black-.jpg", "https://apple11.ru/10714/samsung-galaxy-s8-64gb-sm-g950fd-midnight-black-.jpg"));
         samsung.addProduct(product_samsung);
+        productService.saveProduct(product_samsung);
 
         Category additionHeadphones = categoryService.createCategory("Наушники");
         Product appleHeadphones = productService.createProduct(
@@ -125,6 +128,7 @@ public class DBLoader {
         product_pouch.addImage(productService.createImage("https://img.joomcdn.net/75db71619bdf76963be8ec6fc08a37ca88dfbd83_original.jpeg", "https://img.joomcdn.net/75db71619bdf76963be8ec6fc08a37ca88dfbd83_original.jpeg"));
         product_pouch.addPrice(productService.createPrice(BigDecimal.valueOf(random.nextDouble() * 100), new Date()));
         pouch.addProduct(product_pouch);
+        productService.saveProduct(product_pouch);
         addition.addCategory(pouch);
 
         Product huaweiP50 = productService.createProduct(
@@ -138,6 +142,7 @@ public class DBLoader {
         huaweiP50.addImage(productService.createImage("https://shop-cdn.huawei.com/ru/pms/uomcdn/RUHW/pms/202202/gbom/6941487244423/428_428_A378AA4E3054ABBDC666E9B2135C75B2mp.png", "https://shop-cdn.huawei.com/ru/pms/uomcdn/RUHW/pms/202202/gbom/6941487244423/428_428_A378AA4E3054ABBDC666E9B2135C75B2mp.png"));
         huaweiP50.addPrice(productService.createPrice(BigDecimal.valueOf(random.nextDouble() * 100), new Date()));
         smartPhones.addProduct(huaweiP50);
+        productService.saveProduct(huaweiP50);
 
         Category audio = categoryService.createCategory("Аудиотехника");
         Category locAudio = categoryService.createCategory("Портативные колонки");
@@ -155,10 +160,17 @@ public class DBLoader {
         yandex.addImage(productService.createImage("https://main-cdn.sbermegamarket.ru/big1/hlr-system/183/806/901/210/272/028/100029532466b0.jpg", "https://main-cdn.sbermegamarket.ru/big1/hlr-system/183/806/901/210/272/028/100029532466b0.jpg"));
         yandex.addPrice(productService.createPrice(BigDecimal.valueOf(random.nextDouble() * 100), new Date()));
         locAudio.addProduct(yandex);
+        productService.saveProduct(yandex);
         audio.addCategory(locAudio);
 
-        categoryService.saveCategory(smartPhones);
+        categoryService.saveCategory(headPhones);
+        categoryService.saveCategory(locAudio);
         categoryService.saveCategory(audio);
-
+        categoryService.saveCategory(pouch);
+        categoryService.saveCategory(additionHeadphones);
+        categoryService.saveCategory(addition);
+        categoryService.saveCategory(samsung);
+        categoryService.saveCategory(apple);
+        categoryService.saveCategory(smartPhones);
     }
 }
