@@ -91,6 +91,11 @@ public class ProductService {
         return priceService.createPrice(price, date);
     }
 
+    public Price addPrice(Product product, Price price) {
+        product.addPrice(price);
+        return priceService.savePrice(price);
+    }
+
     public Price getCurrentPrice(Long product_id) {
         return productRepository.findById(product_id).flatMap(product -> product.getPrices().stream().max(Comparator.comparing(Price::getDate))).orElse(null);
     }
@@ -105,6 +110,11 @@ public class ProductService {
 
     public Image createImage(String name, String ref) {
         return imageService.createImage(name, ref);
+    }
+
+    public Image addImage(Product product, Image image) {
+        product.addImage(image);
+        return imageService.saveImage(image);
     }
 
     public Image updateImage(Long image_id, Image editedImage) {
