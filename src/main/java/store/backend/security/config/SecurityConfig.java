@@ -48,6 +48,8 @@ public class SecurityConfig {
                 // Настройка доступа к конечным точкам
                 .authorizeHttpRequests(request -> request
                         // Можно указать конкретный путь, * - 1 уровень вложенности, ** - любое количество уровней вложенности
+                        .mvcMatchers("/admin/**").hasRole(Role.ADMIN.name())
+
                         .mvcMatchers(HttpMethod.POST, "/auth/sign-up/**", "/auth/sign-in/**").permitAll()
                         .mvcMatchers(HttpMethod.POST, "/auth/admin/**").hasRole(Role.ADMIN.name())
 
