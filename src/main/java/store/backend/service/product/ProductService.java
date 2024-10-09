@@ -93,7 +93,15 @@ public class ProductService {
 
     public Price addPrice(Product product, Price price) {
         product.addPrice(price);
-        return priceService.savePrice(price);
+        priceService.savePrice(price);
+
+        if (product.getId() == null) {
+            saveProduct(product);
+        } else {
+            updateProduct(product.getId(), product);
+        }
+
+        return price;
     }
 
     public Price getCurrentPrice(Long product_id) {
@@ -114,7 +122,15 @@ public class ProductService {
 
     public Image addImage(Product product, Image image) {
         product.addImage(image);
-        return imageService.saveImage(image);
+        imageService.saveImage(image);
+
+        if (product.getId() == null) {
+            saveProduct(product);
+        } else {
+            updateProduct(product.getId(), product);
+        }
+
+        return image;
     }
 
     public Image updateImage(Long image_id, Image editedImage) {

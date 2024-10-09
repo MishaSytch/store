@@ -34,13 +34,13 @@ public class CategoryService {
     public Category addCategory(Category category, Category addition) {
         category.addCategory(addition);
         saveCategory(addition);
-        return saveCategory(category);
+        return updateCategory(category.getId(), category);
     }
 
     public Category addProduct(Category category, Product product) {
         category.addProduct(product);
         productService.saveProduct(product);
-        return saveCategory(category);
+        return updateCategory(category.getId(), category);
 
     }
 
