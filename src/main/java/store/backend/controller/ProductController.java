@@ -63,9 +63,9 @@ public class ProductController {
         return productService.saveProduct(product);
     }
 
-    @PutMapping("/{id}")
-    public Product putProduct(@PathVariable Long id, @RequestBody Product product) {
-        return productService.updateProduct(id, product);
+    @PutMapping
+    public Product putProduct(@RequestBody Product product) {
+        return productService.updateProduct(product);
     }
 
     @DeleteMapping("/{id}")

@@ -44,22 +44,8 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    @Transactional
-    public Product updateProduct(Long product_id, Product editedProduct) {
-        return productRepository
-                .findById(product_id)
-                .map(
-                    product -> {
-                        product.setCategories(editedProduct.getCategories());
-                        product.setName(editedProduct.getName());
-                        product.setPrices(editedProduct.getPrices());
-                        product.setImages(editedProduct.getImages());
-                        product.setSKU(editedProduct.getSKU());
-                        product.setDescription(editedProduct.getDescription());
-
-                        return productRepository.save(product);
-                    }
-                ).orElse(null);
+    public Product updateProduct(Product product) {
+        return productRepository.save(product);
     }
 
     public Optional<Product> getProduct(Long product_id) {
