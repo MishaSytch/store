@@ -41,19 +41,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User updateUser(Long user_id, User editedUser) {
-        return userRepository.findById(user_id)
-                .map(
-                        user -> {
-                            user.setFirstName(editedUser.getFirstName());
-                            user.setLastName(editedUser.getLastName());
-                            user.setPassword(editedUser.getPassword());
-                            user.setEmail(editedUser.getEmail());
-                            user.setRole(editedUser.getRole());
-
-                            return userRepository.save(user);
-                        }
-                ).orElse(null);
+    public User updateUser(User user) {
+        return userRepository.save(user);
     }
 
     public Iterable<Order> getOrders(Long customer_id) {
