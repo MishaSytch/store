@@ -2,8 +2,12 @@ package store.backend.service.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import store.backend.database.entity.Image;
 import store.backend.database.repository.ImageRepository;
+
+import java.sql.SQLDataException;
+import java.sql.SQLException;
 
 @Service
 class ImageService {
@@ -11,18 +15,16 @@ class ImageService {
     private ImageRepository imageRepository;
 
     public Image createImage(String name, String ref) {
-        return Image.builder()
-                .name(name)
-                .reference(ref)
-                .build();
+        return saveImage(
+                Image.builder()
+                    .name(name)
+                    .reference(ref)
+                    .build()
+        );
     }
 
     public Image saveImage(Image image) {
-        try {
-            return imageRepository.save(image);
-        } catch (Exception e) {
-            return updateImage(image.getId(), image);
-        }
+        return imageRepository.save(image);
     }
 
     public Image updateImage(Long image_id, Image editedImage) {
@@ -30,9 +32,9 @@ class ImageService {
                 image -> {
                     image.setName(editedImage.getName());
                     image.setReference(editedImage.getReference());
+                    imageRepository.deleteById(image_id);
 
-                    imageRepository.save(image);
-                    return image;
+                    return imageRepository.save(image);
                 }
         ).orElse(null);
     }

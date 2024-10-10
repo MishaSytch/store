@@ -2,6 +2,7 @@ package store.backend.service.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import store.backend.database.entity.Price;
 import store.backend.database.repository.PriceRepository;
 
@@ -14,28 +15,27 @@ class PriceService {
     private PriceRepository priceRepository;
 
     public Price createPrice(BigDecimal price, Date date) {
-        return Price.builder()
-                .price(price)
-                .date(date)
-                .build();
+        return savePrice(
+                Price.builder()
+                    .price(price)
+                    .date(date)
+                    .build()
+        );
     }
 
     public Price savePrice(Price price) {
-        try {
-            return priceRepository.save(price);
-        } catch (Exception e) {
-            return updatePrice(price.getId(), price);
-        }
+        return priceRepository.save(price);
     }
+
 
     public Price updatePrice(Long price_id, Price editedPrice) {
         return priceRepository.findById(price_id).map(
                 price -> {
                 price.setDate(editedPrice.getDate());
                 price.setPrice(editedPrice.getPrice());
+                priceRepository.deleteById(price_id);
 
-                priceRepository.save(price);
-                return price;
+                return priceRepository.save(price);
             }
         ).orElse(null);
     }

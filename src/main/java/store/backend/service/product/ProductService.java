@@ -2,6 +2,7 @@ package store.backend.service.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import store.backend.database.entity.Image;
 import store.backend.database.entity.Price;
 import store.backend.database.entity.Product;
@@ -25,24 +26,22 @@ public class ProductService {
     private ImageService imageService;
 
     public Product createProduct(String name, String description, String sku, Long quantity) {
-        return Product.builder()
-                .name(name)
-                .description(description)
-                .SKU(sku)
-                .quantity(quantity)
-                .categories(new HashSet<>())
-                .images(new HashSet<>())
-                .prices(new HashSet<>())
-                .orders(new ArrayList<>())
-                .build();
+        return saveProduct(
+                Product.builder()
+                    .name(name)
+                    .description(description)
+                    .SKU(sku)
+                    .quantity(quantity)
+                    .categories(new HashSet<>())
+                    .images(new HashSet<>())
+                    .prices(new HashSet<>())
+                    .orders(new ArrayList<>())
+                    .build()
+        );
     }
 
     public Product saveProduct(Product product) {
-        try {
-            return productRepository.save(product);
-        } catch (Exception e) {
-            return updateProduct(product.getId(), product);
-        }
+        return productRepository.save(product);
     }
 
     public Product updateProduct(Long product_id, Product editedProduct) {
@@ -79,10 +78,6 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product addProduct(Product product) {
-        return productRepository.save(product);
-    }
-
     public void deleteProduct(Long product_id) {
         productRepository.deleteById(product_id);
     }
@@ -91,17 +86,10 @@ public class ProductService {
         return priceService.createPrice(price, date);
     }
 
-    public Price addPrice(Product product, Price price) {
+    public Product addPrice(Product product, Price price) {
         product.addPrice(price);
-        priceService.savePrice(price);
 
-        if (product.getId() == null) {
-            saveProduct(product);
-        } else {
-            updateProduct(product.getId(), product);
-        }
-
-        return price;
+        return saveProduct(product);
     }
 
     public Price getCurrentPrice(Long product_id) {
@@ -120,17 +108,10 @@ public class ProductService {
         return imageService.createImage(name, ref);
     }
 
-    public Image addImage(Product product, Image image) {
+    public Product addImage(Product product, Image image) {
         product.addImage(image);
-        imageService.saveImage(image);
 
-        if (product.getId() == null) {
-            saveProduct(product);
-        } else {
-            updateProduct(product.getId(), product);
-        }
-
-        return image;
+        return saveProduct(product);
     }
 
     public Image updateImage(Long image_id, Image editedImage) {

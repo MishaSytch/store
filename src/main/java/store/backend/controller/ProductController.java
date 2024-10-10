@@ -60,7 +60,7 @@ public class ProductController {
 
     @PostMapping
     public Product postProduct(@RequestBody Product product) {
-        return productService.addProduct(product);
+        return productService.saveProduct(product);
     }
 
     @PutMapping("/{id}")

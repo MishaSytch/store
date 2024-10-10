@@ -16,31 +16,29 @@ public class CategoryService {
     private ProductService productService;
 
     public Category createCategory(String name) {
-        return Category.builder()
-                .name(name)
-                .products(new HashSet<>())
-                .categories(new HashSet<>())
-                .build();
+        return saveCategory(
+                Category.builder()
+                    .name(name)
+                    .products(new HashSet<>())
+                    .categories(new HashSet<>())
+                    .build()
+        );
     }
 
     public Category saveCategory(Category category) {
-        try {
-            return categoryRepository.save(category);
-        } catch (Exception e) {
-            return updateCategory(category.getId(), category);
-        }
+        return categoryRepository.save(category);
     }
 
     public Category addCategory(Category category, Category addition) {
         category.addCategory(addition);
-        saveCategory(addition);
-        return updateCategory(category.getId(), category);
+
+        return saveCategory(category);
     }
 
     public Category addProduct(Category category, Product product) {
         category.addProduct(product);
-        productService.saveProduct(product);
-        return updateCategory(category.getId(), category);
+
+        return saveCategory(category);
 
     }
 
@@ -60,6 +58,8 @@ public class CategoryService {
                             category.setSuperCategory(editedCategory.getSuperCategory());
                             category.setName(editedCategory.getName());
                             category.setProducts(editedCategory.getProducts());
+
+                            deleteCategory(category_id);
 
                             return categoryRepository.save(category);
                         }
