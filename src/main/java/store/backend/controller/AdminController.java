@@ -4,7 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import store.backend.database.repository.*;
+import store.backend.database.repository.CategoryRepository;
+import store.backend.database.repository.ImageRepository;
+import store.backend.database.repository.ProductRepository;
+import store.backend.database.repository.OrderRepository;
+import store.backend.database.repository.PriceRepository;
+import store.backend.database.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
