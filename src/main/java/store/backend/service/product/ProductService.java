@@ -44,6 +44,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    @Transactional
     public Product updateProduct(Long product_id, Product editedProduct) {
         return productRepository
                 .findById(product_id)
@@ -96,8 +97,8 @@ public class ProductService {
         return productRepository.findById(product_id).flatMap(product -> product.getPrices().stream().max(Comparator.comparing(Price::getDate))).orElse(null);
     }
 
-    public Price updatePrice(Long price_id, Price editedPrice) {
-        return priceService.updatePrice(price_id, editedPrice);
+    public Price updatePrice(Price price) {
+        return priceService.updatePrice(price);
     }
 
     public void deletePrice(Long price_id) {
@@ -114,8 +115,8 @@ public class ProductService {
         return saveProduct(product);
     }
 
-    public Image updateImage(Long image_id, Image editedImage) {
-        return imageService.updateImage(image_id, editedImage);
+    public Image updateImage(Image image) {
+        return imageService.updateImage(image);
     }
 
     public void deleteImage(Long image_id) {

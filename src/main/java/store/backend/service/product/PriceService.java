@@ -27,19 +27,13 @@ class PriceService {
         return priceRepository.save(price);
     }
 
+    public Price updatePrice(Price price) {
+        assert priceRepository.findById(price.getId()).isPresent();
 
-    public Price updatePrice(Long price_id, Price editedPrice) {
-        return priceRepository.findById(price_id).map(
-                price -> {
-                price.setDate(editedPrice.getDate());
-                price.setPrice(editedPrice.getPrice());
-                priceRepository.deleteById(price_id);
-
-                return priceRepository.save(price);
-            }
-        ).orElse(null);
+        return savePrice(price);
     }
 
+    @Transactional
     public void deletePrice(Long price_id) {
         priceRepository.findById(price_id).ifPresent(
                 price -> price.getProduct().removePrice(price)

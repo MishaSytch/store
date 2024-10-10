@@ -86,9 +86,9 @@ public class ProductController {
         getProduct(product_id).ifPresent(p -> p.addImage(image));
     }
 
-    @PutMapping("/update/image/{id}")
-    public Image updateImage(@PathVariable("id") Long image_id, Image image) {
-        return productService.updateImage(image_id, image);
+    @PutMapping("/update/image")
+    public Image updateImage(Image image) {
+        return productService.updateImage(image);
     }
 
     @DeleteMapping("/{id}/delete/image")
@@ -108,9 +108,9 @@ public class ProductController {
         productService.getProduct(product_id).ifPresent(p -> p.addPrice(price));
     }
 
-    @PutMapping("/update/price/{id}")
-    public Price updatePrice(@PathVariable("id") Long price_id, Price price) {
-        return productService.updatePrice(price_id, price);
+    @PutMapping("/update/price")
+    public Price updatePrice(Price price) {
+        return productService.updatePrice(price);
     }
 
     @DeleteMapping("/{id}/delete/price")

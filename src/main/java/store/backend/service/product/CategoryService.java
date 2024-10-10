@@ -2,6 +2,7 @@ package store.backend.service.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import store.backend.database.entity.Category;
 import store.backend.database.entity.Product;
 import store.backend.database.repository.CategoryRepository;
@@ -50,20 +51,11 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category updateCategory(Long category_id, Category editedCategory) {
-        return categoryRepository.findById(category_id)
-                .map(
-                        category -> {
-                            category.setCategories(editedCategory.getCategories());
-                            category.setSuperCategory(editedCategory.getSuperCategory());
-                            category.setName(editedCategory.getName());
-                            category.setProducts(editedCategory.getProducts());
+    @Transactional
+    public Category updateCategory(Category category) {
+        assert categoryRepository.findById(category.getId()).isPresent();
 
-                            deleteCategory(category_id);
-
-                            return categoryRepository.save(category);
-                        }
-                ).orElse(null);
+        return categoryRepository.save(category);
     }
 
     public void deleteCategory(Long category_id) {

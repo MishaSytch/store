@@ -6,9 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import store.backend.database.entity.Image;
 import store.backend.database.repository.ImageRepository;
 
-import java.sql.SQLDataException;
-import java.sql.SQLException;
-
 @Service
 class ImageService {
     @Autowired
@@ -27,18 +24,13 @@ class ImageService {
         return imageRepository.save(image);
     }
 
-    public Image updateImage(Long image_id, Image editedImage) {
-        return imageRepository.findById(image_id).map(
-                image -> {
-                    image.setName(editedImage.getName());
-                    image.setReference(editedImage.getReference());
-                    imageRepository.deleteById(image_id);
+    public Image updateImage(Image image) {
+        assert imageRepository.findById(image.getId()).isPresent();
 
-                    return imageRepository.save(image);
-                }
-        ).orElse(null);
+        return saveImage(image);
     }
 
+    @Transactional
     public void deleteImage(Long image_id) {
         imageRepository.findById(image_id).ifPresent(
                 image -> image.getProduct().removeImage(image)
