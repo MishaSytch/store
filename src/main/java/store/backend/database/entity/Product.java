@@ -34,7 +34,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
+    @Column(name = "product_id", updatable = false)
     private Long id;
 
     @OneToMany(

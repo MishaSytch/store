@@ -29,7 +29,7 @@ import java.math.BigDecimal;
 public class Price {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "price_id")
+    @Column(name = "price_id", updatable = false)
     private Long id;
 
     @ManyToOne(

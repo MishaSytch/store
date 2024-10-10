@@ -27,6 +27,7 @@ public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "image_id", updatable = false)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
