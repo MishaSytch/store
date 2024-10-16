@@ -18,7 +18,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.FetchType;
 import javax.persistence.CascadeType;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,7 +42,7 @@ public class Product {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
-    private Set<Price> prices;
+    private Set<Price> prices = new HashSet<>();
 
     public void addPrice(Price price) {
         if (prices == null) prices = new HashSet<>();
@@ -84,7 +83,7 @@ public class Product {
             fetch = FetchType.EAGER
     )
 
-    private Set<Image> images;
+    private Set<Image> images = new HashSet<>();
 
     public void addImage(Image image) {
         if (images == null) images = new HashSet<>();
