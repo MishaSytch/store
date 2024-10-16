@@ -26,7 +26,7 @@ spring:
     port: 465
     protocol: smtps
     username: michealsytch@yandex.ru
-    password: "fitheh-ragbi3-sadRic"
+    password: "xnveichxovfehfyq"
     test-connection: true
     properties:
       mail:
