@@ -21,23 +21,27 @@ spring:
 
     driver-class-name: org.postgresql.Driver
 
-    mail:
-      host: smtp.gmail.com
-      port: 587
-      username: mishafromnic@tutamail.com
-      password: "bjx3QR2gYDXuAyH"
-      test-connection: true
-      properties:
-        mail:
-          smtp:
-            auth: true
-            starttls:
-              enable: true
-          ssl:
-            trust: smtp.gmail.com
-          sender:
-            email: no-reply@example.com
-            text: no-reply
+  mail:
+    host: smtp.yandex.ru
+    port: 465
+    protocol: smtps
+    username: michealsytch@yandex.ru
+    password: "fitheh-ragbi3-sadRic"
+    test-connection: true
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        ssl:
+          trust: smtp.yandex.ru
+        sender:
+          email: no-reply@example.com
+          text: no-reply
+
+mail:
+  debug: true
 
 token:
   signing:

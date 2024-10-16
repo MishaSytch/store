@@ -1,6 +1,7 @@
 package store.backend.service.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -15,6 +16,9 @@ import java.io.FileNotFoundException;
 public class EmailService implements IEmailService {
     private final JavaMailSender mailSender;
 
+    @Value("${spring.mail.username}")
+    private String username;
+
     @Autowired
     public EmailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
@@ -23,7 +27,7 @@ public class EmailService implements IEmailService {
     @Override
     public void sendSimpleMessage(String toAddress, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("noreply@baeldung.com");
+        message.setFrom(username);
         message.setTo(toAddress);
         message.setSubject(subject);
         message.setText(text);
@@ -34,6 +38,7 @@ public class EmailService implements IEmailService {
     public void sendMessageWithAttachment(String toAddress, String subject, String text, String attachment) throws FileNotFoundException, javax.mail.MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(message, true);
+        messageHelper.setFrom(username);
         messageHelper.setTo(toAddress);
         messageHelper.setSubject(subject);
         messageHelper.setText(text);
