@@ -54,6 +54,7 @@ public class Order {
 
     public void addProduct(Product product) {
         if (products == null) products = new ArrayList<>();
+        if (product.getOrders() == null) product.setOrders(new ArrayList<>());
 
         products.add(product);
         product.setQuantity(product.getQuantity() - 1);

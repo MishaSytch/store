@@ -2,6 +2,7 @@ package store.backend.service.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import store.backend.database.entity.Image;
 import store.backend.database.entity.Price;
 import store.backend.database.entity.Product;
@@ -39,11 +40,15 @@ public class ProductService {
         );
     }
 
+    @Transactional
     public Product saveProduct(Product product) {
         return productRepository.save(product);
     }
 
+    @Transactional
     public Product updateProduct(Product product) {
+        assert productRepository.findById(product.getId()).isPresent();
+
         return productRepository.save(product);
     }
 
@@ -57,7 +62,8 @@ public class ProductService {
 
     public void addQuantity(Product product, Long quantity) {
         product.setQuantity(product.getQuantity() + quantity);
-        productRepository.save(product);
+
+        saveProduct(product);
     }
 
     public List<Product> getAllProducts() {
@@ -65,13 +71,14 @@ public class ProductService {
     }
 
     public void deleteProduct(Long product_id) {
-        productRepository.deleteById(product_id);
+        if (product_id != null) getProduct(product_id).ifPresent(product -> productRepository.deleteById(product.getId()));
     }
 
     public Price createPrice(BigDecimal price, Date date) {
         return priceService.createPrice(price, date);
     }
 
+    @Transactional
     public Product addPrice(Product product, Price price) {
         product.addPrice(price);
 
@@ -94,6 +101,7 @@ public class ProductService {
         return imageService.createImage(name, ref);
     }
 
+    @Transactional
     public Product addImage(Product product, Image image) {
         product.addImage(image);
 

@@ -75,7 +75,7 @@ public class Product {
             fetch = FetchType.EAGER
     )
     @JsonIgnore
-    private Set<Category> categories = new HashSet<>();
+    private Set<Category> categories;
 
     @OneToMany(
             mappedBy = "product",
@@ -100,5 +100,5 @@ public class Product {
 
     @ManyToMany(mappedBy = "products")
     @JsonIgnore
-    private List<Order> orders = new ArrayList<>();
+    private List<Order> orders;
 }

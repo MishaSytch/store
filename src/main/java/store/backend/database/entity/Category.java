@@ -52,6 +52,7 @@ public class Category {
 
     public void addProduct(Product product) {
         if (products == null) products = new HashSet<>();
+        if (product.getCategories() == null) product.setCategories(new HashSet<>());
 
         products.add(product);
         product.getCategories().add(this);

@@ -2,11 +2,13 @@ package store.backend.service.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import store.backend.database.entity.Category;
 import store.backend.database.entity.Product;
 import store.backend.database.repository.CategoryRepository;
 
 import java.util.HashSet;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
@@ -32,24 +34,28 @@ public class CategoryService {
     public Category addCategory(Category category, Category addition) {
         category.addCategory(addition);
 
-        return saveCategory(category);
+        return category;
+
+//        return updateCategory(category);
     }
 
     public Category addProduct(Category category, Product product) {
         category.addProduct(product);
 
-        return saveCategory(category);
+        return category;
 
+//        return updateCategory(category);
     }
 
-    public Category getCategory(Long category_id) {
-        return categoryRepository.findById(category_id).orElse(null);
+    public Optional<Category> getCategory(Long category_id) {
+        return categoryRepository.findById(category_id);
     }
 
     public Iterable<Category> getCategories() {
         return categoryRepository.findAll();
     }
 
+    @Transactional
     public Category updateCategory(Category category) {
         assert categoryRepository.findById(category.getId()).isPresent();
 
@@ -57,6 +63,6 @@ public class CategoryService {
     }
 
     public void deleteCategory(Long category_id) {
-        categoryRepository.deleteById(category_id);
+        if (category_id != null) getCategory(category_id).ifPresent(category -> categoryRepository.deleteById(category.getId()));
     }
 }

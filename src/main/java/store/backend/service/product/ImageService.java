@@ -20,22 +20,26 @@ class ImageService {
         );
     }
 
+    @Transactional
     public Image saveImage(Image image) {
         return imageRepository.save(image);
     }
 
+    @Transactional
     public Image updateImage(Image image) {
         assert imageRepository.findById(image.getId()).isPresent();
 
-        return saveImage(image);
+        return imageRepository.save(image);
     }
 
     @Transactional
     public void deleteImage(Long image_id) {
-        imageRepository.findById(image_id).ifPresent(
-                image -> image.getProduct().removeImage(image)
+        if (image_id != null) imageRepository.findById(image_id).ifPresent(
+            image ->{
+                    image.getProduct().removeImage(image);
+                    imageRepository.deleteById(image_id);
+            }
         );
-        imageRepository.deleteById(image_id);
     }
 
     public Image getImage(Long image_id) {

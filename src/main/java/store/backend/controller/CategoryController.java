@@ -17,12 +17,12 @@ public class CategoryController {
 
     @GetMapping("/{id}/product/all")
     public Iterable<Product> getProducts(@PathVariable("id") Long category_id) {
-        return categoryService.getCategory(category_id).getProducts();
+        return categoryService.getCategory(category_id).map(Category::getProducts).orElse(null);
     }
 
     @GetMapping("/{id}")
     public Iterable<Category> getSubCategory(@PathVariable("id") Long category_id) {
-        return categoryService.getCategory(category_id).getCategories();
+        return categoryService.getCategory(category_id).map(Category::getCategories).orElse(null);
     }
 
     @GetMapping("/all")
