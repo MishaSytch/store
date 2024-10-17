@@ -48,7 +48,7 @@ public class ProductService {
 
     @Transactional
     public Product saveProduct(Product product) {
-        return productRepository.save(product);
+        return productRepository.saveAndFlush(product);
     }
 
     @Transactional
@@ -88,7 +88,6 @@ public class ProductService {
         return priceService.createPrice(price, date);
     }
 
-    @Transactional
     public Product addPrice(Product product, Price price) {
         if (!product.getPrices().contains(price)) {
             product.addPrice(price);

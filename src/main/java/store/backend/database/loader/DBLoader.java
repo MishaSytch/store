@@ -48,6 +48,7 @@ public class DBLoader {
                 Role.ADMIN);
     }
 
+    @Transactional
     private void loadItems() {
         // Создание основной категории "Смартфоны"
         Category smartPhones = categoryService.createCategory("Смартфоны");
@@ -134,7 +135,7 @@ public class DBLoader {
         Category audio = categoryService.createCategory("Аудиотехника");
         Category locAudio = categoryService.createCategory("Портативные колонки");
         Category headPhones = categoryService.createCategory("Наушники");
-        categoryService.addProduct(headPhones, appleHeadphones);
+//        categoryService.addProduct(headPhones, appleHeadphones);
 
         Product yandex = productService.createProduct(
                 "Умная колонка Яндекс Станция",
