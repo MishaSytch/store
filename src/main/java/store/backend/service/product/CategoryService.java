@@ -33,7 +33,7 @@ public class CategoryService {
     }
 
     public Category saveCategory(Category category) {
-        return categoryRepository.saveAndFlush(category);
+        return categoryRepository.save(category);
     }
 
     public Category addCategory(Category category, Category addition) {
