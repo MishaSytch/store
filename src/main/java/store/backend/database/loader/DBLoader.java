@@ -1,5 +1,6 @@
 package store.backend.database.loader;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import store.backend.security.dto.SignUpRequest;
@@ -23,6 +24,7 @@ public class DBLoader {
     private final AuthenticationService authenticationService;
     private final Random random = new Random();
 
+    @Autowired
     public DBLoader(CategoryService categoryService, ProductService productService, UserService userService, AuthenticationService authenticationService) {
         this.categoryService = categoryService;
         this.productService = productService;

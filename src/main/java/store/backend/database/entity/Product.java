@@ -8,7 +8,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Builder;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GenerationType;
+import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
+import javax.persistence.FetchType;
+import javax.persistence.CascadeType;
 import java.util.List;
 import java.util.HashSet;
 import java.util.Set;

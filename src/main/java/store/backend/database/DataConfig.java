@@ -22,11 +22,9 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@PropertySource("classpath:application.yml")
-@EnableJpaRepositories("store.backend.*")
-@EntityScan("store.backend.*")
-@ComponentScan(basePackages = {("store.backend.*")})
+@EnableJpaRepositories
 @EnableTransactionManagement
+@PropertySource("classpath:application.yml")
 public class DataConfig {
     @Value("${spring.datasource.driver-class-name}")
     private String driver;
@@ -48,11 +46,12 @@ public class DataConfig {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("dataSource") DataSource dataSource) {
+    @Autowired
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource);
-        em.setPackagesToScan("store.backend.*");
+        em.setPackagesToScan("store.backend.database.*");
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
@@ -62,7 +61,8 @@ public class DataConfig {
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(@Qualifier("dataSource") DataSource dataSource) {
+    @Autowired
+    public PlatformTransactionManager transactionManager(DataSource dataSource) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory(dataSource).getObject());
 
