@@ -9,6 +9,7 @@ spring:
         enable_lazy_load_no_trans: true
         allow_update_outside_transaction: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        databasePlatform: org.hibernate.dialect.PostgreSQLDialect
 
   datasource:
 #    url: ${SPRING_DATASOURCE_URL}

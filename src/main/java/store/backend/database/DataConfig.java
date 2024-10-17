@@ -1,7 +1,6 @@
 package store.backend.database;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -18,12 +17,15 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages = {"store.backend.database"})
 @EnableTransactionManagement
+@EntityScan("store.backend.database")
+@ComponentScan(value = {"store.backend.database"})
 @PropertySource("classpath:application.yml")
 public class DataConfig {
     @Value("${spring.datasource.driver-class-name}")
@@ -34,6 +36,8 @@ public class DataConfig {
     private String username;
     @Value("${spring.datasource.password}")
     private String password;
+    @Value("${spring.datasource.databasePlatform}")
+    private String platform;
 
     @Bean
     public DataSource dataSource() {
@@ -42,6 +46,7 @@ public class DataConfig {
         dataSource.setUrl(url);
         dataSource.setUsername(username);
         dataSource.setPassword(password);
+
         return dataSource;
     }
 
@@ -51,9 +56,11 @@ public class DataConfig {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource);
-        em.setPackagesToScan("store.backend.database.*");
+        em.setPackagesToScan("store.backend.database");
 
-        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        vendorAdapter.setDatabasePlatform(platform);
+
         em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(additionalProperties());
 
@@ -62,9 +69,9 @@ public class DataConfig {
 
     @Bean
     @Autowired
-    public PlatformTransactionManager transactionManager(DataSource dataSource) {
+    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactory(dataSource).getObject());
+        transactionManager.setEntityManagerFactory(entityManagerFactory);
 
         return transactionManager;
     }
