@@ -1,6 +1,7 @@
 package store.backend.database.loader;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import store.backend.security.dto.SignUpRequest;
 import store.backend.security.role.Role;
 import store.backend.database.entity.Category;
@@ -46,7 +47,6 @@ public class DBLoader {
                         .build(),
                 Role.ADMIN);
     }
-
 
     private void loadItems() {
         // Создание основной категории "Смартфоны"

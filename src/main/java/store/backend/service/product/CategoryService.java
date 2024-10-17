@@ -1,17 +1,23 @@
 package store.backend.service.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import store.backend.database.entity.Category;
 import store.backend.database.entity.Product;
 import store.backend.database.repository.CategoryRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.HashSet;
 import java.util.Optional;
 
 @Service
 public class CategoryService {
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
@@ -32,15 +38,22 @@ public class CategoryService {
     }
 
     public Category addCategory(Category category, Category addition) {
-        category.addCategory(addition);
+        if (!category.getCategories().contains(addition)) {
+            category.addCategory(addition);
 
-        return saveCategory(category);
+            return updateCategory(category);
+        }
+
+        return category;
     }
 
     public Category addProduct(Category category, Product product) {
-        category.addProduct(product);
+        if (!category.getProducts().contains(product)) {
+            category.addProduct(product);
 
-        return saveCategory(category);
+            return updateCategory(category);
+        }
+        return category;
     }
 
     public Optional<Category> getCategory(Long category_id) {
@@ -53,9 +66,13 @@ public class CategoryService {
 
     @Transactional
     public Category updateCategory(Category category) {
-        assert categoryRepository.findById(category.getId()).isPresent();
+        if (entityManager.find(Category.class, category.getId()) != null) {
+            entityManager.merge(category);
+        } else {
+            saveCategory(category);
+        }
 
-        return categoryRepository.save(category);
+        return category;
     }
 
     public void deleteCategory(Long category_id) {

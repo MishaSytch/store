@@ -8,16 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Builder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Column;
-import javax.persistence.GenerationType;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.FetchType;
-import javax.persistence.CascadeType;
+import javax.persistence.*;
 import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,11 +19,11 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "Products")
+@Table(name = "products")
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "product_id", updatable = false)
     private Long id;
 
@@ -42,7 +33,7 @@ public class Product {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
-    private Set<Price> prices = new HashSet<>();
+    private Set<Price> prices;
 
     public void addPrice(Price price) {
         if (prices == null) prices = new HashSet<>();
@@ -69,9 +60,12 @@ public class Product {
     private Long quantity;
 
     @ManyToMany(
-            mappedBy = "products",
-            cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER
+    )
+    @JoinTable(
+            name = "category_product",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     @JsonIgnore
     private Set<Category> categories;
@@ -83,7 +77,7 @@ public class Product {
             fetch = FetchType.EAGER
     )
 
-    private Set<Image> images = new HashSet<>();
+    private Set<Image> images;
 
     public void addImage(Image image) {
         if (images == null) images = new HashSet<>();

@@ -29,11 +29,11 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "Categories")
+@Table(name = "categories")
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "category_id", updatable = false)
     private Long id;
 
@@ -41,12 +41,9 @@ public class Category {
     private String name;
 
     @ManyToMany(
+            mappedBy = "categories",
+            cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER
-    )
-    @JoinTable(
-            name = "category_product",
-            joinColumns = @JoinColumn(name = "category_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private Set<Product> products;
 
