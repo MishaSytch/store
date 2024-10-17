@@ -22,7 +22,7 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "images")
+@Table(name = "Images")
 public class Image {
 
     @Id

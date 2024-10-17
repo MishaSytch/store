@@ -31,7 +31,7 @@ import java.util.Collections;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "users")
+@Table(name = "Users")
 public class User implements UserDetails {
 
     @Id

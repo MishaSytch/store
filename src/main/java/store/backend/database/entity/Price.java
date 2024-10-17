@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "prices")
+@Table(name = "Prices")
 public class Price {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

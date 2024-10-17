@@ -1,9 +1,11 @@
 package store.backend.database;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
@@ -21,8 +23,9 @@ import java.util.Properties;
 
 @Configuration
 @PropertySource("classpath:application.yml")
-@EnableJpaRepositories
-@EntityScan
+@EnableJpaRepositories("store.backend.*")
+@EntityScan("store.backend.*")
+@ComponentScan(basePackages = {("store.backend.*")})
 @EnableTransactionManagement
 public class DataConfig {
     @Value("${spring.datasource.driver-class-name}")
@@ -44,15 +47,12 @@ public class DataConfig {
         return dataSource;
     }
 
-    @Autowired
-    private DataSource dataSource;
-
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("dataSource") DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource);
-        em.setPackagesToScan("MyPackage");
+        em.setPackagesToScan("store.backend.*");
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
@@ -61,10 +61,10 @@ public class DataConfig {
         return em;
     }
 
-    @Bean(name = "transactionManager")
-    public PlatformTransactionManager transactionManager() {
+    @Bean
+    public PlatformTransactionManager transactionManager(@Qualifier("dataSource") DataSource dataSource) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+        transactionManager.setEntityManagerFactory(entityManagerFactory(dataSource).getObject());
 
         return transactionManager;
     }

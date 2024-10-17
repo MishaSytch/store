@@ -19,7 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "products")
+@Table(name = "Products")
 public class Product {
 
     @Id
@@ -60,12 +60,9 @@ public class Product {
     private Long quantity;
 
     @ManyToMany(
+            mappedBy = "products",
+            cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER
-    )
-    @JoinTable(
-            name = "category_product",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     @JsonIgnore
     private Set<Category> categories;
