@@ -35,7 +35,7 @@ public class DataConfig {
     private String username;
     @Value("${spring.datasource.password}")
     private String password;
-    @Value("${spring.jpa.properties.hibernate.databasePlatform}")
+    @Value("${spring.jpa.properties.hibernate.database-platform}")
     private String platform;
 
     @Bean
