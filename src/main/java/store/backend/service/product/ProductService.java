@@ -2,14 +2,11 @@ package store.backend.service.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import store.backend.database.entity.Image;
 import store.backend.database.entity.Price;
 import store.backend.database.entity.Product;
 import store.backend.database.repository.ProductRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,9 +17,6 @@ import java.util.Comparator;
 
 @Service
 public class ProductService {
-    @PersistenceContext
-    private EntityManager entityManager;
-
     @Autowired
     private ProductRepository productRepository;
     @Autowired
@@ -46,18 +40,12 @@ public class ProductService {
     }
 
     public Product saveProduct(Product product) {
-        return productRepository.saveAndFlush(product);
+        return productRepository.save(product);
     }
 
-    @Transactional("Images")
     public Product updateProduct(Product product) {
-        if (entityManager.find(Product.class, product.getId()) != null) {
-            entityManager.merge(product);
-        } else {
-            saveProduct(product);
-        }
 
-        return product;
+        return saveProduct(product);
     }
 
     public Optional<Product> getProduct(Long product_id) {

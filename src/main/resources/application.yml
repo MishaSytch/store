@@ -7,11 +7,11 @@ spring:
       hibernate:
         show-sql: true
         ddl-auto: create-drop
-        enable_lazy_load_no_trans: true
-        allow_update_outside_transaction: true
+#        enable_lazy_load_no_trans: true
+#        allow_update_outside_transaction: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
         database-platform: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
+#        format_sql: true
 
   datasource:
 #    url: ${SPRING_DATASOURCE_URL}
@@ -48,7 +48,7 @@ token:
   signing:
     key: 23YG9236BRTB3982H3C289GFH49264G237498GCNF4YT5C7HF0348H9HT235T2
 
-logging:
-  level:
-    org.springframework.orm.jpa: DEBUG
-    org.springframework.transaction: DEBUG
+#logging:
+#  level:
+#    org.springframework.orm.jpa: DEBUG
+#    org.springframework.transaction: DEBUG
