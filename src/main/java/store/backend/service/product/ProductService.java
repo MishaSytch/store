@@ -45,12 +45,11 @@ public class ProductService {
         );
     }
 
-    @Transactional
     public Product saveProduct(Product product) {
         return productRepository.saveAndFlush(product);
     }
 
-    @Transactional
+    @Transactional("Images")
     public Product updateProduct(Product product) {
         if (entityManager.find(Product.class, product.getId()) != null) {
             entityManager.merge(product);
@@ -112,7 +111,6 @@ public class ProductService {
         return imageService.createImage(name, ref);
     }
 
-    @Transactional
     public Product addImage(Product product, Image image) {
         if (!product.getImages().contains(image)) {
             product.addImage(image);
