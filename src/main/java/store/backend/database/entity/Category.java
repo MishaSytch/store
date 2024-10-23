@@ -45,8 +45,8 @@ public class Category {
     )
     @JoinTable(
             name = "category_product",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private Set<Product> products;
 
