@@ -82,7 +82,6 @@ public class Product {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
-
     private Set<Image> images;
 
     public void addImage(Image image) {
