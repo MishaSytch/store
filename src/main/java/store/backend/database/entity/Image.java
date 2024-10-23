@@ -26,7 +26,7 @@ import javax.persistence.ManyToOne;
 public class Image {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id", updatable = false)
     private Long id;
 

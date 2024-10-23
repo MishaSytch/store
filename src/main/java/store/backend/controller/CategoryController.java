@@ -21,7 +21,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public Iterable<Category> getSubCategory(@PathVariable("id") Long category_id) {
+    public Iterable<Category> getInnerCategories(@PathVariable("id") Long category_id) {
         return categoryService.getCategory(category_id).map(Category::getCategories).orElse(null);
     }
 

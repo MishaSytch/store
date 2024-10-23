@@ -31,12 +31,9 @@ public class DBLoader {
         this.userService = userService;
         this.authenticationService = authenticationService;
 
-        if (this.productService.getAllProducts().isEmpty()) {
-            loadItems();
-        }
-        if (this.userService.getUsers().isEmpty()) {
-            loadUsers();
-        }
+        loadItems();
+
+        loadUsers();
     }
 
     private void loadUsers() {

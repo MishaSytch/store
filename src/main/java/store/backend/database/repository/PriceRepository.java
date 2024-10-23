@@ -6,5 +6,4 @@ import store.backend.database.entity.Price;
 
 @Repository
 public interface PriceRepository extends JpaRepository<Price, Long> {
-    Iterable<Price> findAllByProductId(Long productId);
 }
