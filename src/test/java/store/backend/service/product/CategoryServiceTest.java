@@ -1,10 +1,12 @@
 package store.backend.service.product;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import store.backend.database.entity.Category;
+import store.backend.database.loader.DBLoader;
 import store.backend.database.repository.CategoryRepository;
 
 import java.util.HashSet;
@@ -12,37 +14,54 @@ import java.util.HashSet;
 @SpringBootTest
 class CategoryServiceTest {
     @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private DBLoader dbLoader;
 
     private final String name = "CategoryTest";
 
+
     @Test
     void createCategory() {
-        Assertions.assertTrue(categoryRepository.findAll().stream().noneMatch(c -> c.getName().equals(name)));
+        for (Category category : categoryService.getCategories()) {
+            Assertions.assertNotEquals(name, category.getName());
+        }
         categoryService.createCategory(name);
-        Assertions.assertEquals(1, categoryRepository.findAll().stream().filter(c -> c.getName().equals(name)).count());
+        int count = 0;
+        for (Category category : categoryService.getCategories()) {
+            if (category.getName().equals(name)) count++;
+        }
+        Assertions.assertEquals(1, count);
+
     }
 
     @Test
     void saveCategory() {
         String name_1 = name + "Save";
-        Assertions.assertTrue(categoryRepository.findAll().stream().noneMatch(c -> c.getName().equals(name_1)));
+        for (Category category : categoryService.getCategories()) {
+            Assertions.assertNotEquals(name, category.getName());
+        }
         Category category = Category.builder()
                 .name(name_1)
                 .products(new HashSet<>())
                 .categories(new HashSet<>())
                 .build();
+
         categoryService.saveCategory(category);
-        Assertions.assertEquals(1, categoryRepository.findAll().stream().filter(c -> c.getName().equals(name_1)).count());
+        int count = 0;
+        for (Category c : categoryService.getCategories()) {
+            if (c.getName().equals(name)) count++;
+        }
+        Assertions.assertEquals(1, count);
+
     }
 
     @Test
     void getCategory() {
         String name_1 = name + "Get";
         Category category = categoryService.createCategory(name_1);
-        Assertions.assertEquals(category.getName(), categoryService.getCategory(category.getId()).getName());
+        Assertions.assertTrue(categoryService.getCategory(category.getId()).isPresent());
+        Assertions.assertEquals(category.getName(), categoryService.getCategory(category.getId()).get().getName());
     }
 
     @Test
@@ -63,16 +82,18 @@ class CategoryServiceTest {
         String name_new = name + "New";
         Category category = categoryService.createCategory(name_1);
         category.setName(name_new);
-        categoryService.updateCategory(category.getId(), category);
+        categoryService.updateCategory(category);
 
-        Assertions.assertEquals(name_new, categoryService.getCategory(category.getId()).getName());
+        Assertions.assertTrue(categoryService.getCategory(category.getId()).isPresent());
+        Assertions.assertEquals(name_new, categoryService.getCategory(category.getId()).get().getName());
     }
 
     @Test
     void deleteCategory() {
         String name_1 = name + "Delete";
         Category category = categoryService.createCategory(name_1);
-        Assertions.assertEquals(name_1, categoryService.getCategory(category.getId()).getName());
+        Assertions.assertTrue(categoryService.getCategory(category.getId()).isPresent());
+        Assertions.assertEquals(name_1, categoryService.getCategory(category.getId()).get().getName());
 
         categoryService.deleteCategory(category.getId());
         Assertions.assertNull(categoryService.getCategory(category.getId()));

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import store.backend.database.entity.Image;
 import store.backend.database.repository.ImageRepository;
 
+import java.util.List;
+
 @Service
 class ImageService {
     @Autowired
@@ -18,7 +20,6 @@ class ImageService {
                     .build()
         );
     }
-
 
     public Image saveImage(Image image) {
         return imageRepository.save(image);
@@ -41,5 +42,9 @@ class ImageService {
 
     public Image getImage(Long image_id) {
         return imageRepository.findById(image_id).orElse(null);
+    }
+
+    public List<Image> getImages() {
+        return imageRepository.findAll();
     }
 }

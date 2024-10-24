@@ -3,6 +3,8 @@ package store.backend.database.loader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import store.backend.database.entity.Image;
+import store.backend.database.entity.User;
 import store.backend.security.dto.SignUpRequest;
 import store.backend.security.role.Role;
 import store.backend.database.entity.Category;

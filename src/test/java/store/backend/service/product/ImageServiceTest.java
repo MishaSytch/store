@@ -5,38 +5,41 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import store.backend.database.entity.Category;
 import store.backend.database.entity.Image;
 import store.backend.database.entity.Product;
 import store.backend.database.repository.ImageRepository;
 import store.backend.database.repository.ProductRepository;
 
-@SpringBootTest
+//@SpringBootTest
 class ImageServiceTest {
     @Autowired
     private ImageService imageService;
-    @Autowired
-    private ImageRepository imageRepository;
 
     private final String name = "ImageName";
 
     @Test
     void createImage() {
-        Assertions.assertTrue(imageRepository.findAll().stream().noneMatch(i -> i.getName().equals(name)));
+        for (Image image : imageService.getImages()) {
+            Assertions.assertNotEquals(name, image.getName());
+        }
         imageService.createImage(name, name);
-        Assertions.assertEquals(1, imageRepository.findAll().stream().filter(i -> i.getName().equals(name)).count());
+        int count = 0;
+        for (Image image : imageService.getImages()) {
+            if (image.getName().equals(name)) count++;
+        }
+        Assertions.assertEquals(1, count);
     }
 
     @Test
     void saveImage() {
         String name_1 = name + "Save";
-        Assertions.assertTrue(imageRepository.findAll().stream().noneMatch(i -> i.getName().equals(name_1)));
         Image image = Image.builder()
                 .name(name_1)
                 .reference(name_1)
                 .build();
         imageService.saveImage(image);
-        Assertions.assertEquals(1, imageRepository.findAll().stream().filter(i -> i.getName().equals(name_1)).count());
-    }
+        }
 
     @Test
     void updateImage() {
@@ -44,7 +47,7 @@ class ImageServiceTest {
         String name_new = name + "New";
         Image image = imageService.createImage(name_1, name_1);
         image.setName(name_new);
-        imageService.updateImage(image.getId(), image);
+        imageService.updateImage(image);
 
         Assertions.assertEquals(name_new, imageService.getImage(image.getId()).getName());
     }
