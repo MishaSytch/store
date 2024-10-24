@@ -27,7 +27,7 @@ public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "image_id")
+//    @Column(name = "image_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
