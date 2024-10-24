@@ -4,13 +4,13 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
       show-sql: true
-      enable_lazy_load_no_trans: true
-      allow_update_outside_transaction: true
+#      enable_lazy_load_no_trans: true
+#      allow_update_outside_transaction: true
       dialect: org.hibernate.dialect.PostgreSQLDialect
       database-platform: org.hibernate.dialect.PostgreSQLDialect
-      format_sql: true
+#      format_sql: true
 
   datasource:
     url: jdbc:postgresql://127.0.0.1:5433/store_db
