@@ -2,15 +2,21 @@ package store.backend.service.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import store.backend.database.entity.Category;
 import store.backend.database.entity.Product;
 import store.backend.database.repository.CategoryRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.HashSet;
 import java.util.Optional;
 
 @Service
 public class CategoryService {
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
@@ -57,9 +63,15 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
+    @Transactional
     public Category updateCategory(Category category) {
+        if (entityManager.find(Category.class, category.getId()) != null) {
+            entityManager.merge(category);
+        } else {
+            saveCategory(category);
+        }
 
-        return saveCategory(category);
+        return category;
     }
 
     public void deleteCategory(Long category_id) {
