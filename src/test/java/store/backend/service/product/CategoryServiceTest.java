@@ -15,9 +15,6 @@ import java.util.HashSet;
 class CategoryServiceTest {
     @Autowired
     private CategoryService categoryService;
-    @Autowired
-    private DBLoader dbLoader;
-
     private final String name = "CategoryTest";
 
 
@@ -28,11 +25,15 @@ class CategoryServiceTest {
         }
         categoryService.createCategory(name);
         int count = 0;
-        for (Category category : categoryService.getCategories()) {
-            if (category.getName().equals(name)) count++;
+        Category category = null;
+        for (Category c : categoryService.getCategories()) {
+            if (c.getName().equals(name)) {
+                category = c;
+                count++;
+            }
         }
         Assertions.assertEquals(1, count);
-
+        categoryService.deleteCategory(category.getId());
     }
 
     @Test
@@ -49,19 +50,29 @@ class CategoryServiceTest {
 
         categoryService.saveCategory(category);
         int count = 0;
+
         for (Category c : categoryService.getCategories()) {
-            if (c.getName().equals(name)) count++;
+            if (c.getName().equals(name_1)) count++;
         }
+
         Assertions.assertEquals(1, count);
+
+        categoryService.deleteCategory(category.getId());
 
     }
 
     @Test
     void getCategory() {
         String name_1 = name + "Get";
+        for (Category category : categoryService.getCategories()) {
+            Assertions.assertNotEquals(name, category.getName());
+        }
+
         Category category = categoryService.createCategory(name_1);
         Assertions.assertTrue(categoryService.getCategory(category.getId()).isPresent());
         Assertions.assertEquals(category.getName(), categoryService.getCategory(category.getId()).get().getName());
+
+        categoryService.deleteCategory(category.getId());
     }
 
     @Test
