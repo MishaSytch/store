@@ -4,7 +4,7 @@ spring:
 
   jpa:
     hibernate:
-      hbm2ddl: create-drop
+      ddl-auto: create-drop
       show-sql: true
       enable_lazy_load_no_trans: true
       allow_update_outside_transaction: true
