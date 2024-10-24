@@ -2,7 +2,6 @@ package store.backend.service.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import store.backend.database.entity.Category;
 import store.backend.database.entity.Product;
 import store.backend.database.repository.CategoryRepository;
@@ -58,7 +57,6 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    @Transactional
     public Category updateCategory(Category category) {
 
         return saveCategory(category);

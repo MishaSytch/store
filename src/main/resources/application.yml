@@ -10,7 +10,7 @@ spring:
 #        enable_lazy_load_no_trans: true
 #        allow_update_outside_transaction: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        database-platform: org.hibernate.dialect.PostgreSQLDialect
+#        database-platform: org.hibernate.dialect.PostgreSQLDialect
 #        format_sql: true
 
   datasource:
