@@ -3,6 +3,7 @@ package store.backend.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -21,10 +22,10 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@EnableJpaRepositories
 @EnableTransactionManagement
-@EntityScan("store.backend.database")
-@ComponentScan(value = {"store.backend"})
+@EnableJpaRepositories(basePackages = { "store.backend.database.repository" })
+@EntityScan(basePackages = { "store.backend.database.entity" })
+@ComponentScan(basePackages = { "store.backend.database" })
 @PropertySource("classpath:application.yml")
 public class DataConfig {
     @Value("${spring.datasource.driver-class-name}")
@@ -50,10 +51,8 @@ public class DataConfig {
     }
 
     @Bean
-    @Autowired
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
-        LocalContainerEntityManagerFactoryBean em
-                = new LocalContainerEntityManagerFactoryBean();
+        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource);
         em.setPackagesToScan("store.backend.database");
 
@@ -67,7 +66,6 @@ public class DataConfig {
     }
 
     @Bean
-    @Autowired
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory);
