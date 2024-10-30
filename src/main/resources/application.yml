@@ -13,6 +13,8 @@ spring:
     password: pass
     driver-class-name: org.postgresql.Driver
 
+
+
   mail:
     host: smtp.yandex.ru
     port: 465
@@ -31,6 +33,10 @@ spring:
         sender:
           email: no-reply@example.com
           text: no-reply
+  sql:
+    init:
+      data-locations: classpath:init-schema.sql
+      mode: always
 
 mail:
   debug: true
