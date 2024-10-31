@@ -36,7 +36,7 @@ spring:
   sql:
     init:
       data-locations: classpath:init-schema.sql
-      mode: always
+      mode: embedded
 
 mail:
   debug: true

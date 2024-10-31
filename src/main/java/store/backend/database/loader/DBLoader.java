@@ -33,10 +33,14 @@ public class DBLoader {
         this.userService = userService;
         this.authenticationService = authenticationService;
 
-        if (this.productService.getAllProducts().isEmpty()) {
+        start();
+    }
+
+    public void start() {
+        if (productService.getAllProducts().isEmpty()) {
             loadItems();
         }
-        if (this.userService.getUsers().isEmpty()) {
+        if (userService.getUsers().isEmpty()) {
             loadUsers();
         }
     }
