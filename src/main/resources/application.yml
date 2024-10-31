@@ -4,7 +4,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
       database-platform: org.hibernate.dialect.PostgreSQLDialect
 
   datasource:
@@ -36,7 +36,6 @@ spring:
   sql:
     init:
       data-locations: classpath:init-schema.sql
-      mode: embedded
 
 mail:
   debug: true
