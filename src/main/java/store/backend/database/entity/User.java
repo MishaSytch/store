@@ -1,5 +1,6 @@
 package store.backend.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import store.backend.security.role.Role;
@@ -45,6 +46,7 @@ public class User implements UserDetails {
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
+    @JsonManagedReference
     private Set<Order> orders = new HashSet<>();
 
     public void addOrder(Order order) {

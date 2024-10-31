@@ -69,8 +69,9 @@ public class ProductService {
                 existing.addImage(i);
             }
         }
+        saveProduct(existing);
 
-        return saveProduct(existing);
+        return product;
     }
 
     public Optional<Product> getProduct(Long productId) {

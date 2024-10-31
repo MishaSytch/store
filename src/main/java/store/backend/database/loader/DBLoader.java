@@ -3,12 +3,9 @@ package store.backend.database.loader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import store.backend.database.entity.Image;
-import store.backend.database.entity.User;
+import store.backend.database.entity.*;
 import store.backend.security.dto.SignUpRequest;
 import store.backend.security.role.Role;
-import store.backend.database.entity.Category;
-import store.backend.database.entity.Product;
 import store.backend.security.service.AuthenticationService;
 import store.backend.security.service.UserService;
 import store.backend.service.product.CategoryService;
@@ -33,16 +30,39 @@ public class DBLoader {
         this.userService = userService;
         this.authenticationService = authenticationService;
 
-        start();
+        load();
     }
 
-    public void start() {
+    public void load() {
         if (productService.getAllProducts().isEmpty()) {
             loadItems();
         }
         if (userService.getUsers().isEmpty()) {
             loadUsers();
         }
+    }
+
+    public void delete() {
+        for (Category c : categoryService.getCategories()) {
+            categoryService.deleteCategory(c.getId());
+        }
+
+        for (Product p : productService.getAllProducts()) {
+            for (Image i : p.getImages()) {
+                productService.deleteImage(i.getId());
+            }
+
+            for (Price price : p.getPrices()) {
+                productService.deletePrice(price.getId());
+            }
+
+            productService.deleteProduct(p.getId());
+        }
+
+        for (User u : userService.getUsers()) {
+            userService.deleteUser(u.getId());
+        }
+
     }
 
     private void loadUsers() {

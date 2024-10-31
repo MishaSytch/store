@@ -1,7 +1,9 @@
 package store.backend.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,6 +45,7 @@ public class Product {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
+    @JsonManagedReference
     private Set<Price> prices = new HashSet<>();
 
     public void addPrice(Price price) {
@@ -74,7 +77,7 @@ public class Product {
             cascade = CascadeType.PERSIST,
             fetch = FetchType.EAGER
     )
-    @JsonIgnore
+    @JsonBackReference
     private Set<Category> categories = new HashSet<>();
 
     @OneToMany(
@@ -83,6 +86,7 @@ public class Product {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
+    @JsonManagedReference
     private Set<Image> images = new HashSet<>();
 
     public void addImage(Image image) {
@@ -98,6 +102,6 @@ public class Product {
     }
 
     @ManyToMany(mappedBy = "products")
-    @JsonIgnore
+    @JsonBackReference
     private List<Order> orders = new ArrayList<>();
 }

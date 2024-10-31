@@ -79,6 +79,10 @@ public class UserService {
         if ((order = orderService.getOrder(order_id)) != null) user.removeOrder(order);
     }
 
+    public void deleteUser(Long user_id) {
+        userRepository.deleteById(user_id);
+    }
+
 //    Security
 
     /**

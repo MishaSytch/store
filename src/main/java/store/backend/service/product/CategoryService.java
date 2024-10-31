@@ -78,8 +78,9 @@ public class CategoryService {
                 existing.addProduct(p);
             }
         }
+        saveCategory(existing);
 
-        return saveCategory(existing);
+        return category;
     }
 
     public void deleteCategory(Long category_id) {

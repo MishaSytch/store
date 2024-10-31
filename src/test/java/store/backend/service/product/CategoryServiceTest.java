@@ -1,8 +1,6 @@
 package store.backend.service.product;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import store.backend.database.entity.Category;
@@ -15,7 +13,20 @@ import java.util.HashSet;
 class CategoryServiceTest {
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private DBLoader dbLoader;
+
     private final String name = "CategoryTest";
+
+    @BeforeEach
+    void start() {
+        dbLoader.load();
+    }
+
+    @AfterEach
+    void end() {
+        dbLoader.delete();
+    }
 
 
     @Test
@@ -58,7 +69,6 @@ class CategoryServiceTest {
         Assertions.assertEquals(1, count);
 
         categoryService.deleteCategory(category.getId());
-
     }
 
     @Test
@@ -83,7 +93,7 @@ class CategoryServiceTest {
             count++;
         }
 
-        Assertions.assertEquals(9, count);
+        Assertions.assertEquals(10, count);
 
     }
 
