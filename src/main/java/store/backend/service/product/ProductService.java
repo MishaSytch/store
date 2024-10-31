@@ -70,10 +70,10 @@ public class ProductService {
             }
         }
 
-        if (!product.getSKU().equals(existing.getSKU())) existing.setSKU(product.getSKU());
-        if (!product.getQuantity().equals(existing.getQuantity())) existing.setQuantity(product.getQuantity());
-        if (!product.getName().equals(existing.getName())) existing.setName(product.getName());
-        if (!product.getDescription().equals(existing.getDescription())) existing.setDescription(product.getDescription());
+        if (product.getSKU() != null && !product.getSKU().equals(existing.getSKU())) existing.setSKU(product.getSKU());
+        if (product.getQuantity() != null && !product.getQuantity().equals(existing.getQuantity())) existing.setQuantity(product.getQuantity());
+        if (product.getName() != null && !product.getName().equals(existing.getName())) existing.setName(product.getName());
+        if (product.getDescription() != null && !product.getDescription().equals(existing.getDescription())) existing.setDescription(product.getDescription());
 
         saveProduct(existing);
 

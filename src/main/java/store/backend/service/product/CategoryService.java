@@ -76,8 +76,8 @@ public class CategoryService {
             }
         }
 
-        if (!category.getName().equals(existing.getName())) existing.setName(category.getName());
-        if (!category.getSuperCategory().equals(existing.getSuperCategory())) existing.setSuperCategory(category.getSuperCategory());
+        if (category.getName() != null && !category.getName().equals(existing.getName())) existing.setName(category.getName());
+        if (category.getSuperCategory() != null && !category.getSuperCategory().equals(existing.getSuperCategory())) existing.setSuperCategory(category.getSuperCategory());
 
         saveCategory(existing);
 
