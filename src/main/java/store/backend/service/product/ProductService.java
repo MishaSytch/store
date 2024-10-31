@@ -59,14 +59,14 @@ public class ProductService {
         existing.setPrices(new HashSet<>());
 
         for (Price p : product.getPrices()) {
-            if (p.getId() != null) {
-                existing.addPrice(p);
+            if (existing.getPrices().contains(p)) {
+                existing.removePrice(p);
             }
         }
 
         for (Image i : product.getImages()) {
-            if (i.getId() != null) {
-                existing.addImage(i);
+            if (existing.getImages().contains(i)) {
+                existing.removeImage(i);
             }
         }
         saveProduct(existing);

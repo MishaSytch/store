@@ -64,18 +64,15 @@ public class CategoryService {
     public Category updateCategory(Category category) {
         Category existing = categoryRepository.findById(category.getId()).orElseThrow(() -> new IllegalArgumentException("Category not found"));
 
-        existing.setCategories(new HashSet<>());
-        existing.setProducts(new HashSet<>());
-
         for (Category c : category.getCategories()) {
-            if (c.getId() != null) {
-                existing.addCategory(c);
+            if (existing.getCategories().contains(c)) {
+                existing.removeCategory(c);
             }
         }
 
         for (Product p : category.getProducts()) {
-            if (p.getId() != null) {
-                existing.addProduct(p);
+            if (existing.getProducts().contains(p)) {
+                existing.removeProduct(p);
             }
         }
         saveCategory(existing);

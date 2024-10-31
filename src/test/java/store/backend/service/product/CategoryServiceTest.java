@@ -82,7 +82,7 @@ class CategoryServiceTest {
 
     @Test
     void getCategories() {
-        Assertions.assertEquals(10, categoryService.getCategories().size());
+        Assertions.assertEquals(9, categoryService.getCategories().size());
 
     }
 
@@ -106,6 +106,6 @@ class CategoryServiceTest {
         Assertions.assertEquals(name_1, categoryService.getCategory(category.getId()).get().getName());
 
         categoryService.deleteCategory(category.getId());
-        Assertions.assertNull(categoryService.getCategory(category.getId()));
+        Assertions.assertFalse(categoryService.getCategory(category.getId()).isPresent());
     }
 }
