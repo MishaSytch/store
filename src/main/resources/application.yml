@@ -4,7 +4,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       database-platform: org.hibernate.dialect.PostgreSQLDialect
 
   datasource:
@@ -44,7 +44,7 @@ token:
   signing:
     key: 23YG9236BRTB3982H3C289GFH49264G237498GCNF4YT5C7HF0348H9HT235T2
 
-#logging:
-#  level:
+logging:
+  level:
 #    org.springframework.orm.jpa: DEBUG
-#    org.springframework.transaction: DEBUG
+    org.springframework.transaction: DEBUG

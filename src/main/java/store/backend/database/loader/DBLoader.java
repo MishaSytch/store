@@ -33,9 +33,6 @@ public class DBLoader {
         this.userService = userService;
         this.authenticationService = authenticationService;
 
-        loadItems();
-        loadUsers();
-
         start();
     }
 

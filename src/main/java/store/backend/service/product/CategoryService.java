@@ -1,5 +1,6 @@
 package store.backend.service.product;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,15 +8,11 @@ import store.backend.database.entity.Category;
 import store.backend.database.entity.Product;
 import store.backend.database.repository.CategoryRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.HashSet;
 import java.util.Optional;
 
 @Service
 public class CategoryService {
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -37,7 +34,7 @@ public class CategoryService {
     }
 
     public Category addCategory(Category category, Category addition) {
-        if (!category.getCategories().contains(addition)) {
+        if (addition != null && !category.getCategories().contains(addition)) {
             category.addCategory(addition);
 
             return updateCategory(category);
@@ -47,7 +44,7 @@ public class CategoryService {
     }
 
     public Category addProduct(Category category, Product product) {
-        if (!category.getProducts().contains(product)) {
+        if (product != null && !category.getProducts().contains(product)) {
             category.addProduct(product);
 
             return updateCategory(category);
@@ -65,13 +62,24 @@ public class CategoryService {
 
     @Transactional
     public Category updateCategory(Category category) {
-        if (entityManager.find(Category.class, category.getId()) != null) {
-            entityManager.merge(category);
-        } else {
-            saveCategory(category);
+        Category existing = categoryRepository.findById(category.getId()).orElseThrow(() -> new IllegalArgumentException("Category not found"));
+
+        existing.setCategories(new HashSet<>());
+        existing.setProducts(new HashSet<>());
+
+        for (Category c : category.getCategories()) {
+            if (c.getId() != null) {
+                existing.addCategory(c);
+            }
         }
 
-        return category;
+        for (Product p : category.getProducts()) {
+            if (p.getId() != null) {
+                existing.addProduct(p);
+            }
+        }
+
+        return saveCategory(existing);
     }
 
     public void deleteCategory(Long category_id) {

@@ -29,6 +29,8 @@ class PriceService {
     public Price updatePrice(Price price) {
         assert priceRepository.findById(price.getId()).isPresent();
 
+        deletePrice(price.getId());
+
         return priceRepository.save(price);
     }
 

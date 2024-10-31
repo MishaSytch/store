@@ -28,6 +28,8 @@ class ImageService {
     public Image updateImage(Image image) {
         assert imageRepository.findById(image.getId()).isPresent();
 
+        deleteImage(image.getId());
+
         return imageRepository.save(image);
     }
 

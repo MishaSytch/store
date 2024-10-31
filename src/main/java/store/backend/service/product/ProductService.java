@@ -1,16 +1,12 @@
 package store.backend.service.product;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import store.backend.database.entity.Image;
-import store.backend.database.entity.Price;
-import store.backend.database.entity.Product;
-import store.backend.database.entity.Category;
+import store.backend.database.entity.*;
 import store.backend.database.repository.ProductRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,9 +17,6 @@ import java.util.Comparator;
 
 @Service
 public class ProductService {
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     private final ProductRepository productRepository;
     private final PriceService priceService;
@@ -36,7 +29,7 @@ public class ProductService {
         this.imageService = imageService;
     }
 
-    @Transactional
+
     public Product createProduct(String name, String description, String sku, Long quantity) {
         Product product = Product.builder()
                 .name(name)
@@ -52,15 +45,36 @@ public class ProductService {
         return saveProduct(product);
     }
 
-    @Transactional
     public Product saveProduct(Product product) {
-        entityManager.persist(product);
+        return productRepository.save(product);
+    }
 
-        return product;
+    @Transactional
+    public Product updateProduct(Product product) {
+        Product existing = productRepository.findById(product.getId()).orElseThrow(() -> new IllegalArgumentException("Product not found"));
+
+        existing.setOrders(new ArrayList<>());
+        existing.setCategories(new HashSet<>());
+        existing.setImages(new HashSet<>());
+        existing.setPrices(new HashSet<>());
+
+        for (Price p : product.getPrices()) {
+            if (p.getId() != null) {
+                existing.addPrice(p);
+            }
+        }
+
+        for (Image i : product.getImages()) {
+            if (i.getId() != null) {
+                existing.addImage(i);
+            }
+        }
+
+        return saveProduct(existing);
     }
 
     public Optional<Product> getProduct(Long productId) {
-        return Optional.ofNullable(entityManager.find(Product.class, productId));
+        return productRepository.findById(productId);
     }
 
     public List<Product> getProductsById(List<Long> productIds) {
@@ -73,25 +87,22 @@ public class ProductService {
     }
 
     @Transactional
-    public Product updateProduct(Product product) {
-        return entityManager.merge(product);
-    }
-
-    @Transactional
     public void addQuantity(Product product, Long quantity) {
-        product.setQuantity(product.getQuantity() + quantity);
-        updateProduct(product);
+        if (quantity != null) {
+            product.setQuantity(product.getQuantity() + quantity);
+            updateProduct(product);
+        }
     }
 
     public List<Product> getAllProducts() {
-        return entityManager.createQuery("SELECT p FROM Product p", Product.class).getResultList();
+        return productRepository.findAll();
     }
 
     @Transactional
     public void deleteProduct(Long productId) {
         Product product = getProduct(productId).orElse(null);
         if (product != null) {
-            entityManager.remove(product);
+            productRepository.delete(product);
         }
     }
 
@@ -102,6 +113,7 @@ public class ProductService {
     public Product addPrice(Product product, Price price) {
         if (price != null && !product.getPrices().contains(price)) {
             product.addPrice(price);
+
             return updateProduct(product);
         }
         return product;
@@ -128,6 +140,7 @@ public class ProductService {
     public Product addImage(Product product, Image image) {
         if (image != null && !product.getImages().contains(image)) {
             product.addImage(image);
+
             return updateProduct(product);
         }
         return product;

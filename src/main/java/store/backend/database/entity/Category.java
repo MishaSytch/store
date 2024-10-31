@@ -69,7 +69,7 @@ public class Category {
 
     @OneToMany(
             mappedBy = "superCategory",
-            cascade = CascadeType.ALL,
+            cascade = CascadeType.PERSIST,
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
