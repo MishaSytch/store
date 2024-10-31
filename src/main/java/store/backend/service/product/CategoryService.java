@@ -75,6 +75,10 @@ public class CategoryService {
                 existing.removeProduct(p);
             }
         }
+
+        if (!category.getName().equals(existing.getName())) existing.setName(category.getName());
+        if (!category.getSuperCategory().equals(existing.getSuperCategory())) existing.setSuperCategory(category.getSuperCategory());
+
         saveCategory(existing);
 
         return category;

@@ -34,16 +34,8 @@ class CategoryServiceTest {
             Assertions.assertNotEquals(name, category.getName());
         }
         categoryService.createCategory(name);
-        int count = 0;
-        Category category = null;
-        for (Category c : categoryService.getCategories()) {
-            if (c.getName().equals(name)) {
-                category = c;
-                count++;
-            }
-        }
-        Assertions.assertEquals(1, count);
-        categoryService.deleteCategory(category.getId());
+
+        Assertions.assertEquals(1, categoryService.getCategories().stream().filter(c -> c.getName().equals(name)).count());
     }
 
     @Test
@@ -62,8 +54,6 @@ class CategoryServiceTest {
         categoryService.saveCategory(category);
 
         Assertions.assertEquals(1, categoryService.getCategories().stream().filter(c -> c.getName().equals(name_1)).count());
-
-        categoryService.deleteCategory(category.getId());
     }
 
     @Test
@@ -76,8 +66,6 @@ class CategoryServiceTest {
         Category category = categoryService.createCategory(name_1);
         Assertions.assertTrue(categoryService.getCategory(category.getId()).isPresent());
         Assertions.assertEquals(category.getName(), categoryService.getCategory(category.getId()).get().getName());
-
-        categoryService.deleteCategory(category.getId());
     }
 
     @Test
@@ -92,6 +80,7 @@ class CategoryServiceTest {
         String name_new = name + "New";
         Category category = categoryService.createCategory(name_1);
         category.setName(name_new);
+
         categoryService.updateCategory(category);
 
         Assertions.assertTrue(categoryService.getCategory(category.getId()).isPresent());

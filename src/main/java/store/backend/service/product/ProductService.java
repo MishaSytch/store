@@ -69,6 +69,12 @@ public class ProductService {
                 existing.removeImage(i);
             }
         }
+
+        if (!product.getSKU().equals(existing.getSKU())) existing.setSKU(product.getSKU());
+        if (!product.getQuantity().equals(existing.getQuantity())) existing.setQuantity(product.getQuantity());
+        if (!product.getName().equals(existing.getName())) existing.setName(product.getName());
+        if (!product.getDescription().equals(existing.getDescription())) existing.setDescription(product.getDescription());
+
         saveProduct(existing);
 
         return product;
