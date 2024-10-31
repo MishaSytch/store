@@ -47,6 +47,7 @@ public class User implements UserDetails {
             fetch = FetchType.LAZY
     )
     @JsonManagedReference
+    @Builder.Default
     private Set<Order> orders = new HashSet<>();
 
     public void addOrder(Order order) {

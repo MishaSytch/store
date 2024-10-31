@@ -46,6 +46,7 @@ public class Product {
             fetch = FetchType.EAGER
     )
     @JsonManagedReference
+    @Builder.Default
     private Set<Price> prices = new HashSet<>();
 
     public void addPrice(Price price) {
@@ -78,6 +79,7 @@ public class Product {
             fetch = FetchType.EAGER
     )
     @JsonBackReference
+    @Builder.Default
     private Set<Category> categories = new HashSet<>();
 
     @OneToMany(
@@ -87,6 +89,7 @@ public class Product {
             fetch = FetchType.EAGER
     )
     @JsonManagedReference
+    @Builder.Default
     private Set<Image> images = new HashSet<>();
 
     public void addImage(Image image) {
@@ -103,5 +106,6 @@ public class Product {
 
     @ManyToMany(mappedBy = "products")
     @JsonBackReference
+    @Builder.Default
     private List<Order> orders = new ArrayList<>();
 }

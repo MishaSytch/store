@@ -52,6 +52,7 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     @JsonManagedReference
+    @Builder.Default
     private List<Product> products = new ArrayList<>();
 
     public void addProduct(Product product) {

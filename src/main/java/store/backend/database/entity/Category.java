@@ -51,6 +51,7 @@ public class Category {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     @JsonManagedReference
+    @Builder.Default
     private Set<Product> products = new HashSet<>();
 
     public void addProduct(Product product) {
@@ -77,6 +78,7 @@ public class Category {
             fetch = FetchType.EAGER
     )
     @JsonManagedReference
+    @Builder.Default
     private Set<Category> categories = new HashSet<>();
 
     public void addCategory(Category category) {
