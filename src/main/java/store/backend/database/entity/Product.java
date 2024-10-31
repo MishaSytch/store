@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.ManyToMany;
 import javax.persistence.FetchType;
 import javax.persistence.CascadeType;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,13 +43,13 @@ public class Product {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
-    private Set<Price> prices;
+    private Set<Price> prices = new HashSet<>();
 
     public void addPrice(Price price) {
-        if (prices == null) prices = new HashSet<>();
-
-        prices.add(price);
-        price.setProduct(this);
+        if (price != null) {
+            prices.add(price);
+            price.setProduct(this);
+        }
     }
 
     public void removePrice(Price price) {
@@ -74,7 +75,7 @@ public class Product {
             fetch = FetchType.EAGER
     )
     @JsonIgnore
-    private Set<Category> categories;
+    private Set<Category> categories = new HashSet<>();
 
     @OneToMany(
             mappedBy = "product",
@@ -82,13 +83,13 @@ public class Product {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
-    private Set<Image> images;
+    private Set<Image> images = new HashSet<>();
 
     public void addImage(Image image) {
-        if (images == null) images = new HashSet<>();
-
-        images.add(image);
-        image.setProduct(this);
+        if (image != null) {
+            images.add(image);
+            image.setProduct(this);
+        }
     }
 
     public void removeImage(Image image) {
@@ -98,5 +99,5 @@ public class Product {
 
     @ManyToMany(mappedBy = "products")
     @JsonIgnore
-    private List<Order> orders;
+    private List<Order> orders = new ArrayList<>();
 }

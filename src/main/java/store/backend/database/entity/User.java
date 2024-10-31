@@ -45,13 +45,13 @@ public class User implements UserDetails {
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
-    private Set<Order> orders;
+    private Set<Order> orders = new HashSet<>();
 
     public void addOrder(Order order) {
-        if (orders == null) orders = new HashSet<>();
-
-        orders.add(order);
-        order.setUser(this);
+        if (order != null) {
+            orders.add(order);
+            order.setUser(this);
+        }
     }
 
     public void removeOrder(Order order) {

@@ -48,14 +48,13 @@ public class Category {
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    private Set<Product> products;
+    private Set<Product> products = new HashSet<>();
 
     public void addProduct(Product product) {
-        if (products == null) products = new HashSet<>();
-        if (product.getCategories() == null) product.setCategories(new HashSet<>());
-
-        products.add(product);
-        product.getCategories().add(this);
+        if (product != null) {
+            products.add(product);
+            product.getCategories().add(this);
+        }
     }
 
     public void removeProduct(Product product) {
@@ -74,13 +73,13 @@ public class Category {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
-    private Set<Category> categories;
+    private Set<Category> categories = new HashSet<>();
 
     public void addCategory(Category category) {
-        if (categories == null) categories = new HashSet<>();
-
-        categories.add(category);
-        category.setSuperCategory(this);
+        if (category != null) {
+            categories.add(category);
+            category.setSuperCategory(this);
+        }
     }
 
     public void removeCategory(Category category) {

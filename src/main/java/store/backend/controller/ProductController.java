@@ -65,7 +65,7 @@ public class ProductController {
 
     @PutMapping
     public Product putProduct(@RequestBody Product product) {
-        return productService.updateProduct(product);
+        return productService.saveProduct(product);
     }
 
     @DeleteMapping("/{id}")

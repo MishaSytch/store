@@ -50,15 +50,14 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
 
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
 
     public void addProduct(Product product) {
-        if (products == null) products = new ArrayList<>();
-        if (product.getOrders() == null) product.setOrders(new ArrayList<>());
-
-        products.add(product);
-        product.setQuantity(product.getQuantity() - 1);
-        product.getOrders().add(this);
+        if (product != null) {
+            products.add(product);
+            product.setQuantity(product.getQuantity() - 1);
+            product.getOrders().add(this);
+        }
     }
 
     public void removeProduct(Product product) {
