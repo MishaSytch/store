@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import store.backend.database.entity.Category;
 import store.backend.database.loader.DBLoader;
-import store.backend.database.repository.CategoryRepository;
 
 import java.util.HashSet;
 
@@ -53,6 +52,7 @@ class CategoryServiceTest {
         for (Category category : categoryService.getCategories()) {
             Assertions.assertNotEquals(name, category.getName());
         }
+
         Category category = Category.builder()
                 .name(name_1)
                 .products(new HashSet<>())
@@ -60,13 +60,8 @@ class CategoryServiceTest {
                 .build();
 
         categoryService.saveCategory(category);
-        int count = 0;
 
-        for (Category c : categoryService.getCategories()) {
-            if (c.getName().equals(name_1)) count++;
-        }
-
-        Assertions.assertEquals(1, count);
+        Assertions.assertEquals(1, categoryService.getCategories().stream().filter(c -> c.getName().equals(name_1)).count());
 
         categoryService.deleteCategory(category.getId());
     }
@@ -87,13 +82,7 @@ class CategoryServiceTest {
 
     @Test
     void getCategories() {
-        int count = 0;
-        Iterable<Category> categories = categoryService.getCategories();
-        for (Category category : categories) {
-            count++;
-        }
-
-        Assertions.assertEquals(10, count);
+        Assertions.assertEquals(10, categoryService.getCategories().size());
 
     }
 

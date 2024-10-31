@@ -1,6 +1,5 @@
 package store.backend.service.product;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +8,7 @@ import store.backend.database.entity.Product;
 import store.backend.database.repository.CategoryRepository;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -56,7 +56,7 @@ public class CategoryService {
         return categoryRepository.findById(category_id);
     }
 
-    public Iterable<Category> getCategories() {
+    public List<Category> getCategories() {
         return categoryRepository.findAll();
     }
 
