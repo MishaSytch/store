@@ -46,7 +46,6 @@ public class User implements UserDetails {
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
-    @JsonManagedReference
     @Builder.Default
     private Set<Order> orders = new HashSet<>();
 

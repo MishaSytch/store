@@ -45,7 +45,6 @@ public class Product {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
-    @JsonManagedReference
     @Builder.Default
     private Set<Price> prices = new HashSet<>();
 
@@ -78,7 +77,7 @@ public class Product {
             cascade = CascadeType.PERSIST,
             fetch = FetchType.EAGER
     )
-    @JsonBackReference
+    @JsonIgnore
     @Builder.Default
     private Set<Category> categories = new HashSet<>();
 
@@ -88,7 +87,6 @@ public class Product {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
-    @JsonManagedReference
     @Builder.Default
     private Set<Image> images = new HashSet<>();
 
@@ -105,7 +103,7 @@ public class Product {
     }
 
     @ManyToMany(mappedBy = "products")
-    @JsonBackReference
+    @JsonIgnore
     @Builder.Default
     private List<Order> orders = new ArrayList<>();
 }

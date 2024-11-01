@@ -50,7 +50,6 @@ public class Category {
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    @JsonManagedReference
     @Builder.Default
     private Set<Product> products = new HashSet<>();
 
@@ -68,7 +67,7 @@ public class Category {
 
     @ManyToOne
     @JoinColumn(name = "super_category_id")
-    @JsonBackReference
+    @JsonIgnore
     private Category superCategory;
 
     @OneToMany(
@@ -77,7 +76,6 @@ public class Category {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
-    @JsonManagedReference
     @Builder.Default
     private Set<Category> categories = new HashSet<>();
 

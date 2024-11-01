@@ -36,7 +36,7 @@ public class Price {
     @ManyToOne(
             fetch = FetchType.LAZY
     )
-    @JsonBackReference
+    @JsonIgnore
     private Product product;
 
     @Column(name = "price_value", nullable = false)

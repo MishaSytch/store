@@ -32,7 +32,7 @@ public class Image {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
+    @JsonIgnore
     private Product product;
 
     @Column(name = "image_title", nullable = false)

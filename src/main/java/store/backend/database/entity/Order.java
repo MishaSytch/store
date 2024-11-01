@@ -39,7 +39,7 @@ public class Order {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
+    @JsonIgnore
     private User user;
 
     @Column(name = "order_date", nullable = false)
@@ -51,7 +51,6 @@ public class Order {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    @JsonManagedReference
     @Builder.Default
     private List<Product> products = new ArrayList<>();
 
