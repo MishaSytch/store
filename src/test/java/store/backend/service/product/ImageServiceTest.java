@@ -1,6 +1,7 @@
 package store.backend.service.product;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,15 +9,25 @@ import org.springframework.transaction.annotation.Transactional;
 import store.backend.database.entity.Category;
 import store.backend.database.entity.Image;
 import store.backend.database.entity.Product;
+import store.backend.database.loader.DBLoader;
 import store.backend.database.repository.ImageRepository;
 import store.backend.database.repository.ProductRepository;
 
-//@SpringBootTest
+@SpringBootTest
 class ImageServiceTest {
-    @Autowired
-    private ImageService imageService;
 
     private final String name = "ImageName";
+
+    @Autowired
+    private ImageService imageService;
+    @Autowired
+    private DBLoader dbLoader;
+
+    @BeforeEach
+    void start() {
+        dbLoader.delete();
+        dbLoader.load();
+    }
 
     @Test
     void createImage() {

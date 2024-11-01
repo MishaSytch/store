@@ -51,13 +51,13 @@ public class DBLoader {
         }
 
         for (Product p : productService.getAllProducts()) {
-            for (Image i : p.getImages()) {
-                productService.deleteImage(i.getId());
-            }
-
-            for (Price price : p.getPrices()) {
-                productService.deletePrice(price.getId());
-            }
+//            for (Image i : p.getImages()) {
+//                productService.deleteImage(i.getId());
+//            }
+//
+//            for (Price price : p.getPrices()) {
+//                productService.deletePrice(price.getId());
+//            }
 
             productService.deleteProduct(p.getId());
         }

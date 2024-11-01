@@ -1,21 +1,36 @@
 package store.backend.service.product;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import store.backend.database.entity.Price;
+import store.backend.database.entity.Product;
+import store.backend.database.loader.DBLoader;
 import store.backend.database.repository.PriceRepository;
+import store.backend.database.repository.ProductRepository;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-//@SpringBootTest
+@SpringBootTest
 class PriceServiceTest {
+
+    private final BigDecimal price = new BigDecimal(10);
+
     @Autowired
     private PriceService priceService;
 
-    private final BigDecimal price = new BigDecimal(10);
+    @Autowired
+    private DBLoader dbLoader;
+
+    @BeforeEach
+    void start() {
+        dbLoader.delete();
+        dbLoader.load();
+    }
 
     @Test
     void createPrice() {
@@ -30,13 +45,51 @@ class PriceServiceTest {
                 .date(new Date())
                 .build();
         priceService.savePrice(price_1);
-        }
+    }
+
+
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private PriceRepository priceRepository;
 
     @Test
     void updatePrice() {
+        BigDecimal initialPrice = price.add(new BigDecimal(5));
+        BigDecimal updatedPrice = price.add(new BigDecimal(15));
+
+        // Create a new price
+        Price priceEntity = priceService.createPrice(initialPrice, new Date());
+
+        // Update the price
+        priceEntity.setPrice(updatedPrice);
+        priceService.updatePrice(priceEntity);
+
+        // Assert the price was updated
+        Assertions.assertEquals(updatedPrice, priceService.savePrice(priceEntity).getPrice());
     }
 
     @Test
+    @Transactional
     void deletePrice() {
+        BigDecimal priceValue = price.add(new BigDecimal(20));
+
+        // Create a new price
+        Price priceEntity = priceService.createPrice(priceValue, new Date());
+
+        // Create a product and associate it with the price
+        Product product = productService.createProduct("Product", "Desc", "sku", 1L);
+        product.addPrice(priceEntity);
+        productRepository.save(product);
+
+        // Delete the price
+        priceService.deletePrice(priceEntity.getId());
+
+        // Assert the price was deleted
+        Assertions.assertFalse(priceRepository.findById(priceEntity.getId()).isPresent());
     }
 }

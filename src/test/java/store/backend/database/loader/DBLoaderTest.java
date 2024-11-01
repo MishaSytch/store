@@ -32,12 +32,6 @@ public class DBLoaderTest {
     @Autowired
     private UserService userService;
 
-    @BeforeEach
-    public void setUp() {
-        // Очистка базы перед каждым тестом
-        dbLoader.delete();
-    }
-
     @Test
     @Transactional
     public void testLoad() {
