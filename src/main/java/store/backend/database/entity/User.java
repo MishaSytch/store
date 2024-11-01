@@ -44,7 +44,7 @@ public class User implements UserDetails {
             mappedBy = "user",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     @Builder.Default
     private Set<Order> orders = new HashSet<>();

@@ -33,9 +33,7 @@ public class Price {
     @Column(name = "price_id")
     private Long id;
 
-    @ManyToOne(
-            fetch = FetchType.LAZY
-    )
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnore
     private Product product;
 

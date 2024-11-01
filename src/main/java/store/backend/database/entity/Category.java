@@ -72,7 +72,7 @@ public class Category {
 
     @OneToMany(
             mappedBy = "superCategory",
-            cascade = CascadeType.MERGE,
+            cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )

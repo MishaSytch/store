@@ -56,7 +56,7 @@ public class ProductService {
 
         // Обновляем список цен, избегая дублирования
         for (Price p : product.getPrices()) {
-            if (existing.getPrices().stream().noneMatch(x -> x.getId().equals(p.getId()) || p.getId() != null)) {
+            if (existing.getPrices().stream().noneMatch(x -> x.getId().equals(p.getId()))) {
                 existing.addPrice(p);
             } else {
                 existing.removePrice(p);
@@ -65,7 +65,7 @@ public class ProductService {
 
         // Обновляем список изображений, избегая дублирования
         for (Image i : product.getImages()) {
-            if (existing.getImages().stream().noneMatch(x -> x.getId().equals(i.getId()) || i.getId() != null)) {
+            if (existing.getImages().stream().noneMatch(x -> x.getId().equals(i.getId()))) {
                 existing.addImage(i);
             } else {
                 existing.removeImage(i);

@@ -44,6 +44,7 @@ public class DBLoader {
         }
     }
 
+    @Transactional
     public void delete() {
         for (Category c : categoryService.getCategories()) {
             categoryService.deleteCategory(c.getId());

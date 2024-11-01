@@ -31,7 +31,7 @@ public class Image {
 //    @Column(name = "image_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnore
     private Product product;
 
