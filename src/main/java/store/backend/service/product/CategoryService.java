@@ -33,6 +33,7 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
+    @Transactional
     public Category addCategory(Category category, Category addition) {
         if (addition != null && !category.getCategories().contains(addition)) {
             category.addCategory(addition);
@@ -43,6 +44,7 @@ public class CategoryService {
         return category;
     }
 
+    @Transactional
     public Category addProduct(Category category, Product product) {
         if (product != null && !category.getProducts().contains(product)) {
             category.addProduct(product);
@@ -60,28 +62,66 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
+//    @Transactional
+//    public Category updateCategory(Category category) {
+//        Category existing = categoryRepository.findById(category.getId()).orElseThrow(() -> new IllegalArgumentException("Category not found"));
+//
+//        for (Category c : category.getCategories()) {
+//            if (existing.getCategories().stream().anyMatch(x -> c.getId() != null && x.getId().equals(c.getId()))) {
+//                existing.removeCategory(c);
+//            } else {
+//                existing.addCategory(c);
+//            }
+//        }
+//
+//        for (Product p : category.getProducts()) {
+//            if (existing.getProducts().stream().anyMatch(x -> p.getId() != null && x.getId().equals(p.getId()))) {
+//                existing.removeProduct(p);
+//            } else {
+//                existing.addProduct(p);
+//            }
+//        }
+//
+//        if (category.getName() != null && !category.getName().equals(existing.getName())) existing.setName(category.getName());
+//        if (category.getSuperCategory() != null && !category.getSuperCategory().equals(existing.getSuperCategory())) existing.setSuperCategory(category.getSuperCategory());
+//
+//        saveCategory(existing);
+//
+//        return category;
+//    }
+
     @Transactional
     public Category updateCategory(Category category) {
-        Category existing = categoryRepository.findById(category.getId()).orElseThrow(() -> new IllegalArgumentException("Category not found"));
+        Category existing = categoryRepository.findById(category.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
 
+        // Обновление подкатегорий
         for (Category c : category.getCategories()) {
-            if (existing.getCategories().contains(c)) {
+            if (existing.getCategories().stream().noneMatch(x -> x.getId().equals(c.getId()))) {
+                existing.addCategory(c);
+            } else {
                 existing.removeCategory(c);
             }
         }
 
+        // Обновление продуктов
         for (Product p : category.getProducts()) {
-            if (existing.getProducts().contains(p)) {
+            if (existing.getProducts().stream().noneMatch(x -> x.getId().equals(p.getId()))) {
+                existing.addProduct(p);
+            } else {
                 existing.removeProduct(p);
             }
         }
 
-        if (category.getName() != null && !category.getName().equals(existing.getName())) existing.setName(category.getName());
-        if (category.getSuperCategory() != null && !category.getSuperCategory().equals(existing.getSuperCategory())) existing.setSuperCategory(category.getSuperCategory());
+        // Обновление имени и суперкатегории, если изменились
+        if (category.getName() != null && !category.getName().equals(existing.getName())) {
+            existing.setName(category.getName());
+        }
+        if (category.getSuperCategory() != null && !category.getSuperCategory().equals(existing.getSuperCategory())) {
+            existing.setSuperCategory(category.getSuperCategory());
+        }
 
-        saveCategory(existing);
-
-        return category;
+        return saveCategory(existing);
     }
 
     public void deleteCategory(Long category_id) {

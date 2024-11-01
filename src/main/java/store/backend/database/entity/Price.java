@@ -29,7 +29,7 @@ import java.math.BigDecimal;
 @Table(name = "Prices")
 public class Price {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "price_id")
     private Long id;
 

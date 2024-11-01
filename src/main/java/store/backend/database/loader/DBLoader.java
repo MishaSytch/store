@@ -33,13 +33,14 @@ public class DBLoader {
         load();
     }
 
+    @Transactional
     public void load() {
-        if (productService.getAllProducts().isEmpty()) {
+//        if (productService.getAllProducts().isEmpty()) {
             loadItems();
-        }
-        if (userService.getUsers().isEmpty()) {
+//        }
+//        if (userService.getUsers().isEmpty()) {
             loadUsers();
-        }
+//        }
     }
 
     public void delete() {
@@ -163,7 +164,7 @@ public class DBLoader {
         Category audio = categoryService.createCategory("Аудиотехника");
         Category locAudio = categoryService.createCategory("Портативные колонки");
         Category headPhones = categoryService.createCategory("Наушники");
-//        categoryService.addProduct(headPhones, appleHeadphones);
+        categoryService.addProduct(headPhones, appleHeadphones);
 
         Product yandex = productService.createProduct(
                 "Умная колонка Яндекс Станция",
@@ -177,11 +178,11 @@ public class DBLoader {
         productService.addImage(yandex, productService.createImage("https://main-cdn.sbermegamarket.ru/big1/hlr-system/183/806/901/210/272/028/100029532466b0.jpg", "https://main-cdn.sbermegamarket.ru/big1/hlr-system/183/806/901/210/272/028/100029532466b0.jpg"));
         categoryService.addProduct(locAudio, yandex);
 
-        categoryService.addCategory(audio, locAudio);
-        categoryService.addCategory(addition, pouch);
-        categoryService.addCategory(audio, headPhones);
-        categoryService.addCategory(smartPhones, addition);
-        categoryService.addCategory(smartPhones, samsung);
-        categoryService.addCategory(smartPhones, apple);
+//        categoryService.addCategory(audio, locAudio);
+//        categoryService.addCategory(addition, pouch);
+//        categoryService.addCategory(audio, headPhones);
+//        categoryService.addCategory(smartPhones, addition);
+//        categoryService.addCategory(smartPhones, samsung);
+//        categoryService.addCategory(smartPhones, apple);
     }
 }

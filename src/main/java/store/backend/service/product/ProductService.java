@@ -49,35 +49,79 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+//    @Transactional
+//    public Product updateProduct(Product product) {
+//        Product existing = productRepository.findById(product.getId()).orElseThrow(() -> new IllegalArgumentException("Product not found"));
+//
+//        existing.setOrders(new ArrayList<>());
+//        existing.setCategories(new HashSet<>());
+//        existing.setImages(new HashSet<>());
+//        existing.setPrices(new HashSet<>());
+//
+//        for (Price p : product.getPrices()) {
+//            if (existing.getPrices().stream().anyMatch(x -> p.getId() != null && x.getId().equals(p.getId()))) {
+//                existing.removePrice(p);
+//            } else {
+//                existing.addPrice(p);
+//            }
+//        }
+//
+//        for (Image i : product.getImages()) {
+//            if (existing.getImages().stream().anyMatch(x -> i.getId() != null && x.getId().equals(i.getId()))) {
+//                existing.removeImage(i);
+//            } else {
+//                existing.addImage(i);
+//            }
+//        }
+//
+//        if (product.getSKU() != null && !product.getSKU().equals(existing.getSKU())) existing.setSKU(product.getSKU());
+//        if (product.getQuantity() != null && !product.getQuantity().equals(existing.getQuantity())) existing.setQuantity(product.getQuantity());
+//        if (product.getName() != null && !product.getName().equals(existing.getName())) existing.setName(product.getName());
+//        if (product.getDescription() != null && !product.getDescription().equals(existing.getDescription())) existing.setDescription(product.getDescription());
+//
+//        saveProduct(existing);
+//
+//        return product;
+//    }
+
     @Transactional
     public Product updateProduct(Product product) {
-        Product existing = productRepository.findById(product.getId()).orElseThrow(() -> new IllegalArgumentException("Product not found"));
+        Product existing = productRepository.findById(product.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
-        existing.setOrders(new ArrayList<>());
-        existing.setCategories(new HashSet<>());
-        existing.setImages(new HashSet<>());
-        existing.setPrices(new HashSet<>());
-
+        // Обновляем список цен, избегая дублирования
         for (Price p : product.getPrices()) {
-            if (existing.getPrices().contains(p)) {
+            if (existing.getPrices().stream().noneMatch(x -> x.getId() != null && x.getId().equals(p.getId()))) {
+                existing.addPrice(p);
+            } else {
                 existing.removePrice(p);
             }
         }
 
+        // Обновляем список изображений, избегая дублирования
         for (Image i : product.getImages()) {
-            if (existing.getImages().contains(i)) {
+            if (existing.getImages().stream().noneMatch(x -> x.getId() != null && x.getId().equals(i.getId()))) {
+                existing.addImage(i);
+            } else {
                 existing.removeImage(i);
             }
         }
 
-        if (product.getSKU() != null && !product.getSKU().equals(existing.getSKU())) existing.setSKU(product.getSKU());
-        if (product.getQuantity() != null && !product.getQuantity().equals(existing.getQuantity())) existing.setQuantity(product.getQuantity());
-        if (product.getName() != null && !product.getName().equals(existing.getName())) existing.setName(product.getName());
-        if (product.getDescription() != null && !product.getDescription().equals(existing.getDescription())) existing.setDescription(product.getDescription());
+        // Обновляем поля продукта, если они изменились
+        if (product.getSKU() != null && !product.getSKU().equals(existing.getSKU())) {
+            existing.setSKU(product.getSKU());
+        }
+        if (product.getQuantity() != null && !product.getQuantity().equals(existing.getQuantity())) {
+            existing.setQuantity(product.getQuantity());
+        }
+        if (product.getName() != null && !product.getName().equals(existing.getName())) {
+            existing.setName(product.getName());
+        }
+        if (product.getDescription() != null && !product.getDescription().equals(existing.getDescription())) {
+            existing.setDescription(product.getDescription());
+        }
 
-        saveProduct(existing);
-
-        return product;
+        return saveProduct(existing);
     }
 
     public Optional<Product> getProduct(Long productId) {

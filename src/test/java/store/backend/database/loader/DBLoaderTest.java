@@ -13,6 +13,7 @@ import store.backend.service.product.ProductService;
 import store.backend.security.service.UserService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -56,17 +57,29 @@ public class DBLoaderTest {
         assertFalse(users.isEmpty(), "Users should be loaded");
 
         // Дополнительные проверки по имени продукта и категории
-        Category smartPhonesCategory = categories.stream()
+        List<Category> smartPhonesCategory = categories.stream()
                 .filter(c -> "Смартфоны".equals(c.getName()))
-                .findFirst()
-                .orElse(null);
+                .peek(c -> {
+                    assertEquals(2, (long) c.getCategories().size());
+                    assertEquals(1, (long) c.getProducts().size());
+                }).collect(Collectors.toList());
         assertNotNull(smartPhonesCategory, "Category 'Смартфоны' should exist");
+        assertEquals(1, smartPhonesCategory.size());
+
 
         Product iphone14 = products.stream()
                 .filter(p -> "Смартфон Apple iPhone 14".equals(p.getName()))
-                .findFirst()
-                .orElse(null);
+                .peek(p -> {
+                    assertEquals(1, (long) p.getCategories().size());
+                    assertEquals(3, (long) p.getImages().size());
+                    assertEquals(3, (long) p.getPrices().size());
+                    assertEquals(100, (long) p.getQuantity());
+                })
+                .findFirst().get();
+
         assertNotNull(iphone14, "Product 'Смартфон Apple iPhone 14' should exist");
+
+
     }
 
     @Test
