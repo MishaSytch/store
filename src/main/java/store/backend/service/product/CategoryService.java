@@ -62,37 +62,10 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-//    @Transactional
-//    public Category updateCategory(Category category) {
-//        Category existing = categoryRepository.findById(category.getId()).orElseThrow(() -> new IllegalArgumentException("Category not found"));
-//
-//        for (Category c : category.getCategories()) {
-//            if (existing.getCategories().stream().anyMatch(x -> c.getId() != null && x.getId().equals(c.getId()))) {
-//                existing.removeCategory(c);
-//            } else {
-//                existing.addCategory(c);
-//            }
-//        }
-//
-//        for (Product p : category.getProducts()) {
-//            if (existing.getProducts().stream().anyMatch(x -> p.getId() != null && x.getId().equals(p.getId()))) {
-//                existing.removeProduct(p);
-//            } else {
-//                existing.addProduct(p);
-//            }
-//        }
-//
-//        if (category.getName() != null && !category.getName().equals(existing.getName())) existing.setName(category.getName());
-//        if (category.getSuperCategory() != null && !category.getSuperCategory().equals(existing.getSuperCategory())) existing.setSuperCategory(category.getSuperCategory());
-//
-//        saveCategory(existing);
-//
-//        return category;
-//    }
-
     @Transactional
     public Category updateCategory(Category category) {
-        Category existing = categoryRepository.findById(category.getId())
+        Category existing = categoryRepository
+                .findById(category.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Category not found"));
 
         // Обновление подкатегорий
@@ -121,7 +94,9 @@ public class CategoryService {
             existing.setSuperCategory(category.getSuperCategory());
         }
 
-        return saveCategory(existing);
+        saveCategory(existing);
+
+        return category;
     }
 
     public void deleteCategory(Long category_id) {

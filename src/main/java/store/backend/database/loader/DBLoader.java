@@ -30,17 +30,18 @@ public class DBLoader {
         this.userService = userService;
         this.authenticationService = authenticationService;
 
+        delete();
         load();
     }
 
     @Transactional
     public void load() {
-//        if (productService.getAllProducts().isEmpty()) {
+        if (productService.getAllProducts().isEmpty()) {
             loadItems();
-//        }
-//        if (userService.getUsers().isEmpty()) {
+        }
+        if (userService.getUsers().isEmpty()) {
             loadUsers();
-//        }
+        }
     }
 
     public void delete() {

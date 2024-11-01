@@ -49,9 +49,46 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-
+    @Transactional
     public Product updateProduct(Product product) {
-        return saveProduct(product);
+        Product existing = productRepository.findById(product.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+
+        // Обновляем список цен, избегая дублирования
+        for (Price p : product.getPrices()) {
+            if (existing.getPrices().stream().noneMatch(x -> x.getId().equals(p.getId()) || p.getId() != null)) {
+                existing.addPrice(p);
+            } else {
+                existing.removePrice(p);
+            }
+        }
+
+        // Обновляем список изображений, избегая дублирования
+        for (Image i : product.getImages()) {
+            if (existing.getImages().stream().noneMatch(x -> x.getId().equals(i.getId()) || i.getId() != null)) {
+                existing.addImage(i);
+            } else {
+                existing.removeImage(i);
+            }
+        }
+
+        // Обновляем поля продукта, если они изменились
+        if (product.getSKU() != null && !product.getSKU().equals(existing.getSKU())) {
+            existing.setSKU(product.getSKU());
+        }
+        if (product.getQuantity() != null && !product.getQuantity().equals(existing.getQuantity())) {
+            existing.setQuantity(product.getQuantity());
+        }
+        if (product.getName() != null && !product.getName().equals(existing.getName())) {
+            existing.setName(product.getName());
+        }
+        if (product.getDescription() != null && !product.getDescription().equals(existing.getDescription())) {
+            existing.setDescription(product.getDescription());
+        }
+
+        saveProduct(existing);
+
+        return product;
     }
 
     public Optional<Product> getProduct(Long productId) {
