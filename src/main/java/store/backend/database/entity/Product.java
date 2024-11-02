@@ -41,7 +41,7 @@ public class Product {
 
     @OneToMany(
             mappedBy = "product",
-            cascade = {CascadeType.DETACH, CascadeType.REMOVE},
+            cascade = {CascadeType.DETACH, CascadeType.PERSIST},
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
@@ -83,7 +83,7 @@ public class Product {
 
     @OneToMany(
             mappedBy = "product",
-            cascade = {CascadeType.DETACH, CascadeType.REMOVE},
+            cascade = {CascadeType.DETACH, CascadeType.PERSIST},
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )

@@ -54,7 +54,7 @@ public class DBLoaderTest {
         List<Category> smartPhonesCategory = categories.stream()
                 .filter(c -> "Смартфоны".equals(c.getName()))
                 .peek(c -> {
-                    assertEquals(2, (long) c.getCategories().size());
+                    assertEquals(3, (long) c.getCategories().size());
                     assertEquals(1, (long) c.getProducts().size());
                 }).collect(Collectors.toList());
         assertNotNull(smartPhonesCategory, "Category 'Смартфоны' should exist");
