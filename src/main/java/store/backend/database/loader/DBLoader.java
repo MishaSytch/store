@@ -180,11 +180,11 @@ public class DBLoader {
         productService.addImage(yandex, productService.createImage("https://main-cdn.sbermegamarket.ru/big1/hlr-system/183/806/901/210/272/028/100029532466b0.jpg", "https://main-cdn.sbermegamarket.ru/big1/hlr-system/183/806/901/210/272/028/100029532466b0.jpg"));
         categoryService.addProduct(locAudio, yandex);
 
-//        categoryService.addCategory(audio, locAudio);
-//        categoryService.addCategory(addition, pouch);
-//        categoryService.addCategory(audio, headPhones);
-//        categoryService.addCategory(smartPhones, addition);
-//        categoryService.addCategory(smartPhones, samsung);
-//        categoryService.addCategory(smartPhones, apple);
+        categoryService.addCategory(audio, locAudio);
+        categoryService.addCategory(addition, pouch);
+        categoryService.addCategory(audio, headPhones);
+        categoryService.addCategory(smartPhones, addition);
+        categoryService.addCategory(smartPhones, samsung);
+        categoryService.addCategory(smartPhones, apple);
     }
 }

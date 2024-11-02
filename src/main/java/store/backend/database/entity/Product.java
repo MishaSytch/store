@@ -41,7 +41,7 @@ public class Product {
 
     @OneToMany(
             mappedBy = "product",
-            cascade = CascadeType.MERGE,
+            cascade = {CascadeType.DETACH, CascadeType.REMOVE},
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
@@ -74,7 +74,7 @@ public class Product {
 
     @ManyToMany(
             mappedBy = "products",
-            cascade = CascadeType.MERGE,
+            cascade = {CascadeType.DETACH, CascadeType.REFRESH},
             fetch = FetchType.EAGER
     )
     @JsonIgnore
@@ -83,7 +83,7 @@ public class Product {
 
     @OneToMany(
             mappedBy = "product",
-            cascade = CascadeType.MERGE,
+            cascade = {CascadeType.DETACH, CascadeType.REMOVE},
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )

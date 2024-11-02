@@ -1,6 +1,5 @@
 package store.backend.database.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import store.backend.security.role.Role;
@@ -42,7 +41,7 @@ public class User implements UserDetails {
 
     @OneToMany(
             mappedBy = "user",
-            cascade = CascadeType.ALL,
+            cascade = {CascadeType.DETACH, CascadeType.REMOVE},
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )

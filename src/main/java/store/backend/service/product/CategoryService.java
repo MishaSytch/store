@@ -68,25 +68,18 @@ public class CategoryService {
                 .findById(category.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Category not found"));
 
-        // Обновление подкатегорий
         for (Category c : category.getCategories()) {
             if (existing.getCategories().stream().noneMatch(x -> x.getId().equals(c.getId()))) {
                 existing.addCategory(c);
-            } else {
-                existing.removeCategory(c);
             }
         }
 
-        // Обновление продуктов
         for (Product p : category.getProducts()) {
             if (existing.getProducts().stream().noneMatch(x -> x.getId().equals(p.getId()))) {
                 existing.addProduct(p);
-            } else {
-                existing.removeProduct(p);
             }
         }
 
-        // Обновление имени и суперкатегории, если изменились
         if (category.getName() != null && !category.getName().equals(existing.getName())) {
             existing.setName(category.getName());
         }
@@ -94,9 +87,7 @@ public class CategoryService {
             existing.setSuperCategory(category.getSuperCategory());
         }
 
-        saveCategory(existing);
-
-        return category;
+        return saveCategory(existing);
     }
 
     public void deleteCategory(Long category_id) {

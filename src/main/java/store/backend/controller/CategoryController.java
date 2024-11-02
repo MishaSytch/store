@@ -20,9 +20,14 @@ public class CategoryController {
         return categoryService.getCategory(category_id).map(Category::getProducts).orElse(null);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}=")
     public Iterable<Category> getInnerCategories(@PathVariable("id") Long category_id) {
         return categoryService.getCategory(category_id).map(Category::getCategories).orElse(null);
+    }
+
+    @GetMapping("/{id}")
+    public Category getCategory(@PathVariable("id") Long category_id) {
+        return categoryService.getCategory(category_id).orElse(null);
     }
 
     @GetMapping("/all")

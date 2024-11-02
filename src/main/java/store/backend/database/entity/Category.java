@@ -43,7 +43,8 @@ public class Category {
     private String name;
 
     @ManyToMany(
-            fetch = FetchType.EAGER
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.REFRESH}
     )
     @JoinTable(
             name = "category_product",
@@ -72,7 +73,7 @@ public class Category {
 
     @OneToMany(
             mappedBy = "superCategory",
-            cascade = CascadeType.ALL,
+            cascade = {CascadeType.DETACH, CascadeType.REMOVE, CascadeType.MERGE},
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
