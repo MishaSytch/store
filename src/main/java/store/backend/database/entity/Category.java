@@ -44,7 +44,7 @@ public class Category {
 
     @ManyToMany(
             fetch = FetchType.EAGER,
-            cascade = {CascadeType.REFRESH}
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     @JoinTable(
             name = "category_product",

@@ -10,6 +10,8 @@ import store.backend.database.repository.CategoryRepository;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
@@ -36,11 +38,18 @@ public class CategoryService {
     @Transactional
     public Category addCategory(Category category, Category addition) {
         if (addition != null && !category.getCategories().contains(addition)) {
+            // Проверяем, какие продукты уже существуют в базе данных
+            Set<Product> existingProducts = addition.getProducts().stream()
+                    .filter(product -> productService.getProduct(product.getId()).isPresent())
+                    .collect(Collectors.toSet());
+
+            // Удаляем существующие продукты из добавляемой категории
+            addition.getProducts().removeAll(existingProducts);
+
             category.addCategory(addition);
 
             return updateCategory(category);
         }
-
         return category;
     }
 
