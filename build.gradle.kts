@@ -49,6 +49,7 @@ dependencies {
 	testImplementation("org.assertj:assertj-core:3.26.3")
 	implementation("com.jayway.jsonpath:json-path:2.9.0")
 	testImplementation("org.hamcrest:hamcrest:3.0")
+	testImplementation ("org.mockito:mockito-core:4.0.0")
 
 
 }
