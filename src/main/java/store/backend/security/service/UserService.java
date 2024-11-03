@@ -67,7 +67,7 @@ public class UserService {
                                                 .append(product.getName())
                                                 .append(": ")
                                                 .append(productService.getCurrentPrice(product.getId()).getPrice().toString())
-                                                .append("\n\t")
+                                                .append("$\n\t")
                             );
                             IEmailService.sendSimpleMessage(user.getEmail(), "Ваш заказ в интернет магазине", stringBuilder.toString());
 

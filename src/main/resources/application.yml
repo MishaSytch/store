@@ -13,32 +13,30 @@ spring:
     password: pass
     driver-class-name: org.postgresql.Driver
 
-
-
   mail:
     host: smtp.yandex.ru
     port: 465
     protocol: smtp
     username: michealsytch@yandex.ru
     password: "xnveichxovfehfyq"
-    test-connection: true
     properties:
       mail:
         smtp:
-          auth: true
-          starttls:
+          ssl:
             enable: true
-        ssl:
-          trust: smtp.yandex.ru
-        sender:
-          email: no-reply@example.com
-          text: no-reply
-  sql:
-    init:
-      data-locations: classpath:init-schema.sql
+          auth: true
+    test-connection: true
+    default-encoding: UTF-8
+    debug: true
+
+sql:
+  init:
+    data-locations: classpath:init-schema.sql
 
 mail:
-  debug: true
+  sender:
+    email: no-reply@example.com
+    text: no-reply
 
 token:
   signing:
@@ -46,5 +44,5 @@ token:
 
 logging:
   level:
-#    org.springframework.orm.jpa: DEBUG
+    # org.springframework.orm.jpa: DEBUG
     org.springframework.transaction: DEBUG
