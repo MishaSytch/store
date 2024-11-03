@@ -2,6 +2,7 @@ package store.backend.security.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import store.backend.database.entity.User;
 import store.backend.database.entity.Order;
 import store.backend.database.entity.Product;
@@ -15,11 +16,8 @@ import java.util.stream.Collectors;
 public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private ProductService productService;
 
+    @Transactional
     public Order createOrder(User user, Date date, Iterable<Product> products) {
         Order order = Order.builder()
                 .date(date)
@@ -28,24 +26,37 @@ public class OrderService {
             orderRepository.save(addOrder(user, order));
             addProduct(order, products);
 
-        return order;
-
+        return updateOrder(order);
     }
 
     public Order saveOrder(Order order) {
         return orderRepository.save(order);
     }
 
+    @Transactional
     public Order addOrder(User user, Order order) {
         user.addOrder(order);
 
-        return  order;
+        return order;
     }
 
-    public void addProduct(Order order, Iterable<Product> products) {
+    @Transactional
+    public Order updateOrder(Order order) {
+        orderRepository.findById(order.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+
+        saveOrder(order);
+
+        return order;
+    }
+
+    @Transactional
+    public Order addProduct(Order order, Iterable<Product> products) {
         for (Product product : products) {
             order.addProduct(product);
         }
+
+        return updateOrder(order);
     }
 
     public Order getOrder(Long order_id) {
