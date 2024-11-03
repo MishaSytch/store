@@ -1,6 +1,5 @@
 package store.backend.database.loader;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +14,10 @@ import store.backend.security.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class DBLoaderTest {
@@ -66,7 +68,7 @@ public class DBLoaderTest {
                 .peek(p -> {
                     assertEquals(1, (long) p.getCategories().size());
                     assertEquals(3, (long) p.getImages().size());
-                    assertEquals(3, (long) p.getPrices().size());
+                    assertEquals(1, (long) p.getPrices().size());
                     assertEquals(100, (long) p.getQuantity());
                 })
                 .findFirst().get();

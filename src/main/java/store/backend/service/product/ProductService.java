@@ -59,7 +59,7 @@ public class ProductService {
             if (existing.getPrices().stream().noneMatch(x -> x.getId().equals(p.getId()))) {
                 existing.addPrice(p);
             } else {
-                existing.removePrice(p);
+//                existing.removePrice(p);
             }
         }
 
@@ -68,7 +68,7 @@ public class ProductService {
             if (existing.getImages().stream().noneMatch(x -> x.getId().equals(i.getId()))) {
                 existing.addImage(i);
             } else {
-                existing.removeImage(i);
+//                existing.removeImage(i);
             }
         }
 
