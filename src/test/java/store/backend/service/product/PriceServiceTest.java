@@ -62,14 +62,11 @@ class PriceServiceTest {
         BigDecimal initialPrice = price.add(new BigDecimal(5));
         BigDecimal updatedPrice = price.add(new BigDecimal(15));
 
-        // Create a new price
         Price priceEntity = priceService.createPrice(initialPrice, new Date());
 
-        // Update the price
         priceEntity.setPrice(updatedPrice);
         priceService.updatePrice(priceEntity);
 
-        // Assert the price was updated
         Assertions.assertEquals(updatedPrice, priceService.savePrice(priceEntity).getPrice());
     }
 
@@ -78,18 +75,14 @@ class PriceServiceTest {
     void deletePrice() {
         BigDecimal priceValue = price.add(new BigDecimal(20));
 
-        // Create a new price
         Price priceEntity = priceService.createPrice(priceValue, new Date());
 
-        // Create a product and associate it with the price
         Product product = productService.createProduct("Product", "Desc", "sku", 1L);
         product.addPrice(priceEntity);
         productRepository.save(product);
 
-        // Delete the price
         priceService.deletePrice(priceEntity.getId());
 
-        // Assert the price was deleted
         Assertions.assertFalse(priceRepository.findById(priceEntity.getId()).isPresent());
     }
 }

@@ -51,42 +51,10 @@ public class ProductService {
 
     @Transactional
     public Product updateProduct(Product product) {
-        Product existing = productRepository.findById(product.getId())
+        productRepository.findById(product.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
-        // Обновляем список цен, избегая дублирования
-        for (Price p : product.getPrices()) {
-            if (existing.getPrices().stream().noneMatch(x -> x.getId().equals(p.getId()))) {
-                existing.addPrice(p);
-            } else {
-//                existing.removePrice(p);
-            }
-        }
-
-        // Обновляем список изображений, избегая дублирования
-        for (Image i : product.getImages()) {
-            if (existing.getImages().stream().noneMatch(x -> x.getId().equals(i.getId()))) {
-                existing.addImage(i);
-            } else {
-//                existing.removeImage(i);
-            }
-        }
-
-        // Обновляем поля продукта, если они изменились
-        if (product.getSKU() != null && !product.getSKU().equals(existing.getSKU())) {
-            existing.setSKU(product.getSKU());
-        }
-        if (product.getQuantity() != null && !product.getQuantity().equals(existing.getQuantity())) {
-            existing.setQuantity(product.getQuantity());
-        }
-        if (product.getName() != null && !product.getName().equals(existing.getName())) {
-            existing.setName(product.getName());
-        }
-        if (product.getDescription() != null && !product.getDescription().equals(existing.getDescription())) {
-            existing.setDescription(product.getDescription());
-        }
-
-        saveProduct(existing);
+        saveProduct(product);
 
         return product;
     }

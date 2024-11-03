@@ -6,11 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import store.backend.database.entity.Category;
 import store.backend.database.entity.Image;
 import store.backend.database.entity.Product;
 import store.backend.database.loader.DBLoader;
-import store.backend.database.repository.ImageRepository;
 import store.backend.database.repository.ProductRepository;
 
 @SpringBootTest

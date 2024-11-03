@@ -38,12 +38,10 @@ public class CategoryService {
     @Transactional
     public Category addCategory(Category category, Category addition) {
         if (addition != null && !category.getCategories().contains(addition)) {
-            // Проверяем, какие продукты уже существуют в базе данных
             Set<Product> existingProducts = addition.getProducts().stream()
                     .filter(product -> productService.getProduct(product.getId()).isPresent())
                     .collect(Collectors.toSet());
 
-            // Удаляем существующие продукты из добавляемой категории
             addition.getProducts().removeAll(existingProducts);
 
             category.addCategory(addition);

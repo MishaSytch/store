@@ -37,22 +37,17 @@ public class DBLoaderTest {
     @Test
     @Transactional
     public void testLoad() {
-        // Вызов метода загрузки данных
         dbLoader.load();
 
-        // Проверка загруженных категорий
         List<Category> categories = categoryService.getCategories();
         assertFalse(categories.isEmpty(), "Categories should be loaded");
 
-        // Проверка загруженных продуктов
         List<Product> products = productService.getAllProducts();
         assertFalse(products.isEmpty(), "Products should be loaded");
 
-        // Проверка загруженных пользователей
         List<User> users = userService.getUsers();
         assertFalse(users.isEmpty(), "Users should be loaded");
 
-        // Дополнительные проверки по имени продукта и категории
         List<Category> smartPhonesCategory = categories.stream()
                 .filter(c -> "Смартфоны".equals(c.getName()))
                 .peek(c -> {
@@ -81,13 +76,10 @@ public class DBLoaderTest {
     @Test
     @Transactional
     public void testDelete() {
-        // Загрузка данных перед удалением
         dbLoader.load();
 
-        // Удаление всех данных
         dbLoader.delete();
 
-        // Проверка, что данные удалены
         assertTrue(categoryService.getCategories().isEmpty(), "Categories should be deleted");
         assertTrue(productService.getAllProducts().isEmpty(), "Products should be deleted");
         assertTrue(userService.getUsers().isEmpty(), "Users should be deleted");
