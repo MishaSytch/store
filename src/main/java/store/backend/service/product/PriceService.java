@@ -33,7 +33,7 @@ class PriceService {
     }
 
     public void deletePrice(Long price_id) {
-        if (price_id != null) priceRepository.findById(price_id).ifPresent(
+        priceRepository.findById(price_id).ifPresent(
                 price -> {
                     price.getProduct().removePrice(price);
                     priceRepository.deleteById(price_id);

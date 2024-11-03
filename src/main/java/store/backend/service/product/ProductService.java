@@ -1,10 +1,11 @@
 package store.backend.service.product;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import store.backend.database.entity.*;
+import store.backend.database.entity.Product;
+import store.backend.database.entity.Price;
+import store.backend.database.entity.Image;
 import store.backend.database.repository.ProductRepository;
 
 import java.math.BigDecimal;
@@ -59,8 +60,8 @@ public class ProductService {
         return product;
     }
 
-    public Optional<Product> getProduct(Long productId) {
-        return productRepository.findById(productId);
+    public Optional<Product> getProduct(Long product_id) {
+        return productRepository.findById(product_id);
     }
 
     public List<Product> getProductsById(List<Long> productIds) {
@@ -85,8 +86,8 @@ public class ProductService {
     }
 
     @Transactional
-    public void deleteProduct(Long productId) {
-        Product product = getProduct(productId).orElse(null);
+    public void deleteProduct(Long product_id) {
+        Product product = getProduct(product_id).orElse(null);
         if (product != null) {
             productRepository.delete(product);
         }
@@ -105,8 +106,8 @@ public class ProductService {
         return product;
     }
 
-    public Price getCurrentPrice(Long productId) {
-        return getProduct(productId)
+    public Price getCurrentPrice(Long product_id) {
+        return getProduct(product_id)
                 .flatMap(product -> product.getPrices().stream().max(Comparator.comparing(Price::getDate)))
                 .orElse(null);
     }
@@ -115,8 +116,8 @@ public class ProductService {
         return priceService.updatePrice(price);
     }
 
-    public void deletePrice(Long priceId) {
-        priceService.deletePrice(priceId);
+    public void deletePrice(Long price_id) {
+        priceService.deletePrice(price_id);
     }
 
     public Image createImage(String name, String ref) {
