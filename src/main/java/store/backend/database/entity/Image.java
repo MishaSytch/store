@@ -1,6 +1,5 @@
 package store.backend.database.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,7 +27,6 @@ public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-//    @Column(name = "image_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -24,14 +24,10 @@ class ImageServiceTest {
     @BeforeEach
     void start() {
         dbLoader.delete();
-        dbLoader.load();
     }
 
     @Test
     void createImage() {
-        for (Image image : imageService.getImages()) {
-            Assertions.assertNotEquals(name, image.getName());
-        }
         imageService.createImage(name, name);
         int count = 0;
         for (Image image : imageService.getImages()) {

@@ -7,7 +7,6 @@ import store.backend.database.entity.User;
 import store.backend.database.entity.Order;
 import store.backend.database.entity.Product;
 import store.backend.database.repository.OrderRepository;
-import store.backend.service.product.ProductService;
 
 import java.util.Date;
 import java.util.stream.Collectors;

@@ -16,27 +16,31 @@ spring:
   mail:
     host: smtp.yandex.ru
     port: 465
-    protocol: smtp
     username: michealsytch@yandex.ru
-    password: "xnveichxovfehfyq"
-    properties:
-      mail:
-        smtp:
-          ssl:
-            enable: true
-          auth: true
+    password: xnveichxovfehfyq
     test-connection: true
     default-encoding: UTF-8
-    debug: true
+    properties:
+      mail:
+        transport:
+          protocol: smtps
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            enable: true
+            trust: smtp.yandex.ru
+        sender:
+          email: no-reply@example.com
+          text: no-reply
+        debug: true
 
 sql:
   init:
     data-locations: classpath:init-schema.sql
 
-mail:
-  sender:
-    email: no-reply@example.com
-    text: no-reply
 
 token:
   signing:

@@ -37,7 +37,7 @@ public class UserController {
 
     @GetMapping("/{id}/orders")
     public Iterable<Order> getOrders(@PathVariable("id") Long user_id) {
-        return userService.getOrders(user_id);
+        return userService.getUserOrders(user_id);
     }
 
     @GetMapping("/{id}/order")

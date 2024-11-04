@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import store.backend.database.entity.Product;
 import store.backend.database.entity.User;
 import store.backend.database.entity.Order;
+import store.backend.database.repository.OrderRepository;
 import store.backend.database.repository.UserRepository;
 import store.backend.service.product.IEmailService;
 import store.backend.service.product.ProductService;
@@ -22,16 +23,24 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private OrderService orderService;
+
     @Autowired
     private IEmailService IEmailService;
+
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     public Optional<User> getUser(Long user_id) {
         return userRepository.findById(user_id);
@@ -45,12 +54,16 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Iterable<Order> getOrders(Long customer_id) {
+    public Iterable<Order> getUserOrders(Long customer_id) {
         return orderService.getOrders(customer_id);
     }
 
+    public List<Order> getOrders() {
+        return orderRepository.findAll();
+    }
+
     public Order getOrder(Long user_id, Long order_id) {
-        Iterable<Order> orders = getOrders(user_id);
+        Iterable<Order> orders = getUserOrders(user_id);
         for (Order order : orders) {
             if (order.getId().equals(order_id)) return order;
         }

@@ -1,14 +1,21 @@
 package store.backend.database.loader;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import store.backend.database.entity.*;
+import store.backend.database.entity.Price;
+import store.backend.database.entity.Product;
+import store.backend.database.entity.Image;
+import store.backend.database.entity.User;
+import store.backend.database.entity.Order;
+import store.backend.database.entity.Category;
 import store.backend.security.dto.SignUpRequest;
 import store.backend.security.role.Role;
 import store.backend.security.service.AuthenticationService;
+import store.backend.security.service.OrderService;
 import store.backend.security.service.UserService;
 import store.backend.service.product.CategoryService;
+import store.backend.service.product.ImageService;
+import store.backend.service.product.PriceService;
 import store.backend.service.product.ProductService;
 
 import java.math.BigDecimal;
@@ -17,17 +24,30 @@ import java.util.Random;
 
 @Component
 public class DBLoader {
+
     private final CategoryService categoryService;
+
     private final ProductService productService;
+
     private final UserService userService;
+
+    private final ImageService imageService;
+
+    private final PriceService priceService;
+
+    private final OrderService orderService;
+
     private final AuthenticationService authenticationService;
+
     private final Random random = new Random();
 
-    @Autowired
-    public DBLoader(CategoryService categoryService, ProductService productService, UserService userService, AuthenticationService authenticationService) {
+    public DBLoader(CategoryService categoryService, ProductService productService, UserService userService, ImageService imageService, PriceService priceService, OrderService orderService, AuthenticationService authenticationService) {
         this.categoryService = categoryService;
         this.productService = productService;
         this.userService = userService;
+        this.imageService = imageService;
+        this.priceService = priceService;
+        this.orderService = orderService;
         this.authenticationService = authenticationService;
 
         delete();
@@ -51,19 +71,23 @@ public class DBLoader {
         }
 
         for (Product p : productService.getAllProducts()) {
-//            for (Image i : p.getImages()) {
-//                productService.deleteImage(i.getId());
-//            }
-//
-//            for (Price price : p.getPrices()) {
-//                productService.deletePrice(price.getId());
-//            }
-
             productService.deleteProduct(p.getId());
+        }
+
+        for (Image i : imageService.getImages()) {
+            imageService.deleteImage(i.getId());
+        }
+
+        for (Price p : priceService.getPrices()) {
+            priceService.deletePrice(p.getId());
         }
 
         for (User u : userService.getUsers()) {
             userService.deleteUser(u.getId());
+        }
+
+        for (Order o : userService.getOrders()) {
+            orderService.deleteOrder(o);
         }
 
     }
@@ -79,7 +103,6 @@ public class DBLoader {
                 Role.ADMIN);
     }
 
-    @Transactional
     private void loadItems() {
         // Создание основной категории "Смартфоны"
         Category smartPhones = categoryService.createCategory("Смартфоны");

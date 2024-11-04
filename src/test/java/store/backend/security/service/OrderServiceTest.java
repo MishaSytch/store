@@ -8,10 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import store.backend.database.entity.Order;
 import store.backend.database.entity.Product;
 import store.backend.database.entity.User;
+import store.backend.database.loader.DBLoader;
 import store.backend.database.repository.OrderRepository;
-import store.backend.database.repository.UserRepository;
-import store.backend.database.repository.ProductRepository;
-import store.backend.security.dto.JwtAuthenticationResponse;
 import store.backend.security.dto.SignUpRequest;
 import store.backend.security.role.Role;
 import store.backend.service.product.ProductService;
@@ -21,7 +19,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class OrderServiceTest {
@@ -42,11 +43,16 @@ class OrderServiceTest {
     @Autowired
     private AuthenticationService authenticationService;
 
+    @Autowired
+    private DBLoader dbLoader;
+
     private User testUser;
     private List<Product> testProducts;
 
     @BeforeEach
     void setUp() {
+        dbLoader.delete();
+
         SignUpRequest request = new SignUpRequest();
         request.setFirstName("John");
         request.setLastName("Doe");

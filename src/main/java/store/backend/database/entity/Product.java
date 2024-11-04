@@ -1,9 +1,7 @@
 package store.backend.database.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,8 +54,10 @@ public class Product {
     }
 
     public void removePrice(Price price) {
-        prices.remove(price);
-        price.setProduct(null);
+        if (price != null) {
+            prices.remove(price);
+            price.setProduct(null);
+        }
     }
 
     @Column(name = "product_name", nullable = false)
@@ -98,8 +98,10 @@ public class Product {
     }
 
     public void removeImage(Image image) {
-        images.remove(image);
-        image.setProduct(null);
+        if (image != null) {
+            images.remove(image);
+            image.setProduct(null);
+        }
     }
 
     @ManyToMany(mappedBy = "products")

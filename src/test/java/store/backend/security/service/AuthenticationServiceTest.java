@@ -3,6 +3,7 @@ package store.backend.security.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import store.backend.database.loader.DBLoader;
 import store.backend.security.dto.JwtAuthenticationResponse;
 import store.backend.security.dto.SignInRequest;
 import store.backend.security.dto.SignUpRequest;
@@ -15,10 +16,14 @@ class AuthenticationServiceTest {
 
     @Autowired
     private AuthenticationService authenticationService;
+    @Autowired
+    private DBLoader dbLoader;
 
 
     @Test
     void signUp() {
+        dbLoader.delete();
+
         SignUpRequest request = new SignUpRequest();
         request.setFirstName("John");
         request.setLastName("Doe");

@@ -4,11 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import store.backend.database.entity.Product;
 import store.backend.database.entity.User;
 import store.backend.database.entity.Order;
-import store.backend.database.repository.UserRepository;
+import store.backend.database.loader.DBLoader;
 import store.backend.security.dto.SignUpRequest;
 import store.backend.security.role.Role;
 import store.backend.service.product.ProductService;
@@ -19,7 +18,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 class UserServiceIntegrationTest {
@@ -34,6 +36,9 @@ class UserServiceIntegrationTest {
     private OrderService orderService;
 
     @Autowired
+    private DBLoader dbLoader;
+
+    @Autowired
     private ProductService productService;
 
     private User testUser;
@@ -41,6 +46,8 @@ class UserServiceIntegrationTest {
 
     @BeforeEach
     void setUp() {
+        dbLoader.delete();
+
         SignUpRequest request = new SignUpRequest();
         request.setFirstName("John");
         request.setLastName("Doe");

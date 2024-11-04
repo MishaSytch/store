@@ -7,9 +7,10 @@ import store.backend.database.repository.PriceRepository;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Service
-class PriceService {
+public class PriceService {
     @Autowired
     private PriceRepository priceRepository;
 
@@ -35,9 +36,18 @@ class PriceService {
     public void deletePrice(Long price_id) {
         priceRepository.findById(price_id).ifPresent(
                 price -> {
-                    price.getProduct().removePrice(price);
+                    if (price.getProduct() != null) price.getProduct().removePrice(price);
                     priceRepository.deleteById(price_id);
                 }
         );
+    }
+
+    public List<Price> getPrices() {
+        return priceRepository.findAll();
+    }
+
+
+    public Price getPrice(Long price_id) {
+        return priceRepository.findById(price_id).orElse(null);
     }
 }

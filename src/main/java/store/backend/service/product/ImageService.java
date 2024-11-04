@@ -8,7 +8,7 @@ import store.backend.database.repository.ImageRepository;
 import java.util.List;
 
 @Service
-class ImageService {
+public class ImageService {
     @Autowired
     private ImageRepository imageRepository;
 
@@ -34,7 +34,7 @@ class ImageService {
     public void deleteImage(Long image_id) {
         if (image_id != null) imageRepository.findById(image_id).ifPresent(
             image ->{
-                    image.getProduct().removeImage(image);
+                    if (image.getProduct() != null) image.getProduct().removeImage(image);
                     imageRepository.deleteById(image_id);
             }
         );
