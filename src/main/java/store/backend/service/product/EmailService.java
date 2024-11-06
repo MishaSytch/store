@@ -9,8 +9,10 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 
 @Service
 public class EmailService implements IEmailService {
@@ -19,6 +21,12 @@ public class EmailService implements IEmailService {
     @Value("${spring.mail.username}")
     private String username = "michealsytch@yandex.ru";
 
+    @Value("${spring.mail.properties.mail.sender.email}")
+    private String senderEmail;
+
+    @Value("${spring.mail.properties.mail.sender.text}")
+    private String senderText;
+
     @Autowired
     public EmailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
@@ -26,24 +34,33 @@ public class EmailService implements IEmailService {
 
     @Override
     public void sendSimpleMessage(String toAddress, String subject, String text) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(username);
-        message.setTo(toAddress);
-        message.setSubject(subject);
-        message.setText(text);
-        mailSender.send(message);
+        MimeMessage message = mailSender.createMimeMessage();
+        try {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(message, true);
+            messageHelper.setFrom(username, senderEmail);
+            messageHelper.setTo(toAddress);
+            messageHelper.setSubject(subject);
+            messageHelper.setText(text);
+            mailSender.send(message);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public void sendMessageWithAttachment(String toAddress, String subject, String text, String attachment) throws FileNotFoundException, javax.mail.MessagingException {
+    public void sendMessageWithAttachment(String toAddress, String subject, String text, String attachment) {
         MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper messageHelper = new MimeMessageHelper(message, true);
-        messageHelper.setFrom(username);
-        messageHelper.setTo(toAddress);
-        messageHelper.setSubject(subject);
-        messageHelper.setText(text);
-        FileSystemResource file = new FileSystemResource(ResourceUtils.getFile(attachment));
-        messageHelper.addAttachment("Purchase order", file);
-        mailSender.send(message);
+        try {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(message, true);
+            messageHelper.setFrom(username, senderEmail);
+            messageHelper.setTo(toAddress);
+            messageHelper.setSubject(subject);
+            messageHelper.setText(text);
+            FileSystemResource file = new FileSystemResource(ResourceUtils.getFile(attachment));
+            messageHelper.addAttachment("Purchase order", file);
+            mailSender.send(message);
+        } catch (FileNotFoundException | UnsupportedEncodingException | MessagingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

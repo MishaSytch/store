@@ -1,4 +1,23 @@
+version: '3.8'
+
+volumes:
+  pg_store:
+
 services:
+  store_db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=store_db
+    volumes:
+      - pg_store:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - backend-network
+
   store-backend:
     build:
       context: .
@@ -8,16 +27,22 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
 
-      - SPRING_DATASOURCE_HOST=127.0.0.1
-      - SPRING_DATASOURCE_PORT=5433
-      - DATABASE_NAME=store_db
+      - SPRING_DATASOURCE_HOST=store_db
+      - SPRING_DATASOURCE_PORT=5432
       - SPRING_DATASOURCE_USERNAME=user
       - SPRING_DATASOURCE_PASSWORD=pass
 
       - SPRING_MAIL_USERNAME=michealsytch@yandex.ru
       - SPRING_MAIL_PASSWORD=xnveichxovfehfyq
 
-      - networks=backend-network
+    depends_on:
+      - store_db
+    networks:
+      - backend-network
+    command:
+      - /bin/bash
+      - -c
+      - ./wait-for-db.sh && ./gradlew test
 
 networks:
   backend-network:
