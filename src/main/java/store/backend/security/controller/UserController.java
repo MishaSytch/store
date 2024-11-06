@@ -52,6 +52,6 @@ public class UserController {
 
     @DeleteMapping("/{id}/delete/order")
     public void deleteOrder(@PathVariable("id") Long user_id, @RequestParam Long order_id) {
-        userService.deleteOrder(getCustomerById(user_id).get(), order_id);
+        if (userService.getUser(user_id).isPresent()) userService.deleteOrder(order_id);
     }
 }

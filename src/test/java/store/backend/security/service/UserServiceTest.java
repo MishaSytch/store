@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 class UserServiceIntegrationTest {
@@ -51,7 +52,7 @@ class UserServiceIntegrationTest {
         SignUpRequest request = new SignUpRequest();
         request.setFirstName("John");
         request.setLastName("Doe");
-        request.setEmail("misha.sytch@mail.ru");
+        request.setEmail("test@example.ru");
         request.setPassword("password");
 
         Role role = Role.CUSTOMER;
@@ -103,8 +104,10 @@ class UserServiceIntegrationTest {
     void testDeleteOrder() {
         Order order = orderService.createOrder(testUser, new Date(), testProducts);
         userService.addOrder(testUser, order);
-        userService.deleteOrder(testUser, order.getId());
-        assertFalse(testUser.getOrders().contains(order));
+        userService.deleteOrder(order.getId());
+        User user = userService.getUser(testUser.getId()).get();
+        assertFalse(user.getOrders().contains(order));
+        assertNull(orderService.getOrder(order.getId()));
     }
 
     @Test

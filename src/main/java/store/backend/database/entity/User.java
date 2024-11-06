@@ -41,7 +41,7 @@ public class User implements UserDetails {
 
     @OneToMany(
             mappedBy = "user",
-            cascade = {CascadeType.DETACH, CascadeType.REMOVE},
+            cascade = {CascadeType.ALL},
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )

@@ -22,16 +22,6 @@ spring:
     default-encoding: UTF-8
     properties:
       mail:
-        transport:
-          protocol: smtps
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-            required: true
-          ssl:
-            enable: true
-            trust: smtp.yandex.ru
         sender:
           email: no-reply@example.com
           text: no-reply

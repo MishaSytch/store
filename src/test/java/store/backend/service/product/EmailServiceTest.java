@@ -1,64 +1,91 @@
 package store.backend.service.product;
 
+import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.ServerSetupTest;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.util.ResourceUtils;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.FileNotFoundException;
-import java.util.Objects;
+import java.io.IOException;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.mock;
 
 @SpringBootTest
 class EmailServiceTest {
     private final String to = "test@example.com";
     private final String subject = "Test Subject";
     private final String text = "Test Message";
-    private final String attachmentFile = "src.test.resources.testAttachment.txt";
 
-    @Mock
-    private JavaMailSender mailSender;
+    private GreenMail greenMail;
+    private Session session;
 
-    @InjectMocks
+
+    @Autowired
     private EmailService emailService;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        greenMail = new GreenMail(ServerSetupTest.SMTP);
+        greenMail.start();
+        session = greenMail.getSmtp().createSession();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        greenMail.stop();
     }
 
     @Test
-    void sendSimpleMessage() {
+    void sendSimpleMessage() throws MessagingException, IOException {
         emailService.sendSimpleMessage(to, subject, text);
 
-        ArgumentCaptor<SimpleMailMessage> messageCaptor = ArgumentCaptor.forClass(SimpleMailMessage.class);
-        verify(mailSender, times(1)).send(messageCaptor.capture());
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom(new InternetAddress("from@example.com"));
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress("to@example.com"));
+        message.setSubject("Test Subject");
+        message.setText("Test Message");
 
-        SimpleMailMessage sentMessage = messageCaptor.getValue();
-        assertEquals(to, Objects.requireNonNull(sentMessage.getTo())[0]);
-        assertEquals(subject, sentMessage.getSubject());
-        assertEquals(text, sentMessage.getText());
+        Transport.send(message);
+
+        MimeMessage[] receivedMessages = greenMail.getReceivedMessages();
+        assertEquals(1, receivedMessages.length);
+        assertEquals("Test Subject", receivedMessages[0].getSubject());
+        assertEquals("Test Message", receivedMessages[0].getContent().toString().trim());
     }
 
     @Test
-    void sendMessageWithAttachment() throws FileNotFoundException, javax.mail.MessagingException {
-        MimeMessage mimeMessage = mock(MimeMessage.class);
-        when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
-
-        String attachment = attachmentFile;
+    void sendMessageWithAttachment() throws IOException, javax.mail.MessagingException {
+        String attachment = "src/test/resources/testAttachment.txt";
         emailService.sendMessageWithAttachment(to, subject, text, attachment);
 
-        verify(mailSender, times(1)).send(mimeMessage);
+        MimeMessage message = new MimeMessage(session);
+        MimeMessageHelper messageHelper = new MimeMessageHelper(message, true);
+        messageHelper.setFrom(new InternetAddress("from@example.com"));
+        messageHelper.setTo(new InternetAddress("to@example.com"));
+        messageHelper.setSubject("Test Subject");
+        messageHelper.setText("Test Message");
+        FileSystemResource file = new FileSystemResource(ResourceUtils.getFile(attachment));
+        messageHelper.addAttachment("Purchase order", file);
+
+        Transport.send(message);
+
+        MimeMessage[] receivedMessages = greenMail.getReceivedMessages();
+        assertEquals(1, receivedMessages.length);
+        assertEquals("Test Subject", receivedMessages[0].getSubject());
     }
 }

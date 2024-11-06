@@ -66,7 +66,12 @@ public class OrderService {
         return orderRepository.findAll().stream().filter(order -> order.getUser().getId().equals(customer_id)).collect(Collectors.toList());
     }
 
-    public void deleteOrder(Order order) {
-        order.getUser().removeOrder(order);
+    public void deleteOrder(Long order_id) {
+        orderRepository.findById(order_id).ifPresent(
+                order -> {
+                    if (order.getUser() != null) order.getUser().removeOrder(order);
+                    orderRepository.deleteById(order_id);
+                }
+        );
     }
 }
