@@ -91,7 +91,7 @@ class UserServiceIntegrationTest {
         assertEquals("UpdatedName", userService.getUser(updatedUser.getId()).get().getFirstName());
     }
 
-//    @Test
+    @Test
     void testAddOrder() {
         Order order = orderService.createOrder(testUser, new Date(), testProducts);
         Order savedOrder = userService.addOrder(testUser, order);
@@ -99,7 +99,7 @@ class UserServiceIntegrationTest {
         assertTrue(testUser.getOrders().contains(savedOrder));
     }
 
-//    @Test
+    @Test
     void testDeleteOrder() {
         Order order = orderService.createOrder(testUser, new Date(), testProducts);
         userService.addOrder(testUser, order);
