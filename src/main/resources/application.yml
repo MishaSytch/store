@@ -8,16 +8,16 @@ spring:
       database-platform: org.hibernate.dialect.PostgreSQLDialect
 
   datasource:
-    url: jdbc:postgresql://127.0.0.1:5433/store_db
-    username: user
-    password: pass
+    url: jdbc:postgresql://${SPRING_DATASOURCE_HOST}:${SPRING_DATASOURCE_PORT}/store_db
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   mail:
     host: smtp.yandex.ru
     port: 465
-    username: michealsytch@yandex.ru
-    password: xnveichxovfehfyq
+    username: ${SPRING_MAIL_USERNAME}
+    password: ${SPRING_MAIL_PASSWORD}
     test-connection: true
     default-encoding: UTF-8
     properties:
