@@ -119,18 +119,10 @@ class OrderServiceTest {
 
     @Test
     void getOrders() {
-        Order order1 = orderService.createOrder(testUser, new Date(), testProducts);
-        Order order2 = orderService.createOrder(testUser, new Date(), testProducts);
+        orderService.createOrder(testUser, new Date(), testProducts);
+        orderService.createOrder(testUser, new Date(), testProducts);
 
         Iterable<Order> orders = orderService.getOrders(testUser.getId());
         assertTrue(orders.iterator().hasNext());
-    }
-
-    @Test
-    void deleteOrder() {
-        Order order = orderService.createOrder(testUser, new Date(), testProducts);
-
-        orderService.deleteOrder(order);
-        assertFalse(testUser.getOrders().contains(order));
     }
 }

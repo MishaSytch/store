@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 import store.backend.database.entity.Product;
 import store.backend.database.entity.User;
@@ -87,9 +88,9 @@ public class UserService {
                             return order;
     }
 
-    public void deleteOrder(User user, @RequestParam Long order_id) {
-        Order order;
-        if ((order = orderService.getOrder(order_id)) != null) user.removeOrder(order);
+    @Transactional
+    public void deleteOrder(Long order_id) {
+        orderService.deleteOrder(order_id);
     }
 
     public void deleteUser(Long user_id) {

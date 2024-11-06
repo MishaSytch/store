@@ -87,7 +87,7 @@ public class DBLoader {
         }
 
         for (Order o : userService.getOrders()) {
-            orderService.deleteOrder(o);
+            orderService.deleteOrder(o.getId());
         }
 
     }
