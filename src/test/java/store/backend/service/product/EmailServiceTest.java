@@ -1,61 +1,74 @@
 package store.backend.service.product;
 
+import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.ServerSetupTest;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.FileNotFoundException;
-import java.util.Objects;
+import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.mock;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@SpringBootTest
 class EmailServiceTest {
-    private final String to = "test@example.com";
+    private final String to = "misha.sytch@mail.ru";
     private final String subject = "Test Subject";
     private final String text = "Test Message";
 
-    @Mock
-    private JavaMailSender mailSender;
+    private GreenMail greenMail;
 
-    @InjectMocks
+    @Autowired
     private EmailService emailService;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        greenMail = new GreenMail(ServerSetupTest.SMTP);
+        greenMail.start();
     }
 
     @Test
     void sendSimpleMessage() {
         emailService.sendSimpleMessage(to, subject, text);
 
-        ArgumentCaptor<SimpleMailMessage> messageCaptor = ArgumentCaptor.forClass(SimpleMailMessage.class);
-        verify(mailSender, times(1)).send(messageCaptor.capture());
-
-        SimpleMailMessage sentMessage = messageCaptor.getValue();
-        assertEquals(to, Objects.requireNonNull(sentMessage.getTo())[0]);
-        assertEquals(subject, sentMessage.getSubject());
-        assertEquals(text, sentMessage.getText());
+        assertThat(greenMail.getReceivedMessages()).hasSize(1);
+        MimeMessage receivedMessage = greenMail.getReceivedMessages()[0];
+        try {
+            assertThat(receivedMessage.getSubject()).isEqualTo(subject);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            assertThat(receivedMessage.getContent().toString()).contains(text);
+        } catch (IOException | MessagingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
     void sendMessageWithAttachment() throws FileNotFoundException, javax.mail.MessagingException {
-        MimeMessage mimeMessage = mock(MimeMessage.class);
-        when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
-
-        String attachment = "src.test.java.resources.testAttachment.txt";
+        String attachment = "src.test.resources.testAttachment.txt";
         emailService.sendMessageWithAttachment(to, subject, text, attachment);
 
-        verify(mailSender, times(1)).send(mimeMessage);
+        assertThat(greenMail.getReceivedMessages()).hasSize(1);
+        MimeMessage receivedMessage = greenMail.getReceivedMessages()[0];
+        try {
+            assertThat(receivedMessage.getSubject()).isEqualTo(subject);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            assertThat(receivedMessage.getContent().toString()).contains(text);
+        } catch (IOException | MessagingException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertThat(greenMail.getReceivedMessages()).hasSize(1);
+
     }
 }
