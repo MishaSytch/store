@@ -6,6 +6,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
@@ -19,10 +20,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
 
+@SpringBootTest
 class EmailServiceTest {
     private final String to = "test@example.com";
     private final String subject = "Test Subject";
     private final String text = "Test Message";
+    private final String attachmentFile = "src.test.resources.testAttachment.txt";
 
     @Mock
     private JavaMailSender mailSender;
@@ -53,7 +56,7 @@ class EmailServiceTest {
         MimeMessage mimeMessage = mock(MimeMessage.class);
         when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
 
-        String attachment = "src.test.java.resources.testAttachment.txt";
+        String attachment = attachmentFile;
         emailService.sendMessageWithAttachment(to, subject, text, attachment);
 
         verify(mailSender, times(1)).send(mimeMessage);
