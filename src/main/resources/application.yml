@@ -9,7 +9,7 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${SPRING_DATASOURCE_HOST:localhost}:${SPRING_DATASOURCE_PORT:5432}/store_db
+    url: jdbc:postgresql://${SPRING_DATASOURCE_HOST:store_db}:${SPRING_DATASOURCE_PORT:5432}/store_db
     username: ${SPRING_DATASOURCE_USERNAME:user}
     password: ${SPRING_DATASOURCE_PASSWORD:pass}
 
