@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: backend
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${SPRING_DATASOURCE_HOST:store_db}:${SPRING_DATASOURCE_PORT:5432}/store_db
+    username: ${SPRING_DATASOURCE_USERNAME:user}
+    password: ${SPRING_DATASOURCE_PASSWORD:pass}
+
+  mail:
+    host: smtp.yandex.ru
+    port: 465
+    username: ${SPRING_MAIL_USERNAME:michealsytch@yandex.ru}
+    password: ${SPRING_MAIL_PASSWORD:xnveichxovfehfyq}
+    test-connection: true
+    default-encoding: UTF-8
+    properties:
+      mail:
+        sender:
+          email: no-reply@example.com
+          text: no-reply
+        debug: true
+
+sql:
+  init:
+    data-locations: classpath:init-schema.sql
+
+
+token:
+  signing:
+    key: 23YG9236BRTB3982H3C289GFH49264G237498GCNF4YT5C7HF0348H9HT235T2
+
+logging:
+  level:
+    # org.springframework.orm.jpa: DEBUG
+    org.springframework.transaction: DEBUG

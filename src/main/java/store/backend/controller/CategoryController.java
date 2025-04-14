@@ -1,0 +1,38 @@
+package store.backend.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import store.backend.database.entity.Category;
+import store.backend.database.entity.Product;
+import store.backend.service.product.CategoryService;
+
+@RestController
+@RequestMapping("/category")
+public class CategoryController {
+    @Autowired
+    private CategoryService categoryService;
+
+    @GetMapping("/{id}/product/all")
+    public Iterable<Product> getProducts(@PathVariable("id") Long category_id) {
+        return categoryService.getCategory(category_id).map(Category::getProducts).orElse(null);
+    }
+
+    @GetMapping("/{id}=")
+    public Iterable<Category> getInnerCategories(@PathVariable("id") Long category_id) {
+        return categoryService.getCategory(category_id).map(Category::getCategories).orElse(null);
+    }
+
+    @GetMapping("/{id}")
+    public Category getCategory(@PathVariable("id") Long category_id) {
+        return categoryService.getCategory(category_id).orElse(null);
+    }
+
+    @GetMapping("/all")
+    public Iterable<Category> getCategories() {
+        return categoryService.getCategories();
+    }
+
+}
