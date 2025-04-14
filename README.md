@@ -1,44 +1,16 @@
-# Endpoints
+# Прототип интернет магазина
 
-- account
-  - customer
-    - {id} [**get**]
-      - add
-        - order [**post**]
-      - delete
-        - order [**get** **del**]
-      - orders [**get**]
+## Описание
 
-- auth
-  - admin
-    - sing-up [**post**]
-  - sign-in [**post**]
-  - sign-up [**post**]
+Данный проект представляет собой серверную часть интернет магазина с Авторизацией/Аутентификацией с использщванием JWT для поддержания сессии, хранением данных в docker контейнере, тестами.
 
-- category
-  - all [**get**]
-  - {id} [**get**]
-    - product
-      - all [**get**]
+## Стек технологий
 
-- product [**post**]
-  - all [**get**]
-  - update
-    - image
-      - {id} [**put**]
-    - price
-      - {id} [**put**]
-  - {id} [**get** **put** **del**]
-  - add
-    - image [**post**]
-    - price [**post**]
-  - create
-      - image [**post**]
-      - price [**post**]
-  - delete
-      - image [**post**]
-      - price [**post**]
-  - quantity [**get** **put**]
+- Вся серверная логика реализованна на Java 8 + Spring Boot
+- Для работы с бд используется Spring Data JPA
+- Для защиты - Spring Security
 
-- order
-  - create [**post**]
+## Цель проекта
+
+Помимо практического освоения технологий, проект нацелен на практику работы в команде с git (Что очень пригодилось в реальной работе) и фиксаций изменения в коде
+
